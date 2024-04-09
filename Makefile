@@ -1,4 +1,5 @@
 .PHONY:			all clean fclean re
+
 MACHINE 		:= $(shell uname -m)
 NAME			= cub3d
 
@@ -8,25 +9,27 @@ RM				= rm -rf
 
 INCLUDES		= ./includes
 SRCS_DIR		= ./src
-UTILS_DIR		= ./utils
-LIBFT_DIR		= ./libs/libft
-LIBS_DIR		= ./libs
 OBJS_DIR		= ./obj
+UTILS_DIR		= ./utils
 
+LIBS_DIR		= ./libs
+LIBFT_DIR		= $(LIBS_DIR)/libft
+MINILIBX_DIR	= $(LIBS_DIR)/minilibx-linux
 LIBFT			= $(LIBFT_DIR)/libft-$(MACHINE).a
+MINILIBX		= $(MINILIBX_DIR)/libmlx_Linux.a
 
 rwildcard		= $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 SRCS			= $(call rwildcard, $(SRCS_DIR)/, *.c) $(call rwildcard, $(UTILS_DIR)/, *.c)
 OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS 			= $(OBJS:.o=.d)
-LIBS			= -L$(LIBFT_DIR)
+LIBS			= -L$(LIBFT_DIR) -L$(MINILIBX_DIR) -lXext -lX11 -lm
 
 $(NAME): $(OBJS) Makefile
 	@echo "Linking..."
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBS) -I$(INCLUDES) $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBS) -I$(INCLUDES) $(LIBFT) $(MINILIBX)
 	@echo "Build complete."
 
-all: libft $(NAME)
+all: minilibx libft $(NAME)
 	@echo "Building $(NAME)..."
 	
 $(OBJS_DIR)/%.o: %.c
@@ -38,6 +41,9 @@ $(OBJS_DIR)/%.o: %.c
 
 libft:
 	$(MAKE) -C $(LIBFT_DIR)
+
+minilibx:
+	$(MAKE) -C $(MINILIBX_DIR)
 
 clean:
 	$(RM) $(OBJS_DIR) $(DEPS)

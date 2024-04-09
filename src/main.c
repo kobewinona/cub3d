@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/09 17:06:55 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:47:08 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 int	main(void)
 {
+	ft_putstr_fd("hello world\n", STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }
