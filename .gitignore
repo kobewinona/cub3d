@@ -1,0 +1,19 @@
+# IDE
+.idea
+*.dSYM
+
+# program
+a.out
+cub3d
+
+# objects
+obj
+
+# rest
+.DS_store
+*.txt
+*.py
+*.lldb
+
+# logs
+logs

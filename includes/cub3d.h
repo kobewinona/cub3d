@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/09 17:46:51 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:56:02 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <math.h>
 # include <stdbool.h>
 # include "../libs/libft/includes/libft.h"
+# include "../libs/minilibx-linux/mlx.h"
 # include "constants.h"
 
 #endif
