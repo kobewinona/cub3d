@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:06:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/12 16:04:30 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/12 20:44:41 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@
 # define SCREEN_WIDTH 640
 # define SCREEN_HEIGHT 480
 
-# define ESC 53
+# define ESC 65307
+# define W 119
+# define A 97
+# define S 115
+# define D 100
 
 // colors
 # define RED "\033[31m"

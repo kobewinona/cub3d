@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/12 16:04:10 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/12 20:49:42 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,16 @@ typedef struct s_xy
 	int	y;
 }	t_xy;
 
+typedef struct s_state
+{
+	t_win	*win;
+	t_xy	p_pos;
+	t_xy	p_dir;
+}	t_state;
+
 // map utils
 void	print_map(int map[MAP_WIDTH][MAP_HEIGHT]);
+int		render_game(t_state **state);
 
 // graphics utils
 int		create_window(int w, int h, t_win **win);

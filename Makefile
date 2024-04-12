@@ -4,7 +4,9 @@ MACHINE 		:= $(shell uname -m)
 NAME			= cub3d
 
 CC				= gcc
-CFLAGS			= -g -Wall -Wextra -Werror -MMD
+# CFLAGS			= -g -Wall -Wextra -Werror -MMD -03
+CFLAGS			= -g -MMD -O3
+GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
 
 INCLUDES		= ./includes
@@ -22,11 +24,11 @@ rwildcard		= $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(sub
 SRCS			= $(call rwildcard, $(SRCS_DIR)/, *.c) $(call rwildcard, $(UTILS_DIR)/, *.c)
 OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS 			= $(OBJS:.o=.d)
-LIBS			= -L$(LIBFT_DIR) -L$(MINILIBX_DIR) -lXext -lX11 -lm
+LIBS			= -L$(LIBFT_DIR) $(MINILIBX) -L$(MINILIBX_DIR) $(LIBFT)
 
 $(NAME): $(OBJS) Makefile
 	@echo "Linking..."
-	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBS) -I$(INCLUDES) $(LIBFT) $(MINILIBX)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(GFLAGS) -o $(NAME)
 	@echo "Build complete."
 
 all: minilibx libft $(NAME)
@@ -35,7 +37,7 @@ all: minilibx libft $(NAME)
 $(OBJS_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
 -include $(DEPS)
 
