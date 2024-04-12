@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:35:13 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/12 16:04:10 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:27:38 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ void	print_map(int map[MAP_HEIGHT][MAP_WIDTH])
 	if (!map)
 		return ;
 	pos = (t_xy){0, 0};
-	while (pos.y < MAP_HEIGHT)
+	while (pos.x < MAP_HEIGHT)
 	{
-		pos.x = 0;
-		while (pos.x < MAP_WIDTH)
+		pos.y = 0;
+		while (pos.y < MAP_WIDTH)
 		{
-			print_map_value(map[pos.y][pos.x]);
-			pos.x++;
-			if (pos.x < MAP_WIDTH)
+			print_map_value(map[pos.x][pos.y]);
+			pos.y++;
+			if (pos.y < MAP_WIDTH)
 				ft_putchar_fd(' ', STDOUT_FILENO);
 		}
 		ft_putchar_fd('\n', STDOUT_FILENO);
-		pos.y++;
+		pos.x++;
 	}
 }
