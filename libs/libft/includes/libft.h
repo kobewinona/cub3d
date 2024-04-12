@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dklimkin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 20:00:23 by dklimkin          #+#    #+#             */
-/*   Updated: 2023/08/31 20:00:24 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:42:13 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,21 @@
 # include <limits.h>
 # include <stdint.h>
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# else
+#  if BUFFER_SIZE <= 0 || BUFFER_SIZE > 0xfffffff
+#   undef BUFFER_SIZE
+#   define BUFFER_SIZE 1024
+#  endif
+# endif
+
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
@@ -72,5 +82,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+char	*get_next_line(int fd);
+size_t	ft_strclen(const char *str, char c);
+char	*ft_strndup(const char *s0, size_t len);
 
 #endif
