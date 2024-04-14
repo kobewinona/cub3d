@@ -24,7 +24,7 @@ OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS 			= $(OBJS:.o=.d)
 LIBS			= -L$(LIBFT_DIR) -L$(MINILIBX_DIR) -lXext -lX11 -lm
 
-$(NAME): $(OBJS) Makefile
+$(NAME): $(OBJS) Makefile libft minilibx
 	@echo "Linking..."
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBS) -I$(INCLUDES) $(LIBFT) $(MINILIBX)
 	@echo "Build complete."
@@ -47,9 +47,11 @@ minilibx:
 
 clean:
 	$(RM) $(OBJS_DIR) $(DEPS)
+	$(MAKE) -C $(MINILIBX_DIR) clean
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 	$(RM) $(NAME)
 
 re: fclean all
