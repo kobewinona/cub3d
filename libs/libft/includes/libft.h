@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 20:00:23 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/12 17:42:13 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/14 17:49:54 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*get_next_line(int fd);
+char	*get_next_line_ext_buff(int fd, char **ext_buff);
 size_t	ft_strclen(const char *str, char c);
 char	*ft_strndup(const char *s0, size_t len);
 
