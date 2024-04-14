@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/14 18:45:11 by tponutha         ###   ########.fr       */
+/*   Created: 2024/04/13 07:51:07 by tponutha          #+#    #+#             */
+/*   Updated: 2024/04/14 18:44:22 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#include "../../includes/parser.h"
 
-# include <stdlib.h>
-# include <fcntl.h>
-# include <math.h>
-# include <stdbool.h>
-# include "../libs/libft/includes/libft.h"
-# include "../libs/minilibx-linux/mlx.h"
-# include "constants.h"
-# include "parser.h"
-
-#endif
+void	par_error_msg(char *msg)
+{
+	ft_putendl_fd("Error", STDERR_FILENO);
+	ft_putendl_fd(msg, STDERR_FILENO);
+}
