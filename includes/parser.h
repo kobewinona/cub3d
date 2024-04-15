@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/14 18:47:06 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:25:19 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,13 @@ typedef struct s_parser
 	t_player	player;
 }	t_parser;
 
-int	par_open_cub3d(const char *path);
-// int	parser_init(void *mlx, int fd, t_);
-int	get_element(t_parser *info, int fd);
+// main function
+int		par_open_cub3d(const char *path);
+t_parser	parser_init(void *mlx);
+
+
+// get element
+int	par_get_element(t_parser *info, int fd, char **ext_buff);
 
 // parser_utils
 void	par_error_msg(char *msg);

@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/14 18:45:20 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:26:33 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,31 @@ static int	sb_argv_parsing(int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	int			fd;
-	void		*mlx;
-	// t_parser	info;
+	// void		*mlx;
+	char		*ext_buff;
+	t_parser	info;
 
 	fd = sb_argv_parsing(argc, argv);
 	if (fd == -1)
 		return (EXIT_FAILURE);
-	mlx = mlx_init();
-	if (mlx == NULL)
+	// mlx = mlx_init();
+	// if (mlx == NULL)
+	// {
+	// 	par_error_msg("mlx initialize failed");
+	// 	close(fd);
+	// 	return (EXIT_FAILURE);
+	// }
+	// // parsing function;
+	ext_buff = NULL;
+
+	// null for testing
+	info = parser_init(NULL);
+
+	if (par_get_element(&info, fd, &ext_buff) == 0)
 	{
-		par_error_msg("mlx initialize failed");
 		close(fd);
 		return (EXIT_FAILURE);
 	}
-	// parsing function;
-
 	close(fd);
 
 	// running game
