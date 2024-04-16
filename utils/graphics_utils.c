@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:17:25 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/12 18:14:12 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:55:18 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,36 @@ t_img	*create_image(int w, int h, void *mlx_ptr)
 
 void	put_pixel_img(t_img img, t_xy pos, int color)
 {
-	char	*dst;
+	int		offset;
+	char	*pixel;
+	int		y;
+	int		x;
 
-	if ((pos.x >= 0 && pos.y >= 0) && (pos.x < img.width && pos.y < img.height))
-	{
-		dst = img.addr + ((pos.y * img.line_len) + (pos.x * (img.bpp / 8)));
-		*(unsigned int *)dst = color;
-	}
+	y = (int)round(pos.y);
+	x = (int)round(pos.x);
+	if (x < 0 || y < 0 || x >= img.width || y >= img.height)
+		return ;
+	offset = (y * img.line_len) + (x * (img.bpp / 8));
+	pixel = (char *)(img.addr + offset);
+	*(int *)pixel = blend_colors(*(int *)pixel, color);
 }
 
-int	create_color(int alpha, int red, int green, int blue)
+void	draw_shape(t_shape shape, t_img img)
 {
-	if (alpha > 255 || red > 255 || green > 255 || blue > 255)
-		return (0);
-	alpha = 255 - alpha;
-	return (alpha << 24 | red << 16 | green << 8 | blue);
+	int	y;
+	int	x;
+
+	y = 0;
+	while (y < shape.height && (y + shape.pos.y) < img.height)
+	{
+		x = 0;
+		while (x < shape.width && (x + shape.pos.x) < img.width)
+		{
+			put_pixel_img(img,
+				(t_xy){x + shape.pos.x, y + shape.pos.y}, shape.color);
+			x++;
+		}
+		y++;
+	}
 }
 
