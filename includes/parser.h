@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/15 21:22:50 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/17 00:12:46 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include "constants.h"
+# include "ft_queue.h"
 # include "../libs/libft/includes/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
 
@@ -102,7 +103,7 @@ RETURN VALUE
 */
 
 // main function
-int		par_open_cub3d(const char *path);
+int			par_open_cub3d(const char *path);
 t_parser	parser_init(void *mlx);
 
 
