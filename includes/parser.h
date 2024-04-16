@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/17 00:12:46 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/17 04:37:04 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSER_H
 # include <fcntl.h>
 # include <stdbool.h>
+# include <sys/errno.h>
 # include "constants.h"
 # include "ft_queue.h"
 # include "../libs/libft/includes/libft.h"
@@ -112,5 +113,8 @@ int	par_get_element(t_parser *info, int fd, char **ext_buff);
 
 // parser_utils
 void	par_error_msg(char *msg);
+
+bool	par_ismap(char *line);
+bool	par_isspace(char *line);
 
 #endif
