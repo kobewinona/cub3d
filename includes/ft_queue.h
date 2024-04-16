@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 23:11:34 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/17 00:12:28 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/17 03:28:29 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	queue_flush(t_queue *queue);
 void	queue_queue(t_queue *queue, t_node *node);
 t_node	*queue_dequeue(t_queue *queue);
 void	queue_transverse(t_queue *queue);
+size_t	queue_len(t_queue *queue);
 
 t_node	*node_new(char *line);
 char	*node_extract(t_node *node);
