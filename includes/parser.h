@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/15 14:25:19 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/15 21:22:50 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdbool.h>
 # include "constants.h"
 # include "../libs/libft/includes/libft.h"
+# include "../libs/minilibx-linux/mlx.h"
 
 typedef struct s_texture
 {
@@ -63,6 +64,42 @@ typedef struct s_parser
 	int			height;
 	t_player	player;
 }	t_parser;
+
+/*
+RETURN VALUE
+- NORMAL RETURN
+	0:	success
+	-1:	allocation failed
+
+- CAN'T FIND SOME ELEMENT
+	1:	can't find north
+	2:	can't find south
+	4:	can't find west
+	8:	can't find east
+	16:	can't find floor
+	32:	can't find ceil
+
+- ELEMENT INFO ERROR
+	2^8:	north file error
+	2^9:	south file error
+	2^10:	west file error
+	2^11:	east file error
+	2^12:	floor info is wrong
+	2^13:	ceil info is wrong
+
+- ELEMENT FIELD INPUT (too much or lack)
+	2^16:	north input field must be 2
+	2^17:	south input field must be 2
+	2^18:	west input field must be 2
+	2^19:	east input field must be 2
+	2^20:	floor input field must be 2
+	2^21:	ceil input field must be 2
+
+- FINDING MAP TOO EARLY OR NOT FIND AT ALL
+	2^24:	find map? too early (stop reading map)
+	2^25:	map doesn't exist in this file (reach eof)
+	2^26:	duplicate element
+*/
 
 // main function
 int		par_open_cub3d(const char *path);
