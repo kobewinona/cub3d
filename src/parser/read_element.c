@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 05:23:56 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/17 17:38:19 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/17 18:40:13 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static bool	sb_is_contain_elemnet(char *line, int *element_bits)
 		return (sb_set_element_bits((1 << 4), element_bits));
 	if (ft_strnstr(line, "C ", len) != NULL)
 		return (sb_set_element_bits((1 << 5), element_bits));
-	return (false);
+	return (true);
 }
 
 /*
@@ -72,10 +72,10 @@ char	*par_read_element(t_queue *element, int fd, char **ext_buff)
 	line = get_next_line_ext_buff(fd, ext_buff);
 	while (line != NULL)
 	{
-		if (par_ismap(line))
-			break ;
 		if (!par_isspace(line))
 		{
+			if (par_ismap(line))
+				break ;
 			if (sb_check_element(line, element, &element_bit) == -1)
 			{
 				free(ext_buff);
