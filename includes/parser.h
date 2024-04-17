@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/17 04:37:04 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:44:49 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ t_parser	parser_init(void *mlx);
 
 
 // get element
-int	par_get_element(t_parser *info, int fd, char **ext_buff);
+char	*par_read_element(t_queue *element, int fd, char **ext_buff);
 
 // parser_utils
 void	par_error_msg(char *msg);
