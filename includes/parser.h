@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/17 16:44:49 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/17 23:15:49 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,25 @@
 # include "ft_queue.h"
 # include "../libs/libft/includes/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
+
+typedef enum e_elem_type
+{
+	undefine = 0,
+	north_elem = 1,
+	south_elem = 2,
+	east_elem = 3,
+	west_elem = 4,
+	floor_elem = 5,
+	ceil_elem = 6
+}	t_elem_type;
+
+typedef enum e_elem_error
+{
+	not_found = 0,
+	data_error = 8,
+	args_error = 16,
+	no_error = 32
+}	t_error_type;
 
 typedef struct s_texture
 {
@@ -107,14 +126,17 @@ RETURN VALUE
 int			par_open_cub3d(const char *path);
 t_parser	parser_init(void *mlx);
 
-
 // get element
-char	*par_read_element(t_queue *element, int fd, char **ext_buff);
+char		*par_read_element(t_queue *element, int fd, char **ext_buff);
 
 // parser_utils
-void	par_error_msg(char *msg);
+void		par_error_msg(char *msg);
 
-bool	par_ismap(char *line);
-bool	par_isspace(char *line);
+bool		par_ismap(char *line);
+bool		par_isspace(char *line);
+
+int	par_element_bitmask(t_elem_type type, t_error_type err);
+int	par_get_texture(t_parser *info, char **box, t_elem_type type);
+int	par_get_color(t_parser *info, char **box, t_elem_type type);
 
 #endif
