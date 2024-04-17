@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 05:05:48 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/14 17:46:13 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:36:36 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ static char	*sb_buffmanage(char *text, char *buffer)
 {
 	char	*str;
 
-	str = ft_strjoin(text, buffer);
+	if (text == NULL)
+		str = ft_strjoin("", buffer);
+	else
+		str = ft_strjoin(text, buffer);
 	free(text);
 	free(buffer);
 	return (str);
