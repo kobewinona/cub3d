@@ -6,37 +6,39 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 05:23:56 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/17 18:40:13 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/18 21:58:43 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 
-static bool	sb_set_element_bits(int bit, int *element_bits)
+static bool	sb_set_element_bits(int bit, int *bits, t_ltype *type, t_ltype t1)
 {
-	if (((*element_bits) & bit) != 0)
+	*type = t1;
+	if (((*bits) & bit) != 0)
 		return (false);
-	(*element_bits) |= bit;
+	(*bits) |= bit;
 	return (true);
 }
 
-static bool	sb_is_contain_elemnet(char *line, int *element_bits)
+static bool	sb_is_contain_elemnet(char *line, int *bits, t_ltype *type)
 {
 	size_t	len;
 
 	len = ft_strlen(line);
 	if (ft_strnstr(line, "NO ", len) != NULL)
-		return (sb_set_element_bits((1 << 0), element_bits));
+		return (sb_set_element_bits((1 << 0), bits, type, north_elem));
 	if (ft_strnstr(line, "SO ", len) != NULL)
-		return (sb_set_element_bits((1 << 1), element_bits));
+		return (sb_set_element_bits((1 << 1), bits, type, south_elem));
 	if (ft_strnstr(line, "WE ", len) != NULL)
-		return (sb_set_element_bits((1 << 2), element_bits));
+		return (sb_set_element_bits((1 << 2), bits, type, west_elem));
 	if (ft_strnstr(line, "EA ", len) != NULL)
-		return (sb_set_element_bits((1 << 3), element_bits));
+		return (sb_set_element_bits((1 << 3), bits, type, east_elem));
 	if (ft_strnstr(line, "F ", len) != NULL)
-		return (sb_set_element_bits((1 << 4), element_bits));
+		return (sb_set_element_bits((1 << 4), bits, type, floor_elem));
 	if (ft_strnstr(line, "C ", len) != NULL)
-		return (sb_set_element_bits((1 << 5), element_bits));
+		return (sb_set_element_bits((1 << 5), bits, type, ceil_elem));
+	*type = unidentify;
 	return (true);
 }
 
@@ -47,13 +49,14 @@ RETURN VALUE
 -1: error
 */
 
-static int	sb_check_element(char *line, t_queue *element, int *element_bits)
+static int	sb_check_element(char *line, size_t n, t_queue *element, int *bits)
 {
 	t_node	*node;
+	t_ltype	type;
 
-	if (!sb_is_contain_elemnet(line, element_bits))
+	if (!sb_is_contain_elemnet(line, bits, &type))
 		return (0);
-	node = node_new(line);
+	node = node_new(line, n, type);
 	if (node == NULL)
 	{
 		free(line);
@@ -65,10 +68,12 @@ static int	sb_check_element(char *line, t_queue *element, int *element_bits)
 
 char	*par_read_element(t_queue *element, int fd, char **ext_buff)
 {
+	size_t	no;
 	char	*line;
-	int		element_bit;
+	int		bits;
 
-	element_bit = 0;
+	no = 0;
+	bits = 0;
 	line = get_next_line_ext_buff(fd, ext_buff);
 	while (line != NULL)
 	{
@@ -76,7 +81,7 @@ char	*par_read_element(t_queue *element, int fd, char **ext_buff)
 		{
 			if (par_ismap(line))
 				break ;
-			if (sb_check_element(line, element, &element_bit) == -1)
+			if (sb_check_element(line, no, element, &bits) == -1)
 			{
 				free(ext_buff);
 				return (NULL);
@@ -85,6 +90,7 @@ char	*par_read_element(t_queue *element, int fd, char **ext_buff)
 		else
 			free(line);
 		line = get_next_line_ext_buff(fd, ext_buff);
+		no++;
 	}
 	return (line);
 }
