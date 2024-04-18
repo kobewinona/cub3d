@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/17 22:28:11 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:36:20 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "../libs/minilibx-linux/mlx.h"
 # include "constants.h"
 
-extern int	testMap[MAP_WIDTH][MAP_HEIGHT];
+extern int	g_test_map[MAP_WIDTH][MAP_HEIGHT];
 
 // @typedef structs
 
@@ -69,6 +69,16 @@ typedef struct s_line
 
 }	t_line;
 
+typedef struct s_keys
+{
+	bool	move_up;
+	bool	move_down;
+	bool	move_left;
+	bool	move_right;
+	bool	turn_left;
+	bool	turn_right;
+}	t_keys;
+
 typedef struct s_line_calc
 {
 	int	current_x;
@@ -83,21 +93,22 @@ typedef struct s_line_calc
 	int	error_delta;
 }	t_line_calc;
 
-typedef struct s_keys
+typedef	struct s_raycast_calc
 {
-	bool	move_up;
-	bool	move_down;
-	bool	move_left;
-	bool	move_right;
-	bool	turn_left;
-	bool	turn_right;
-}	t_keys;
-
-typedef struct s_vep
-{
-	t_xy	pos;
-	double	angle;
-}	t_vep;
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	int		step_x;
+	int		step_y;
+	int		map_x;
+	int		map_y;
+	bool	is_obstacle_hit;
+	bool	is_obstacle_side;
+}	t_raycast_calc;
 
 typedef struct s_state
 {

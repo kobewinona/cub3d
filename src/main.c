@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/17 20:49:09 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:36:23 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int	main(void)
 	t_state	*state;
 	t_win	*win;
 
-	print_map(testMap);
+	print_map(g_test_map);
 	state = (t_state *)malloc(sizeof(t_state));
 	if (!state)
 		return (EXIT_FAILURE);
 	ft_memset(state, 0, sizeof(t_state));
 	state->p_pos = (t_xy){22, 19};
-	state->p_dir = (t_xy){-1, 0};
-	state->plane = (t_xy){0, 0.66};
+	state->p_dir = (t_xy){0, -1};
+	state->plane = (t_xy){0.66, 0};
 	if (create_window(SCREEN_WIDTH, SCREEN_HEIGHT, &win) == FAILURE)
 		return (EXIT_FAILURE);
 	state->win = win;

@@ -6,101 +6,107 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/17 22:38:11 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:36:22 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static void	calc_step_and_initial_side_dist(t_state *state, t_raycast_calc *rc)
+{
+	if (rc->ray_dir_x < 0)
+	{
+		rc->step_x = -1;
+		rc->side_dist_x = (state->p_pos.x - rc->map_x) * rc->delta_dist_x;
+	}
+	else
+	{
+		rc->step_x = 1;
+		rc->side_dist_x = (rc->map_x + 1.0 - state->p_pos.x) * rc->delta_dist_x;
+	}
+	if (rc->ray_dir_y < 0)
+	{
+		rc->step_y = -1;
+		rc->side_dist_y = (state->p_pos.y - rc->map_y) * rc->delta_dist_y;
+	}
+	else
+	{
+		rc->step_y = 1;
+		rc->side_dist_y = (rc->map_y + 1.0 - state->p_pos.y) * rc->delta_dist_y;
+	}
+}
+
+static void	preform_dda(t_state *state, t_raycast_calc *rc)
+{
+	while (rc->is_obstacle_hit == false)
+	{
+		rc->is_obstacle_side = rc->side_dist_x >= rc->side_dist_y;
+		if (rc->side_dist_x < rc->side_dist_y)
+		{
+			rc->side_dist_x += rc->delta_dist_x;
+			rc->map_x += rc->step_x;
+		}
+		else
+		{
+			rc->side_dist_y += rc->delta_dist_y;
+			rc->map_y += rc->step_y;
+		}
+		rc->is_obstacle_hit = g_test_map[rc->map_y][rc->map_x] > 0;
+	}
+	draw_line((t_line){{state->p_pos.x * CELL_SIZE, state->p_pos.y
+		* CELL_SIZE}, {rc->map_x * CELL_SIZE, rc->map_y * CELL_SIZE},
+		create_color(255, 255, 0, 255)}, (*state->canvas), 0);
+}
+
+static void	draw_column(t_state *state, t_raycast_calc *rc, int x)
+{
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	double	perp_wall_dist;
+
+	perp_wall_dist = (rc->map_y - state->p_pos.y
+			+ (1 - rc->step_y) / 2) / rc->ray_dir_y;
+	if (rc->is_obstacle_side == false)
+		perp_wall_dist = (rc->map_x - state->p_pos.x
+				+ (1 - rc->step_x) / 2) / rc->ray_dir_x;
+	line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
+	draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+	if (draw_start < 0)
+		draw_start = 0;
+	draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
+	if (draw_end >= SCREEN_HEIGHT)
+		draw_end = (SCREEN_HEIGHT - 1);
+	draw_line((t_line){{x, draw_start}, (t_xy){x, draw_end},
+		create_color(255, 100, 100, 100)},
+		(*state->canvas), rc->is_obstacle_side);
+}
+
 void	handle_raycasting(t_state **state)
 {
-	for (int x = 0; x < SCREEN_WIDTH; x++)
+	t_raycast_calc	rc;
+	int				x;
+
+	x = 0;
+	ft_memset(&rc, 0, sizeof(t_raycast_calc));
+	while (x < SCREEN_WIDTH)
 	{
-		double cameraX = 2 * x / (double)SCREEN_WIDTH - 1; // x-coordinate in camera space
-		double rayDirX = (*state)->p_dir.x + (*state)->plane.x * cameraX;
-		double rayDirY = (*state)->p_dir.y + (*state)->plane.y * cameraX;
-
-		// Calculate position and direction of the ray
-		int mapX = (int)(*state)->p_pos.x;
-		int mapY = (int)(*state)->p_pos.y;
-		double sideDistX, sideDistY;
-
-		// Length of ray from one side to next in map
-		double deltaDistX = fabs(1 / rayDirX);
-		double deltaDistY = fabs(1 / rayDirY);
-		double perpWallDist;
-
-		int stepX, stepY;
-		int hit = 0; // Was a wall hit?
-		int side;	 // Was the wall vertical or horizontal?
-
-		// Calculate step and initial side distance
-		if (rayDirX < 0)
-		{
-			stepX = -1;
-			sideDistX = ((*state)->p_pos.x - mapX) * deltaDistX;
-		}
-		else
-		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - (*state)->p_pos.x) * deltaDistX;
-		}
-		if (rayDirY < 0)
-		{
-			stepY = -1;
-			sideDistY = ((*state)->p_pos.y - mapY) * deltaDistY;
-		}
-		else
-		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - (*state)->p_pos.y) * deltaDistY;
-		}
-
-		// Perform DDA
-		while (hit == 0)
-		{
-			// Jump to next map square
-			if (sideDistX < sideDistY)
-			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
-				side = 0;
-			}
-			else
-			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
-				side = 1;
-			}
-			// Check if the ray has hit a wall
-			if (testMap[mapY][mapX] > 0)
-				hit = 1;
-		}
-
-		draw_line((t_line){
-            {(*state)->p_pos.x * CELL_SIZE, (*state)->p_pos.y * CELL_SIZE},
-            {mapX * CELL_SIZE, mapY * CELL_SIZE},
-            create_color(255, 255, 0, 255)  // Green for rays
-        }, (*(*state)->canvas), 0);
-
-		// Calculate distance to the point of impact
-		if (side == 0)
-			perpWallDist = (mapX - (*state)->p_pos.x + (1 - stepX) / 2) / rayDirX;
-		else
-			perpWallDist = (mapY - (*state)->p_pos.y + (1 - stepY) / 2) / rayDirY;
-
-		// Calculate height of the line to draw on the screen
-		int lineHeight = (int)(SCREEN_HEIGHT / perpWallDist);
-
-		// Calculate lowest and highest pixel to fill in the current stripe
-		int drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
-		if (drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
-		if (drawEnd >= SCREEN_HEIGHT)
-			drawEnd = SCREEN_HEIGHT - 1;
-
-		// Draw the pixels of the stripe as a vertical line (use your drawing functions)
-		draw_line((t_line){{x, drawStart}, (t_xy){x, drawEnd}, create_color(255, 100, 100, 100)}, (*(*state)->canvas), side);
+		rc.map_x = (int)(*state)->p_pos.x;
+		rc.map_y = (int)(*state)->p_pos.y;
+		rc.camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+		rc.ray_dir_x = (*state)->p_dir.x + (*state)->plane.x * rc.camera_x;
+		rc.ray_dir_y = (*state)->p_dir.y + (*state)->plane.y * rc.camera_x;
+		rc.delta_dist_x = fabs(1 / rc.ray_dir_x);
+		if (rc.ray_dir_x == 0)
+			rc.delta_dist_x = 1e30;
+		rc.delta_dist_y = fabs(1 / rc.ray_dir_y);
+		if (rc.ray_dir_y == 0)
+			rc.delta_dist_y = 1e30;
+		rc.is_obstacle_hit = false;
+		rc.is_obstacle_side = false;
+		calc_step_and_initial_side_dist((*state), &rc);
+		preform_dda((*state), &rc);
+		draw_column((*state), &rc, x);
+		x++;
 	}
 }
