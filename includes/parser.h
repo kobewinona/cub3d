@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/18 17:51:33 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/19 01:04:56 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,8 @@ void		par_error_msg(char *msg);
 
 bool		par_ismap(char *line);
 bool		par_isspace(char *line);
+
+int	par_get_texture(char **box, t_parser *info, t_ltype type, bool iserr);
+int	par_get_color(char **box, t_parser *info, t_ltype type);
 
 #endif
