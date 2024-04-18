@@ -22,6 +22,7 @@
 		"utility": "c",
 		"libft.h": "c",
 		"random": "c",
-		"cmath": "c"
+		"cmath": "c",
+		"cub3d.h": "c"
 	},
 }

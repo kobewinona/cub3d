@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:32:53 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/18 17:36:22 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/18 19:49:31 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,27 @@ static void	render_layout(t_state *state)
 		y++;
 	}
 }
+
+// static void	render_layout(t_state *state)
+// {
+// 	double	y;
+// 	double	x;
+
+// 	y = 0;
+// 	while (y < SCREEN_HEIGHT)
+// 	{
+// 		x = 0;
+// 		while (x < SCREEN_WIDTH)
+// 		{
+// 			// draw_square((t_square){(t_xy){x * CELL_SIZE, y * CELL_SIZE},
+// 			// 	CELL_SIZE, CELL_SIZE, create_color(255, 25, 25, 25)},
+// 			// 	*(state->canvas));
+// 			put_pixel_img((*state->canvas), (t_xy){x, y}, create_color(255, 25, 25, 25));
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
 
 static void	draw_direction_vector(t_state *state, t_img *canvas)
 {

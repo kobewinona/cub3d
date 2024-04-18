@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/18 17:36:20 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:08:57 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,16 @@
 extern int	g_test_map[MAP_WIDTH][MAP_HEIGHT];
 
 // @typedef structs
+
+typedef struct s_keys
+{
+	bool	move_up;
+	bool	move_down;
+	bool	move_left;
+	bool	move_right;
+	bool	turn_left;
+	bool	turn_right;
+}	t_keys;
 
 typedef struct s_xy
 {
@@ -69,16 +79,6 @@ typedef struct s_line
 
 }	t_line;
 
-typedef struct s_keys
-{
-	bool	move_up;
-	bool	move_down;
-	bool	move_left;
-	bool	move_right;
-	bool	turn_left;
-	bool	turn_right;
-}	t_keys;
-
 typedef struct s_line_calc
 {
 	int	current_x;
@@ -93,7 +93,7 @@ typedef struct s_line_calc
 	int	error_delta;
 }	t_line_calc;
 
-typedef	struct s_raycast_calc
+typedef struct s_raycast_calc
 {
 	double	camera_x;
 	double	ray_dir_x;
@@ -110,14 +110,32 @@ typedef	struct s_raycast_calc
 	bool	is_obstacle_side;
 }	t_raycast_calc;
 
+// typedef struct s_raycast_calc
+// {
+// 	int		r;
+// 	int		mx;
+// 	int		my;
+// 	int		mp;
+// 	int		dof;
+// 	double	rx;
+// 	double	ry;
+// 	double	ra;
+// 	double	xo;
+// 	double	yo;
+// 	bool	is_obstacle_hit;
+// 	bool	is_obstacle_side;
+// }	t_raycast_calc;
+
 typedef struct s_state
 {
 	t_win	*win;
 	t_xy	p_pos;
 	t_xy	p_dir;
+	double	p_angle;
 	t_xy	plane;
 	t_keys	keys;
 	t_img	*canvas;
+	int		log_fd;
 }	t_state;
 
 typedef enum s_argb
@@ -128,7 +146,7 @@ typedef enum s_argb
 	ALPHA_CH = 24,
 }	t_argb;
 
-int		game_exit(t_win *win, int exit_status);
+int		game_exit(t_state **state, int exit_status);
 
 // render
 int		render_game(t_state **state);
@@ -137,12 +155,15 @@ int		render_game(t_state **state);
 void	handle_raycasting(t_state **state);
 
 // input
-int		read_keys(int key_pressed, t_state **state);
-int		release_keys(int key, t_state **state);
+int		read_keys_pressed(int key_pressed, t_state **state);
+int		read_keys_released(int key, t_state **state);
 
 // player
 void	update_player_position(t_state *state);
 void	update_player_direction(t_state *state);
+
+// logger
+void	log_raycast_calculations(t_state **state, t_raycast_calc rc);
 
 // map utils
 void	print_map(int map[MAP_WIDTH][MAP_HEIGHT]);
@@ -152,12 +173,8 @@ int		create_window(int w, int h, t_win **win);
 t_img	*create_image(int width, int height, void *mlx_ptr);
 void	put_pixel_img(t_img img, t_xy pos, int color);
 int		create_color(int alpha, int red, int green, int blue);
+int		blend_colors(unsigned int bg_color, unsigned int fg_color);
 void	draw_square(t_square params, t_img img);
 void	draw_line(t_line params, t_img img, int side);
-
-// colors utils
-int		create_color(int alpha, int red, int green, int blue);
-int		blend_colors(unsigned int bg_color, unsigned int fg_color);
-int		get_argb_value(int argb, t_argb chanel);
 
 #endif

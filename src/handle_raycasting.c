@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/18 17:36:22 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:19:19 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,23 @@
 
 static void	calc_step_and_initial_side_dist(t_state *state, t_raycast_calc *rc)
 {
+	rc->step_x = (rc->ray_dir_x > 0) - (rc->ray_dir_x < 0);
+	rc->step_y = (rc->ray_dir_y > 0) - (rc->ray_dir_y < 0);
 	if (rc->ray_dir_x < 0)
-	{
-		rc->step_x = -1;
 		rc->side_dist_x = (state->p_pos.x - rc->map_x) * rc->delta_dist_x;
-	}
 	else
-	{
-		rc->step_x = 1;
 		rc->side_dist_x = (rc->map_x + 1.0 - state->p_pos.x) * rc->delta_dist_x;
-	}
 	if (rc->ray_dir_y < 0)
-	{
-		rc->step_y = -1;
 		rc->side_dist_y = (state->p_pos.y - rc->map_y) * rc->delta_dist_y;
-	}
 	else
-	{
-		rc->step_y = 1;
 		rc->side_dist_y = (rc->map_y + 1.0 - state->p_pos.y) * rc->delta_dist_y;
-	}
 }
 
 static void	preform_dda(t_state *state, t_raycast_calc *rc)
 {
 	while (rc->is_obstacle_hit == false)
 	{
-		rc->is_obstacle_side = rc->side_dist_x >= rc->side_dist_y;
+		rc->is_obstacle_side = (rc->side_dist_x >= rc->side_dist_y);
 		if (rc->side_dist_x < rc->side_dist_y)
 		{
 			rc->side_dist_x += rc->delta_dist_x;
@@ -96,12 +86,13 @@ void	handle_raycasting(t_state **state)
 		rc.camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
 		rc.ray_dir_x = (*state)->p_dir.x + (*state)->plane.x * rc.camera_x;
 		rc.ray_dir_y = (*state)->p_dir.y + (*state)->plane.y * rc.camera_x;
+		printf("rc.ray_dir_x %lf, rc.ray_dir_y %lf\n", rc.ray_dir_x, rc.ray_dir_y);
 		rc.delta_dist_x = fabs(1 / rc.ray_dir_x);
 		if (rc.ray_dir_x == 0)
-			rc.delta_dist_x = 1e30;
+			rc.delta_dist_x = (double)LONG_MAX;
 		rc.delta_dist_y = fabs(1 / rc.ray_dir_y);
 		if (rc.ray_dir_y == 0)
-			rc.delta_dist_y = 1e30;
+			rc.delta_dist_y = (double)LONG_MAX;
 		rc.is_obstacle_hit = false;
 		rc.is_obstacle_side = false;
 		calc_step_and_initial_side_dist((*state), &rc);
