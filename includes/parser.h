@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/18 16:58:50 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:51:33 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,6 @@
 # include "ft_queue.h"
 # include "../libs/libft/includes/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
-
-typedef enum e_elem_type
-{
-	north_elem = 1,
-	south_elem = 2,
-	east_elem = 3,
-	west_elem = 4,
-	floor_elem = 5,
-	ceil_elem = 6
-}	t_elem_type;
-
-typedef enum e_elem_error
-{
-	not_found = 0,
-	data_error = 8,
-	args_error = 16,
-	no_error = 32
-}	t_error_type;
 
 typedef struct s_texture
 {
@@ -55,7 +37,7 @@ typedef struct s_rgb
 
 typedef enum e_direction
 {
-	undefine,
+	no_player,
 	north,
 	south,
 	west,
