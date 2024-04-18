@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 23:11:34 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/17 03:28:29 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:06:01 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_queue
 {
 	t_node	*head;
 	t_node	*tail;
-}   t_queue;
+}	t_queue;
 
 t_queue	queue_init(void);
 void	queue_flush(t_queue *queue);
