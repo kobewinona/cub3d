@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/19 01:04:56 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/20 05:47:49 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ typedef struct s_texture
 
 typedef struct s_rgb
 {
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
-	bool			isinit;
+	int		r;
+	int		g;
+	int 	b;
+	bool	isinit;
 }	t_rgb;
 
 typedef enum e_direction
@@ -61,6 +61,7 @@ typedef struct s_parser
 	t_texture	west;
 	t_rgb		floor;
 	t_rgb		ceil;
+	int			init_checker;
 	char		**map;
 	int			width;
 	int			height;
@@ -69,10 +70,12 @@ typedef struct s_parser
 
 // main function
 int			par_open_cub3d(const char *path);
-t_parser	parser_init(void *mlx);
+int	parser_init(t_parser *info);
+void	parser_free(t_parser *info);
 
 // get element
-char		*par_read_element(t_queue *element, int fd, char **ext_buff);
+char	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit);
+void	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err);
 
 // parser_utils
 void		par_error_msg(char *msg);
@@ -82,5 +85,6 @@ bool		par_isspace(char *line);
 
 int	par_get_texture(char **box, t_parser *info, t_ltype type, bool iserr);
 int	par_get_color(char **box, t_parser *info, t_ltype type);
+int	par_get_element(t_parser *info, t_queue *element, t_queue *err);
 
 #endif

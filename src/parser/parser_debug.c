@@ -1,28 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   queue_len.c                                        :+:      :+:    :+:   */
+/*   parser_debug.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 03:25:49 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/20 01:20:56 by tponutha         ###   ########.fr       */
+/*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
+/*   Updated: 2024/04/20 00:49:45 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/ft_queue.h"
+#include "../../includes/parser.h"
 
-size_t	queue_len(t_queue *queue)
-{
-	size_t	len;
-	t_node	*node;
-
-	len = 0;
-	node = queue->head;
-	while (node != NULL)
-	{
-		node = node->next;
-		len++;
-	}
-	return (len);
-}
+// void	parser_debug()

@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/19 02:17:20 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/20 02:37:57 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static int	sb_filter_type(char **box, t_parser *info, t_ltype type, bool *iserr)
 			*iserr = true;
 	}
 	else
-		return (par_get_color(box, info, type));
+		status = par_get_color(box, info, type);
+	return (status);
 }
 
 static int	sb_extract(t_parser *info, t_node *node, t_queue *err, bool *iserr)
@@ -52,28 +53,47 @@ static int	sb_extract(t_parser *info, t_node *node, t_queue *err, bool *iserr)
 
 	box = ft_split(node->str, ' ');
 	if (box == NULL)
-		return ;
+		return (-1);
 	if (ft_split_len(box) == 2)
 	{
-		status = sb_filter_type(box, info, node->type, *iserr);
+		status = sb_filter_type(box, info, node->type, iserr);
 		if (status == 1)
 			queue_queue(err, node);
+	}
+	else
+	{
+		status = 1;
+		node->err_type = args;
+		queue_queue(err, node);
 	}
 	ft_free_split(box);
 	return (status);
 }
 
-int	par_get_elemnet(t_parser *info, t_queue *element, t_queue *err)
+// static int	sb_summary_error(t_queue *err)
+
+int	par_get_element(t_parser *info, t_queue *element, t_queue *err)
 {
-	size_t	err_len;
 	t_node	*node;
 	bool	iserr;
+	int		status;
 
 	iserr = false;
 	sb_filter_elemnet(element, err);
 	node = queue_dequeue(element);
 	while (node != NULL)
 	{
+		status = sb_extract(info, node, err, &iserr);
+		if (status == 0)
+			node_delete(node);
+		else if (status == -1)
+		{
+			queue_flush(element);
+			queue_flush(err);
+			return (-1);
+		}
 		node = queue_dequeue(element);
 	}
+	return (queue_len(err) != 0);
+	// return (0);
 }

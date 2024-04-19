@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/17 17:37:51 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/20 05:50:46 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,39 @@ static int	sb_argv_parsing(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	int		fd;
-	t_queue	elemnet;
-	char	*ext_buff;
-	char	*first_map;
+	int			fd;
+	t_parser	info;
+	t_queue		element;
+	t_queue		err;
+	char		*ext_buff;
+	char		*first_map;
 
-	elemnet = queue_init();
+	element = queue_init();
+	err = queue_init();
 	ext_buff = NULL;
+	if (parser_init(&info) == -1)
+	{
+		return (EXIT_FAILURE);
+	}
 	fd = sb_argv_parsing(argc, argv);
 	if (fd == -1)
 		return (EXIT_FAILURE);
-	// char	*line;
-	// char	buff[4];
-	// read(fd, buff, 3);
-	// buff[3] = 0;
-	// printf("%s\n", buff);
-	// line = get_next_line(fd);
-	// while (line != NULL)
-	// {
-	// 	printf("%s", line);
-	// 	free(line);
-	// 	line = get_next_line(fd);
-	// }
-	first_map = par_read_element(&elemnet, fd, &ext_buff);
+	first_map = par_read_element(&element, fd, &ext_buff, &info.init_checker);
 	free(first_map);
-	queue_transverse(&elemnet);
-	queue_flush(&elemnet);
+
+	queue_transverse(&element);
+	
+	printf("Ready for extracting\n");
+	int status = par_get_element(&info, &element, &err);
+	printf("Finish extracting\n");
+	
+	(void)status;
+	par_element_error(fd, ext_buff, &info, &err);
+	
+	free(ext_buff);
+	queue_flush(&err);
+	queue_flush(&element);
 	close(fd);
+	parser_free(&info);
 	return (EXIT_SUCCESS);
 }

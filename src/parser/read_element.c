@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 05:23:56 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/18 21:58:43 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/20 05:30:30 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ static int	sb_check_element(char *line, size_t n, t_queue *element, int *bits)
 	t_ltype	type;
 
 	if (!sb_is_contain_elemnet(line, bits, &type))
+	{
+		free(line);
 		return (0);
+	}
 	node = node_new(line, n, type);
 	if (node == NULL)
 	{
@@ -66,14 +69,12 @@ static int	sb_check_element(char *line, size_t n, t_queue *element, int *bits)
 	return (1);
 }
 
-char	*par_read_element(t_queue *element, int fd, char **ext_buff)
+char	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit)
 {
 	size_t	no;
 	char	*line;
-	int		bits;
 
 	no = 0;
-	bits = 0;
 	line = get_next_line_ext_buff(fd, ext_buff);
 	while (line != NULL)
 	{
@@ -81,7 +82,7 @@ char	*par_read_element(t_queue *element, int fd, char **ext_buff)
 		{
 			if (par_ismap(line))
 				break ;
-			if (sb_check_element(line, no, element, &bits) == -1)
+			if (sb_check_element(line, no, element, bit) == -1)
 			{
 				free(ext_buff);
 				return (NULL);

@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 07:51:07 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/18 17:00:46 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/20 04:20:36 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,14 @@ bool	par_isspace(char *line)
 			return (false);
 		i++;
 	}
+	return (true);
+}
+
+bool	par_set_element_bits(int bit, int *bits, t_ltype *type, t_ltype t1)
+{
+	*type = t1;
+	if (((*bits) & bit) != 0)
+		return (false);
+	(*bits) |= bit;
 	return (true);
 }

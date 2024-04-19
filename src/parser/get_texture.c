@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/19 01:19:40 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/20 01:05:16 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static t_texture	*sb_get_ptr(t_parser *info, t_ltype type)
 {
 	t_texture	*ptr;
 
+	ptr = NULL;
 	if (type == north_elem)
 		ptr = &info->north;
 	else if (type == south_elem)
