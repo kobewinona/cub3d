@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/20 01:13:19 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/22 02:59:38 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	parser_init(t_parser *info)
 	info->mlx = mlx_init();
 	if (info->mlx == NULL)
 		return (-1);
+	info->init_checker = 0;
 	info->window = NULL;
 	sb_init_map(info);
 	sb_init_player(&info->player);

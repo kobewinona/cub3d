@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/20 05:55:27 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/22 03:00:55 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ static void	sb_err_str(char *line, size_t no, t_ltype type, t_etype etype)
 
 static void	sb_print_uninit(int init_checker)
 {
-	if ((init_checker & (1 << 0)) != 0)
+	if ((init_checker & (1 << 0)) == 0)
 		printf("NO: not found\n");
-	if ((init_checker & (1 << 1)) != 0)
+	if ((init_checker & (1 << 1)) == 0)
 		printf("SO: not found\n");
-	if ((init_checker & (1 << 2)) != 0)
+	if ((init_checker & (1 << 2)) == 0)
 		printf("WE: not found\n");
-	if ((init_checker & (1 << 3)) != 0)
+	if ((init_checker & (1 << 3)) == 0)
 		printf("EA: not found\n");
-	if ((init_checker & (1 << 4)) != 0)
+	if ((init_checker & (1 << 4)) == 0)
 		printf("F: not found\n");
-	if ((init_checker & (1 << 5)) != 0)
+	if ((init_checker & (1 << 5)) == 0)
 		printf("C: not found\n");
 }
 
