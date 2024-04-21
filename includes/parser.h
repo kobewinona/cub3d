@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/20 05:47:49 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/22 05:38:46 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ typedef enum e_direction
 	north,
 	south,
 	west,
-	east
+	east,
+	too_many_player
 }	t_direction;
 
 typedef struct s_player
@@ -74,11 +75,10 @@ int	parser_init(t_parser *info);
 void	parser_free(t_parser *info);
 
 // get element
-char	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit);
+t_node	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit);
 void	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err);
 
 // parser_utils
-void		par_error_msg(char *msg);
 
 bool		par_ismap(char *line);
 bool		par_isspace(char *line);

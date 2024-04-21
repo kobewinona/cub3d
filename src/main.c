@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/20 05:50:46 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/22 03:07:00 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	first_map = par_read_element(&element, fd, &ext_buff, &info.init_checker);
 	free(first_map);
-
-	queue_transverse(&element);
 	
 	printf("Ready for extracting\n");
 	int status = par_get_element(&info, &element, &err);

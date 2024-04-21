@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:06:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/20 00:50:21 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/22 05:23:02 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,16 @@
 # define EAST_ELEM "EA"
 # define FLOOR_ELEM "F"
 # define CEILING_ELEM "C"
-# define FACE_NORTH 'N'
-# define FACE_SOUTH 'S'
-# define FACE_WEST 'W'
-# define FACE_EAST 'E'
-# define EMPTY '0'
-# define WALL '1'
+# define FACE_NORTH_CHAR 'N'
+# define FACE_SOUTH_CHAR 'S'
+# define FACE_WEST_CHAR 'W'
+# define FACE_EAST_CHAR 'E'
+# define FLOOR_CHAR '0'
+# define WALL_CHAR '1'
 
-// # define 
+# define WALL 1
+# define FLOOR 0
+# define EMPTY -2
 
 
 #endif

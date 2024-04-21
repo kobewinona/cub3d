@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 05:23:56 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/20 05:30:30 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/22 03:51:11 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static int	sb_check_element(char *line, size_t n, t_queue *element, int *bits)
 	node = node_new(line, n, type);
 	if (node == NULL)
 	{
+		queue_flush(element);
 		free(line);
 		return (-1);
 	}
@@ -69,7 +70,13 @@ static int	sb_check_element(char *line, size_t n, t_queue *element, int *bits)
 	return (1);
 }
 
-char	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit)
+/*
+RETURN VALUE
+non-null	: ptr to map line
+null		: allocation failed or no map exist
+*/
+
+t_node	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit)
 {
 	size_t	no;
 	char	*line;
@@ -81,7 +88,7 @@ char	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit)
 		if (!par_isspace(line))
 		{
 			if (par_ismap(line))
-				break ;
+				return (node_new(line, no, map_elem));
 			if (sb_check_element(line, no, element, bit) == -1)
 			{
 				free(ext_buff);
@@ -93,5 +100,5 @@ char	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit)
 		line = get_next_line_ext_buff(fd, ext_buff);
 		no++;
 	}
-	return (line);
+	return (NULL);
 }

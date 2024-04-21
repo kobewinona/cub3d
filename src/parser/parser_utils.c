@@ -6,17 +6,11 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 07:51:07 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/20 04:20:36 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/22 05:03:52 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
-
-void	par_error_msg(char *msg)
-{
-	ft_putendl_fd("Error", STDERR_FILENO);
-	ft_putendl_fd(msg, STDERR_FILENO);
-}
 
 bool	par_ismap(char *line)
 {
@@ -27,7 +21,7 @@ bool	par_ismap(char *line)
 	{
 		if (line[i] == '\n')
 			break ;
-		if (line[i] != WALL && line[i] != EMPTY && line[i] != ' ' && \
+		if (line[i] != WALLS && line[i] != EMPTY && line[i] != ' ' && \
 			line[i] != FACE_NORTH && line[i] != FACE_SOUTH && \
 			line[i] != FACE_EAST && line[i] != FACE_WEST)
 				return (false);
