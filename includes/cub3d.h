@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/18 22:08:57 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/24 19:51:37 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
+# include <float.h>
 # include "../libs/libft/includes/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
 # include "constants.h"
@@ -93,45 +94,55 @@ typedef struct s_line_calc
 	int	error_delta;
 }	t_line_calc;
 
-typedef struct s_raycast_calc
-{
-	double	camera_x;
-	double	ray_dir_x;
-	double	ray_dir_y;
-	double	side_dist_x;
-	double	side_dist_y;
-	double	delta_dist_x;
-	double	delta_dist_y;
-	int		step_x;
-	int		step_y;
-	int		map_x;
-	int		map_y;
-	bool	is_obstacle_hit;
-	bool	is_obstacle_side;
-}	t_raycast_calc;
-
 // typedef struct s_raycast_calc
 // {
-// 	int		r;
-// 	int		mx;
-// 	int		my;
-// 	int		mp;
-// 	int		dof;
-// 	double	rx;
-// 	double	ry;
-// 	double	ra;
-// 	double	xo;
-// 	double	yo;
+// 	double	camera_x;
+// 	double	ray_dir_x;
+// 	double	ray_dir_y;
+// 	double	side_dist_x;
+// 	double	side_dist_y;
+// 	double	delta_dist_x;
+// 	double	delta_dist_y;
+// 	int		step_x;
+// 	int		step_y;
+// 	int		map_x;
+// 	int		map_y;
 // 	bool	is_obstacle_hit;
 // 	bool	is_obstacle_side;
 // }	t_raycast_calc;
+
+// delta_dist.x 1.5151515151515151
+// delta_dist.y 1
+
+typedef struct s_raycast_calc
+{
+	t_xy	ray_dir;
+	t_xy	ray_start_pos;
+	t_xy	ray_end_pos;
+	t_xy	ray_dist;
+	t_xy	delta_dist;
+	t_xy	delta;
+	t_xy	side_dist;
+	t_xy	side_pos;
+	t_xy	chande_in_pos;
+	int		step_x;
+	int		step_y;
+	t_xy	map;
+	t_xy	map_side;
+	int		map_x;
+	int		map_y;
+	bool	is_obstacle_hit;
+	bool	is_unit_side_x_hit;
+	bool	is_unit_side_y_hit;
+	bool	is_obstacle_side;
+}	t_raycast_calc;
 
 typedef struct s_state
 {
 	t_win	*win;
 	t_xy	p_pos;
 	t_xy	p_dir;
-	double	p_angle;
+	double	p_dir_angle;
 	t_xy	plane;
 	t_keys	keys;
 	t_img	*canvas;
@@ -161,9 +172,6 @@ int		read_keys_released(int key, t_state **state);
 // player
 void	update_player_position(t_state *state);
 void	update_player_direction(t_state *state);
-
-// logger
-void	log_raycast_calculations(t_state **state, t_raycast_calc rc);
 
 // map utils
 void	print_map(int map[MAP_WIDTH][MAP_HEIGHT]);

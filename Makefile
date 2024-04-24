@@ -5,7 +5,7 @@ NAME			= cub3d
 
 CC				= gcc
 # CFLAGS			= -g -Wall -Wextra -Werror -MMD -03
-CFLAGS			= -g -MMD -O3
+CFLAGS			= -g -MMD #-O3
 GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
 

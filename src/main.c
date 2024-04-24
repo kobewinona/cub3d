@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/18 22:41:00 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/24 20:59:02 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ int	main(void)
 		return (EXIT_FAILURE);
 	ft_memset(state, 0, sizeof(t_state));
 	state->log_fd = open("logs.txt", O_WRONLY | O_CREAT | O_TRUNC, 444);
-	state->p_pos = (t_xy){15, 19};
+	state->p_pos = (t_xy){19.34, 9.64};
 	state->p_dir = (t_xy){0, -1};
-	state->plane = (t_xy){0.66, 0};
+	// state->p_pos = (t_xy){19, 9};
+	// state->p_dir = (t_xy){0, -1};
+	// state->plane = (t_xy){-0.66, 0};
 	if (create_window(SCREEN_WIDTH, SCREEN_HEIGHT, &win) == FAILURE)
 		return (EXIT_FAILURE);
 	state->win = win;

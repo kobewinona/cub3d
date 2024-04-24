@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:33:27 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/18 22:47:19 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/24 20:19:42 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,27 @@ void	update_player_direction(t_state *state)
 {
 	double	old_dir_x;
 	double	old_plane_x;
-	double	ang;
+	double	new_angle;
 
 	old_dir_x = state->p_dir.x;
 	old_plane_x = state->plane.x;
-	ang = ((state->keys.turn_right - state->keys.turn_left) * CAMERA_SPEED);
-	state->p_dir.x = (state->p_dir.x * cos(ang)) - (state->p_dir.y * sin(ang));
-	state->p_dir.y = old_dir_x * sin(ang) + state->p_dir.y * cos(ang);
-	state->plane.x = state->plane.x * cos(ang) - state->plane.y * sin(ang);
-	state->plane.y = old_plane_x * sin(ang) + state->plane.y * cos(ang);
+	new_angle = ((state->keys.turn_right - state->keys.turn_left)
+			* CAMERA_SPEED);
+	state->p_dir_angle += ((state->keys.turn_left - state->keys.turn_right)
+			* CAMERA_SPEED);
+	while (state->p_dir_angle >= 2 * PI)
+		state->p_dir_angle -= 2 * PI;
+	while (state->p_dir_angle < 0)
+		state->p_dir_angle += 2 * PI;
+	state->p_dir.x = (state->p_dir.x * cos(new_angle))
+		- (state->p_dir.y * sin(new_angle));
+	state->p_dir.y = old_dir_x * sin(new_angle)
+		+ state->p_dir.y * cos(new_angle);
+	state->plane.x = state->plane.x * cos(new_angle)
+		- state->plane.y * sin(new_angle);
+	state->plane.y = old_plane_x * sin(new_angle)
+		+ state->plane.y * cos(new_angle);
+	printf("state->p_dir_angle %lf\n", state->p_dir_angle);
 }
 
 void	update_player_position(t_state *state)
