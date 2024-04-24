@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:06:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/24 21:48:35 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/25 00:08:43 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 
 # define WALL 1
 # define FLOOR 0
+# define PLAYER 2
 # define EMPTY -2
 
 
