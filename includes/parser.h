@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/22 05:38:46 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/24 23:48:46 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ typedef struct s_parser
 	t_rgb		ceil;
 	int			init_checker;
 	char		**map;
-	int			width;
-	int			height;
+	size_t		width;
+	size_t		height;
 	t_player	player;
 }	t_parser;
 
@@ -79,12 +79,16 @@ t_node	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit);
 void	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err);
 
 // parser_utils
-
+void		par_error_msg(char *msg);
 bool		par_ismap(char *line);
 bool		par_isspace(char *line);
 
 int	par_get_texture(char **box, t_parser *info, t_ltype type, bool iserr);
 int	par_get_color(char **box, t_parser *info, t_ltype type);
 int	par_get_element(t_parser *info, t_queue *element, t_queue *err);
+
+char	**par_get_map(t_queue *map_queue, t_parser *info);
+int		par_read_map(t_queue *maps, int fd, char **ext_buff, t_parser *info);
+void	par_find_player_by_line(char *line, size_t line_no, t_player *player);
 
 #endif
