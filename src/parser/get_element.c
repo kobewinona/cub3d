@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/20 02:37:57 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/24 22:38:16 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,4 @@ int	par_get_element(t_parser *info, t_queue *element, t_queue *err)
 		node = queue_dequeue(element);
 	}
 	return (queue_len(err) != 0);
-	// return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 07:51:07 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/22 05:03:52 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/24 21:49:05 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ bool	par_ismap(char *line)
 	{
 		if (line[i] == '\n')
 			break ;
-		if (line[i] != WALLS && line[i] != EMPTY && line[i] != ' ' && \
-			line[i] != FACE_NORTH && line[i] != FACE_SOUTH && \
-			line[i] != FACE_EAST && line[i] != FACE_WEST)
+		if (line[i] != WALL_CHAR && line[i] != FLOOR_CHAR && line[i] != ' ' \
+			&& line[i] != FACE_NORTH_CHAR && line[i] != FACE_SOUTH_CHAR && \
+			line[i] != FACE_WEST_CHAR && line[i] != FACE_EAST_CHAR)
 				return (false);
 		i++;
 	}
@@ -51,4 +51,10 @@ bool	par_set_element_bits(int bit, int *bits, t_ltype *type, t_ltype t1)
 		return (false);
 	(*bits) |= bit;
 	return (true);
+}
+
+void	par_error_msg(char *msg)
+{
+	printf("Error\n");
+	printf("%s\n", msg);
 }
