@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/24 21:27:27 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/24 23:42:06 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,24 @@ static int	clamp(int value, int min, int max)
 	return (value);
 }
 
+static void	calc_step_and_initial_side_dist(t_state *state, t_raycast_calc *rc)
+{
+	rc->step_x = (rc->ray_dir.x > 0) - (rc->ray_dir.x < 0);
+	rc->step_y = (rc->ray_dir.y > 0) - (rc->ray_dir.y < 0);
+	if (rc->ray_dir.x < 0)
+		rc->side_dist.x = (state->p_pos.x
+				- floor(state->p_pos.x)) * rc->delta_dist.x;
+	else
+		rc->side_dist.x = (ceil(state->p_pos.x)
+				- state->p_pos.x) * rc->delta_dist.x;
+	if (rc->ray_dir.y < 0)
+		rc->side_dist.y = (state->p_pos.y
+				- floor(state->p_pos.y)) * rc->delta_dist.y;
+	else
+		rc->side_dist.y = (ceil(state->p_pos.y)
+				- state->p_pos.y) * rc->delta_dist.y;
+}
+
 static bool	is_colliding(t_raycast_calc *rc)
 {
 	if (rc->ray_dir.x < 0)
@@ -149,18 +167,31 @@ static bool	is_colliding(t_raycast_calc *rc)
 
 static void	preform_dda(t_state *state, t_raycast_calc *rc)
 {
-	if (rc->ray_dir.x < 0)
-		rc->ray_end_pos.x = floor(rc->ray_end_pos.x);
-	else
-		rc->ray_end_pos.x = ceil(rc->ray_end_pos.x);
-	if (rc->ray_dir.y < 0)
-		rc->ray_end_pos.y = floor(rc->ray_end_pos.y);
-	else
-		rc->ray_end_pos.y = ceil(rc->ray_end_pos.y);
-	
-
-	// printf("is_colliding %d\n", is_colliding(rc));
-
+	int i = 0;
+	while (rc->is_obstacle_hit == false)
+	{
+		if (rc->side_dist.x < rc->side_dist.y)
+		{
+			rc->map_x += rc->step_x;
+			rc->side_dist.x += rc->delta_dist.x;
+			if (rc->ray_dir.x < 0)
+				rc->ray_end_pos.x = ceil(rc->ray_end_pos.x + rc->step_x);
+			else
+				rc->ray_end_pos.x = floor(rc->ray_end_pos.x + rc->step_x);
+			rc->ray_end_pos.y = state->p_pos.y + (rc->ray_end_pos.x - state->p_pos.x) * (rc->ray_dir.y / rc->ray_dir.x);
+		}
+		else
+		{
+			rc->map_y += rc->step_y;
+			rc->side_dist.y += rc->delta_dist.y;
+			if (rc->ray_dir.y < 0)
+				rc->ray_end_pos.y = ceil(rc->ray_end_pos.y + rc->step_y);
+			else
+				rc->ray_end_pos.y = floor(rc->ray_end_pos.y + rc->step_y);
+			rc->ray_end_pos.x = state->p_pos.x + (rc->ray_end_pos.y - state->p_pos.y) * (rc->ray_dir.x / rc->ray_dir.y);
+		}
+		rc->is_obstacle_hit = g_test_map[rc->map_y][rc->map_x] > 0;
+	}
 	draw_line((t_line){{state->p_pos.x * CELL_SIZE, state->p_pos.y * CELL_SIZE},
 	{rc->ray_end_pos.x * CELL_SIZE, rc->ray_end_pos.y * CELL_SIZE},
 		create_color(255, 255, 0, 255)}, (*state->canvas), 0);
@@ -178,15 +209,20 @@ void	handle_raycasting(t_state **state)
 		rc.map = (*state)->p_pos;
 		rc.map_x = (int)(*state)->p_pos.x;
 		rc.map_y = (int)(*state)->p_pos.y;
-		rc.ray_start_pos = (*state)->p_pos;
+		// rc.ray_start_pos = (*state)->p_pos;
 		rc.ray_end_pos = (*state)->p_pos;
+		rc.ray_dir_x = (float)(*state)->p_dir.x;
+		rc.ray_dir_y = (float)(*state)->p_dir.y;
 		rc.ray_dir = (*state)->p_dir;
-		rc.delta_dist.x = fabs(1 / rc.ray_dir.x);
 		if (rc.ray_dir.x == 0)
 			rc.delta_dist.x = FLT_MAX;
-		rc.delta_dist.y = fabs(1 / rc.ray_dir.y);
+		else
+			rc.delta_dist.x = 1 / fabs(rc.ray_dir.x);
 		if (rc.ray_dir.y == 0)
 			rc.delta_dist.y = FLT_MAX;
+		else
+			rc.delta_dist.y = 1 / fabs(rc.ray_dir.y);
+		calc_step_and_initial_side_dist((*state), &rc);
 		preform_dda((*state), &rc);
 		x++;
 	}

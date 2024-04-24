@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:06:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/22 20:55:09 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/24 23:45:06 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 // @def gameplay
 # define VISION_DISTANCE MAP_WIDTH
 # define PLAYER_SPEED 0.12
-# define CAMERA_SPEED 0.03
+# define CAMERA_SPEED 0.08
 
 // @def keyboard keys values
 # define KEY_ESC 65307
