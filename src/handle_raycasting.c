@@ -6,224 +6,131 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/24 23:42:06 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/26 22:36:11 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// static void	calc_step_and_initial_side_dist(t_state *state, t_raycast_calc *rc)
-// {
-// 	rc->step_x = (rc->ray_dir_x > 0) - (rc->ray_dir_x < 0);
-// 	rc->step_y = (rc->ray_dir_y > 0) - (rc->ray_dir_y < 0);
-// 	if (rc->ray_dir_x < 0)
-// 		rc->side_dist_x = (state->p_pos.x - rc->map_x) * rc->delta_dist_x;
-// 	else
-// 		rc->side_dist_x = (rc->map_x + 1.0 - state->p_pos.x) * rc->delta_dist_x;
-// 	if (rc->ray_dir_y < 0)
-// 		rc->side_dist_y = (state->p_pos.y - rc->map_y) * rc->delta_dist_y;
-// 	else
-// 		rc->side_dist_y = (rc->map_y + 1.0 - state->p_pos.y) * rc->delta_dist_y;
-// }
-
-// static void	preform_dda(t_state *state, t_raycast_calc *rc)
-// {
-// 	while (rc->is_obstacle_hit == false)
-// 	{
-// 		rc->is_obstacle_side = (rc->side_dist_x >= rc->side_dist_y);
-// 		if (rc->side_dist_x < rc->side_dist_y)
-// 		{
-// 			rc->side_dist_x += rc->delta_dist_x;
-// 			rc->map_x += rc->step_x;
-// 		}
-// 		else
-// 		{
-// 			rc->side_dist_y += rc->delta_dist_y;
-// 			rc->map_y += rc->step_y;
-// 		}
-// 		rc->is_obstacle_hit = g_test_map[rc->map_y][rc->map_x] > 0;
-// 		// printf("rc->is_obstacle_hit %d\n", rc->is_obstacle_hit);
-// 	}
-// 	draw_line((t_line){{state->p_pos.x * CELL_SIZE, state->p_pos.y
-// 		* CELL_SIZE}, {rc->map_x * CELL_SIZE, rc->map_y * CELL_SIZE},
-// 		create_color(255, 255, 0, 255)}, (*state->canvas), 0);
-// }
-
-// static void	draw_column(t_state *state, t_raycast_calc *rc, int x)
-// {
-// 	int		line_height;
-// 	int		draw_start;
-// 	int		draw_end;
-// 	double	perp_wall_dist;
-
-// 	perp_wall_dist = (rc->map_y - state->p_pos.y
-// 			+ (1 - rc->step_y) / 2) / rc->ray_dir_y;
-// 	if (rc->is_obstacle_side == false)
-// 		perp_wall_dist = (rc->map_x - state->p_pos.x
-// 				+ (1 - rc->step_x) / 2) / rc->ray_dir_x;
-// 	line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
-// 	draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
-// 	if (draw_start < 0)
-// 		draw_start = 0;
-// 	draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
-// 	if (draw_end >= SCREEN_HEIGHT)
-// 		draw_end = (SCREEN_HEIGHT - 1);
-// 	draw_line((t_line){(t_xy){x, draw_start}, (t_xy){x, draw_end},
-// 		create_color(255, 100, 100, 100)},
-// 		(*state->canvas), rc->is_obstacle_side);
-// }
-
-// void	handle_raycasting(t_state **state)
-// {
-// 	t_raycast_calc	rc;
-// 	int				x;
-
-// 	x = 0;
-// 	ft_memset(&rc, 0, sizeof(t_raycast_calc));
-// 	while (x < SCREEN_WIDTH)
-// 	{
-// 		rc.map_x = (int)(*state)->p_pos.x;
-// 		rc.map_y = (int)(*state)->p_pos.y;
-// 		rc.camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
-// 		rc.ray_dir_x = (*state)->p_dir.x + (*state)->plane.x * rc.camera_x;
-// 		rc.ray_dir_y = (*state)->p_dir.y + (*state)->plane.y * rc.camera_x;
-// 		rc.delta_dist_x = fabs(1 / rc.ray_dir_x);
-// 		if (rc.ray_dir_x == 0)
-// 			rc.delta_dist_x = (double)LONG_MAX;
-// 		rc.delta_dist_y = fabs(1 / rc.ray_dir_y);
-// 		if (rc.ray_dir_y == 0)
-// 			rc.delta_dist_y = (double)LONG_MAX;
-// 		rc.is_obstacle_hit = false;
-// 		rc.is_obstacle_side = false;
-// 		calc_step_and_initial_side_dist((*state), &rc);
-// 		preform_dda((*state), &rc);
-// 		// draw_column((*state), &rc, x);
-// 		// printf("here\n");
-// 		x++;
-// 	}
-// }
-
-// static void	calc_step_and_initial_side_dist(t_state *state, t_raycast_calc *rc)
-// {
-// 	// rc->step_x = (rc->ray_dir.x > 0) - (rc->ray_dir.x < 0);
-// 	// rc->step_y = (rc->ray_dir.y > 0) - (rc->ray_dir.y < 0);
-// 	if (rc->ray_dir.x < 0)
-// 		rc->side_dist.x = (state->p_pos.x - rc->map_x) * rc->delta_dist.x;
-// 	else
-// 		rc->side_dist.x = (rc->map_x + 1.0 - state->p_pos.x) * rc->delta_dist.x;
-// 	if (rc->ray_dir.y < 0)
-// 		rc->side_dist.y = (state->p_pos.y - rc->map_y) * rc->delta_dist.y;
-// 	else
-// 		rc->side_dist.y = (rc->map_y + 1.0 - state->p_pos.y) * rc->delta_dist.y;
-// }
-
-static int	clamp(int value, int min, int max)
+static void	calc_step_and_initial_side_dist(t_state *state, t_ray *ray)
 {
-	if (value < min)
-		return (min);
-	if (value > max)
-		return (max);
-	return (value);
+	if (ray->dir.x < 0)
+		ray->side_dist.x = (state->p_pos.x
+				- floor(state->p_pos.x)) * ray->delta_dist.x;
+	else
+		ray->side_dist.x = (ceil(state->p_pos.x)
+				- state->p_pos.x) * ray->delta_dist.x;
+	if (ray->dir.y < 0)
+		ray->side_dist.y = (state->p_pos.y
+				- floor(state->p_pos.y)) * ray->delta_dist.y;
+	else
+		ray->side_dist.y = (ceil(state->p_pos.y)
+				- state->p_pos.y) * ray->delta_dist.y;
 }
 
-static void	calc_step_and_initial_side_dist(t_state *state, t_raycast_calc *rc)
+static void	preform_dda(t_ray *ray, int map_x, int map_y)
 {
-	rc->step_x = (rc->ray_dir.x > 0) - (rc->ray_dir.x < 0);
-	rc->step_y = (rc->ray_dir.y > 0) - (rc->ray_dir.y < 0);
-	if (rc->ray_dir.x < 0)
-		rc->side_dist.x = (state->p_pos.x
-				- floor(state->p_pos.x)) * rc->delta_dist.x;
-	else
-		rc->side_dist.x = (ceil(state->p_pos.x)
-				- state->p_pos.x) * rc->delta_dist.x;
-	if (rc->ray_dir.y < 0)
-		rc->side_dist.y = (state->p_pos.y
-				- floor(state->p_pos.y)) * rc->delta_dist.y;
-	else
-		rc->side_dist.y = (ceil(state->p_pos.y)
-				- state->p_pos.y) * rc->delta_dist.y;
-}
+	int	step_x;
+	int	step_y;
 
-static bool	is_colliding(t_raycast_calc *rc)
-{
-	if (rc->ray_dir.x < 0)
-		rc->map.x = clamp(ceil(rc->ray_end_pos.x - 1), 0, MAP_WIDTH - 1);
-	else
-		rc->map.x = clamp(rc->ray_end_pos.x, 0 , MAP_WIDTH - 1);
-	rc->map_side.x = fabs(floor(rc->ray_end_pos.x));
-	if (g_test_map[(int)floor(rc->ray_end_pos.y)][(int)rc->map.x] > 0)
-		rc->is_unit_side_x_hit = rc->ray_end_pos.x == rc->map.x
-			|| rc->ray_end_pos.x == rc->map_side.x;
-	if (rc->ray_dir.y < 0)
-		rc->map.y = clamp(ceil(rc->ray_end_pos.y - 1), 0, MAP_HEIGHT - 1);
-	else
-		rc->map.y = clamp(rc->ray_end_pos.y, 0, MAP_HEIGHT - 1);
-	rc->map_side.y = fabs(floor(rc->ray_end_pos.y));
-	if (g_test_map[(int)rc->map.y][(int)floor(rc->ray_end_pos.x)] > 0)
-		rc->is_unit_side_y_hit = rc->ray_end_pos.y == rc->map.y
-			|| rc->ray_end_pos.y == rc->map_side.y;
-	return (rc->is_unit_side_x_hit || rc->is_unit_side_y_hit);
-}
-
-static void	preform_dda(t_state *state, t_raycast_calc *rc)
-{
-	int i = 0;
-	while (rc->is_obstacle_hit == false)
+	step_x = (ray->dir.x > 0) - (ray->dir.x < 0);
+	step_y = (ray->dir.y > 0) - (ray->dir.y < 0);
+	while (ray->is_obstacle_hit == false)
 	{
-		if (rc->side_dist.x < rc->side_dist.y)
+		ray->is_back_side = ray->side_dist.x < ray->side_dist.y;
+		if (ray->side_dist.x < ray->side_dist.y)
 		{
-			rc->map_x += rc->step_x;
-			rc->side_dist.x += rc->delta_dist.x;
-			if (rc->ray_dir.x < 0)
-				rc->ray_end_pos.x = ceil(rc->ray_end_pos.x + rc->step_x);
-			else
-				rc->ray_end_pos.x = floor(rc->ray_end_pos.x + rc->step_x);
-			rc->ray_end_pos.y = state->p_pos.y + (rc->ray_end_pos.x - state->p_pos.x) * (rc->ray_dir.y / rc->ray_dir.x);
+			ray->perp_dist = ray->side_dist.x;
+			map_x += step_x;
+			ray->side_dist.x += ray->delta_dist.x;
 		}
 		else
 		{
-			rc->map_y += rc->step_y;
-			rc->side_dist.y += rc->delta_dist.y;
-			if (rc->ray_dir.y < 0)
-				rc->ray_end_pos.y = ceil(rc->ray_end_pos.y + rc->step_y);
-			else
-				rc->ray_end_pos.y = floor(rc->ray_end_pos.y + rc->step_y);
-			rc->ray_end_pos.x = state->p_pos.x + (rc->ray_end_pos.y - state->p_pos.y) * (rc->ray_dir.x / rc->ray_dir.y);
+			ray->perp_dist = ray->side_dist.y;
+			map_y += step_y;
+			ray->side_dist.y += ray->delta_dist.y;
 		}
-		rc->is_obstacle_hit = g_test_map[rc->map_y][rc->map_x] > 0;
+		ray->is_obstacle_hit = g_test_map[map_y][map_x] > 0;
 	}
-	draw_line((t_line){{state->p_pos.x * CELL_SIZE, state->p_pos.y * CELL_SIZE},
-	{rc->ray_end_pos.x * CELL_SIZE, rc->ray_end_pos.y * CELL_SIZE},
-		create_color(255, 255, 0, 255)}, (*state->canvas), 0);
+}
+
+static void	draw(t_state *state, t_ray ray, t_column column, int x)
+{
+	int	y;
+
+	y = 0;
+	while (y < column.wall_start)
+	{
+		put_pixel_img((*state->canvas), (t_xy){x, y},
+			create_color(255, 0, 0, 0));
+		y++;
+	}
+	while (y < column.wall_end)
+	{
+		put_pixel_img((*state->canvas), (t_xy){x, y},
+			create_color(255, 5, 70, 120));
+		column.shadow.color = create_color(column.shadow.opacity, 0, 0, 0);
+		put_pixel_img((*state->canvas), (t_xy){x, y}, column.shadow.color);
+		y++;
+	}
+	while (y < SCREEN_HEIGHT)
+	{
+		put_pixel_img((*state->canvas), (t_xy){x, y},
+			create_color(255, 0, 0, 0));
+		y++;
+	}
+}
+
+static void	draw_column(t_state *state, t_ray ray, int x)
+{
+	t_column	column;
+	t_shadow	shadow;
+	float		exponent;
+
+	column.height = (int)(SCREEN_WIDTH / (ray.perp_dist * cos(ray.angle)));
+	column.wall_start = -column.height / 2 + SCREEN_HEIGHT / 2;
+	if (column.wall_start < 0)
+		column.wall_start = 0;
+	column.wall_end = column.height / 2 + SCREEN_HEIGHT / 2;
+	if (column.wall_end >= SCREEN_HEIGHT)
+		column.wall_end = SCREEN_HEIGHT - 1;
+	shadow.max_opacity = 200;
+	shadow.factor = 10;
+	if (ray.is_back_side)
+		shadow.factor = 5;
+	exponent = (1 - exp(-(ray.perp_dist / shadow.factor)));
+	shadow.opacity = (shadow.max_opacity * exponent);
+	if (shadow.opacity > shadow.max_opacity)
+		shadow.opacity = shadow.max_opacity;
+	column.shadow = shadow;
+	draw(state, ray, column, x);
 }
 
 void	handle_raycasting(t_state **state)
 {
-	t_raycast_calc	rc;
-	int				x;
+	t_ray		ray;
+	float		angle;
+	float		angle_i;
+	int			x;
 
 	x = 0;
-	ft_memset(&rc, 0, sizeof(t_raycast_calc));
+	angle_i = FIELD_OF_VIEW / (SCREEN_WIDTH - 1);
 	while (x < SCREEN_WIDTH)
 	{
-		rc.map = (*state)->p_pos;
-		rc.map_x = (int)(*state)->p_pos.x;
-		rc.map_y = (int)(*state)->p_pos.y;
-		// rc.ray_start_pos = (*state)->p_pos;
-		rc.ray_end_pos = (*state)->p_pos;
-		rc.ray_dir_x = (float)(*state)->p_dir.x;
-		rc.ray_dir_y = (float)(*state)->p_dir.y;
-		rc.ray_dir = (*state)->p_dir;
-		if (rc.ray_dir.x == 0)
-			rc.delta_dist.x = FLT_MAX;
-		else
-			rc.delta_dist.x = 1 / fabs(rc.ray_dir.x);
-		if (rc.ray_dir.y == 0)
-			rc.delta_dist.y = FLT_MAX;
-		else
-			rc.delta_dist.y = 1 / fabs(rc.ray_dir.y);
-		calc_step_and_initial_side_dist((*state), &rc);
-		preform_dda((*state), &rc);
+		ft_memset(&ray, 0, sizeof(t_ray));
+		angle = (((*state)->p_dir_angle - (FIELD_OF_VIEW / 2)) + (x * angle_i));
+		ray.angle = angle - (*state)->p_dir_angle;
+		ray.dir = (t_xy){cos(angle), sin(angle)};
+		ray.end_pos = (*state)->p_pos;
+		ray.delta_dist.x = 1 / fabs(ray.dir.x);
+		ray.delta_dist.y = 1 / fabs(ray.dir.y);
+		if (ray.dir.x == 0)
+			ray.delta_dist.x = FLT_MAX;
+		if (ray.dir.y == 0)
+			ray.delta_dist.y = FLT_MAX;
+		calc_step_and_initial_side_dist((*state), &ray);
+		preform_dda(&ray, (int)(*state)->p_pos.x, (int)(*state)->p_pos.y);
+		draw_column((*state), ray, x);
 		x++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/24 23:44:15 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/26 22:32:12 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct s_keys
 
 typedef struct s_xy
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 }	t_xy;
 
 typedef struct s_win
@@ -94,69 +94,42 @@ typedef struct s_line_calc
 	int	error_delta;
 }	t_line_calc;
 
-// typedef struct s_raycast_calc
-// {
-// 	double	camera_x;
-// 	double	ray_dir_x;
-// 	double	ray_dir_y;
-// 	double	side_dist_x;
-// 	double	side_dist_y;
-// 	double	delta_dist_x;
-// 	double	delta_dist_y;
-// 	int		step_x;
-// 	int		step_y;
-// 	int		map_x;
-// 	int		map_y;
-// 	bool	is_obstacle_hit;
-// 	bool	is_obstacle_side;
-// }	t_raycast_calc;
-
-// state->p_pos.x 13.629072, state->p_pos.y 2.428815
-// state->p_dir.x -0.079955, state->p_dir.y -1.002850
-// rc->is_obstacle_hit 0, rc->map_y 1, rc->map_x 13
-// rc->ray_end_pos.x 13.594884, rc->ray_end_pos.y 2.000000
-
-// state->p_pos.x 13.629072, state->p_pos.y 2.428815
-// state->p_dir.x -0.428108, state->p_dir.y -0.91039
-// rc->is_obstacle_hit 1, rc->map_y 0, rc->map_x 12
-// rc->ray_end_pos.x 12.957176, rc->ray_end_pos.y 1.000000
-
-// state->p_pos.x 18.445797, state->p_pos.y 12.518223
-// state->p_dir.x -1.005993, state->p_dir.y 0.008816
-
-typedef struct s_raycast_calc
+typedef struct s_ray
 {
-	t_xy	ray_dir;
-	float	ray_dir_x;
-	float	ray_dir_y;
-	t_xy	ray_start_pos;
-	t_xy	ray_end_pos;
-	float	ray_end_x;
-	float	ray_end_y;
-	t_xy	ray_dist;
+	float	angle;
+	t_xy	dir;
+	t_xy	end_pos;
 	t_xy	delta_dist;
-	t_xy	delta;
+	float	perp_dist;
 	t_xy	side_dist;
-	t_xy	side_pos;
-	t_xy	chande_in_pos;
-	int		step_x;
-	int		step_y;
-	t_xy	map;
-	t_xy	map_side;
-	int		map_x;
-	int		map_y;
 	bool	is_obstacle_hit;
-	bool	is_unit_side_x_hit;
-	bool	is_unit_side_y_hit;
-	bool	is_obstacle_side;
-}	t_raycast_calc;
+	bool	is_back_side;
+}	t_ray;
+
+typedef struct s_shadow
+{
+	int	max_opacity;
+	int	opacity;
+	int	factor;
+	int	color;
+}	t_shadow;
+
+typedef struct s_column
+{
+	int			height;
+	int			wall_start;
+	int			wall_end;
+	int			ceil_color;
+	int			floor_color;
+	t_shadow	shadow;
+}	t_column;
 
 typedef struct s_state
 {
 	t_win	*win;
 	t_xy	p_pos;
 	t_xy	p_dir;
-	double	p_dir_angle;
+	float	p_dir_angle;
 	t_xy	plane;
 	t_keys	keys;
 	t_img	*canvas;

@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:32:53 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/24 20:26:26 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/26 21:20:35 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ int	render_game(t_state **state)
 {
 	update_player_direction((*state));
 	update_player_position((*state));
-	render_layout((*state));
-	draw_direction_vector(*state, (*state)->canvas);
-	draw_square((t_square){(t_xy){((*state)->p_pos.x * CELL_SIZE)
-		- (PLAYER_SIZE / 2), ((*state)->p_pos.y * CELL_SIZE)
-		- (PLAYER_SIZE / 2)}, PLAYER_SIZE, PLAYER_SIZE,
-		create_color(100, 150, 0, 100)}, (*(*state)->canvas));
+	// render_layout((*state));
+	// draw_direction_vector(*state, (*state)->canvas);
+	// draw_square((t_square){(t_xy){((*state)->p_pos.x * CELL_SIZE)
+	// 	- (PLAYER_SIZE / 2), ((*state)->p_pos.y * CELL_SIZE)
+	// 	- (PLAYER_SIZE / 2)}, PLAYER_SIZE, PLAYER_SIZE,
+	// 	create_color(100, 150, 0, 100)}, (*(*state)->canvas));
 	put_pixel_img((*(*state)->canvas), (t_xy){(*state)->p_pos.x
 		* CELL_SIZE, (*state)->p_pos.y * CELL_SIZE},
 		create_color(255, 255, 255, 255));

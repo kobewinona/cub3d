@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:33:27 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/24 20:19:42 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/26 18:27:30 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ void	update_player_direction(t_state *state)
 	old_plane_x = state->plane.x;
 	new_angle = ((state->keys.turn_right - state->keys.turn_left)
 			* CAMERA_SPEED);
-	state->p_dir_angle += ((state->keys.turn_left - state->keys.turn_right)
-			* CAMERA_SPEED);
+	// state->p_dir_angle += ((state->keys.turn_left - state->keys.turn_right)
+	// 		* CAMERA_SPEED);
+	state->p_dir_angle += (new_angle);
 	while (state->p_dir_angle >= 2 * PI)
 		state->p_dir_angle -= 2 * PI;
 	while (state->p_dir_angle < 0)
@@ -36,7 +37,6 @@ void	update_player_direction(t_state *state)
 		- state->plane.y * sin(new_angle);
 	state->plane.y = old_plane_x * sin(new_angle)
 		+ state->plane.y * cos(new_angle);
-	printf("state->p_dir_angle %lf\n", state->p_dir_angle);
 }
 
 void	update_player_position(t_state *state)

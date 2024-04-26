@@ -6,12 +6,21 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:06:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/24 23:45:06 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/26 20:51:50 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
+
+// x 13.6290722
+// y 2.42881489
+
+// x 13.5151558
+// y 1
+
+// 25.5345, 34.435
+// 21.12, 12.23
 
 # define TITLE "cub3d"
 
@@ -27,11 +36,14 @@
 # define PLAYER_SIZE 25
 # define SCREEN_WIDTH 840
 # define SCREEN_HEIGHT 840
+// # define SCREEN_WIDTH 640
+// # define SCREEN_HEIGHT 460
+# define FIELD_OF_VIEW 0.8
 
 // @def gameplay
 # define VISION_DISTANCE MAP_WIDTH
 # define PLAYER_SPEED 0.12
-# define CAMERA_SPEED 0.08
+# define CAMERA_SPEED 0.06
 
 // @def keyboard keys values
 # define KEY_ESC 65307
