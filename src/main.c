@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/26 19:31:32 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:43:38 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	main(void)
 	state->p_pos = (t_xy){13.629072, 2.428815};
 	state->p_dir = (t_xy){0, -1};
 	state->p_dir_angle = atan2(state->p_dir.y, state->p_dir.x);
+	state->mov_offset_step = 1;
+	state->cam_speed = CAMERA_SPEED / 2;
 	if (create_window(SCREEN_WIDTH, SCREEN_HEIGHT, &win) == FAILURE)
 		return (EXIT_FAILURE);
 	state->win = win;

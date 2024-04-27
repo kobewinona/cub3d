@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/26 22:36:11 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:47:19 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,16 @@ static void	draw_column(t_state *state, t_ray ray, int x)
 	t_shadow	shadow;
 	float		exponent;
 
+	// printf("state->mov_offset %d\n", (int)state->mov_offset);
 	column.height = (int)(SCREEN_WIDTH / (ray.perp_dist * cos(ray.angle)));
 	column.wall_start = -column.height / 2 + SCREEN_HEIGHT / 2;
 	if (column.wall_start < 0)
 		column.wall_start = 0;
+	column.wall_start -= (int)state->mov_offset * 5;
 	column.wall_end = column.height / 2 + SCREEN_HEIGHT / 2;
 	if (column.wall_end >= SCREEN_HEIGHT)
 		column.wall_end = SCREEN_HEIGHT - 1;
+	column.wall_end -= (int)state->mov_offset * 5;
 	shadow.max_opacity = 200;
 	shadow.factor = 10;
 	if (ray.is_back_side)

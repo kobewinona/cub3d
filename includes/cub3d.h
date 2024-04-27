@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/26 22:32:12 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:43:22 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ extern int	g_test_map[MAP_WIDTH][MAP_HEIGHT];
 
 typedef struct s_keys
 {
-	bool	move_up;
-	bool	move_down;
+	bool	move_forwards;
+	bool	move_backwards;
 	bool	move_left;
 	bool	move_right;
 	bool	turn_left;
@@ -134,6 +134,9 @@ typedef struct s_state
 	t_keys	keys;
 	t_img	*canvas;
 	int		log_fd;
+	float	mov_offset;
+	int		mov_offset_step;
+	float	cam_speed;
 }	t_state;
 
 typedef enum s_argb

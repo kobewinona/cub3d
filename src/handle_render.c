@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:32:53 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/26 21:20:35 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:46:56 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void	draw_direction_vector(t_state *state, t_img *canvas)
 int	render_game(t_state **state)
 {
 	update_player_direction((*state));
+	printf("(*state)->cam_speed %f\n", (*state)->cam_speed);
 	update_player_position((*state));
 	// render_layout((*state));
 	// draw_direction_vector(*state, (*state)->canvas);
@@ -66,6 +67,7 @@ int	render_game(t_state **state)
 	put_pixel_img((*(*state)->canvas), (t_xy){(*state)->p_pos.x
 		* CELL_SIZE, (*state)->p_pos.y * CELL_SIZE},
 		create_color(255, 255, 255, 255));
+	// printf("state->mov_offset %d\n", (int)(*state)->mov_offset);
 	handle_raycasting(state);
 	mlx_put_image_to_window((*state)->win->mlx_ptr,
 		(*state)->win->win_ptr, (*state)->canvas->img_ptr, 0, 0);
