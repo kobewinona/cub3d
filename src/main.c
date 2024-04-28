@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/24 23:31:46 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/28 16:58:21 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char **argv)
 	}
 	par_element_error(fd, ext_buff, &info, &err);
 
-	int status = par_read_map(first_map, fd, &ext_buff, &info);
+	int status = par_read_map(&maps, fd, &ext_buff, &info);
 	if (status == -1)
 	{
 		// TODO: write a function that clear every variable
@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 		par_error_msg("Allocation failed");
 		return (EXIT_FAILURE);
 	}
-	
+	parser_debug(&info, true);
 	free(ext_buff);
 	queue_flush(&err);
 	queue_flush(&element);

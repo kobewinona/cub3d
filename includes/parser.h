@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/24 23:48:46 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/28 16:58:01 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err);
 void		par_error_msg(char *msg);
 bool		par_ismap(char *line);
 bool		par_isspace(char *line);
+void	parser_debug(t_parser *info, bool isprint);
 
 int	par_get_texture(char **box, t_parser *info, t_ltype type, bool iserr);
 int	par_get_color(char **box, t_parser *info, t_ltype type);

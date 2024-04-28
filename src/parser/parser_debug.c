@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/25 00:15:08 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/28 17:48:24 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,22 @@ static void	sb_print_map(t_parser *info)
 	while (y < info->height)
 	{
 		x = 0;
-		while (x < info->height)
+		while (x < info->width)
 		{
-			if (info->map[y][x] = EMPTY)
-				printf("\033[0;33 \033[0m");
-			else if (info->map[y][x] = WALL)
-				printf("\033[0;371\033[0m");
-			else if (info->map[y][x] = FLOOR)
+			if (info->map[y][x] == EMPTY)
+				printf("\033[0;33m \033[0m");
+			else if (info->map[y][x] == WALL)
+				printf("\033[0;35m1\033[0m");
+			else if (info->map[y][x] == FLOOR)
 				printf("0");
-			else if (info->map[y][x] = PLAYER)
+			else if (info->map[y][x] == PLAYER)
 			{
 				if (info->player.face == north)
-					printf("\033[0;32mN\033[0m");
+					printf("N");
 				else if (info->player.face == south)
-					printf("\033[0;32mS\033[0m");
+					printf("S");
 				else if (info->player.face == west)
-					printf("\033[0;32mW\033[0m");
+					printf("W");
 				else if (info->player.face == east)
 					printf("\033[0;32mE\033[0m");
 				else
@@ -87,4 +87,5 @@ void	parser_debug(t_parser *info, bool isprint)
 		return ;
 	sb_print_elem(info);
 	sb_print_player(info);
+	sb_print_map(info);
 }

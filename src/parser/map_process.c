@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 23:18:59 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/24 21:56:40 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/28 17:31:55 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*sb_get_newline(char *old_line, size_t width)
 		return (NULL);
 	old_len = ft_strclen(old_line, '\n');
 	i = 0;
-	while (i <= width)
+	while (i < width)
 	{
 		if (i >= old_len)
 			new_line[i] = EMPTY;

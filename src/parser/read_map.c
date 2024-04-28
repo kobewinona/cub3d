@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/24 23:07:27 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/28 16:59:26 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 	while (line != NULL)
 	{
 		par_find_player_by_line(line, no, &info->player);
-		if (!sb_check_map(&maps, &err, node_new(line, no, map_elem), line))
+		if (!sb_check_map(maps, &err, node_new(line, no, map_elem), line))
 		{
 			free(*ext_buff);
 			*ext_buff = NULL;
@@ -74,7 +74,7 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 	}
 	if (errno == ENOMEM)
 		return (-1);
-	return (sb_illegal(&maps, &err));
+	return (sb_illegal(maps, &err));
 }
 
 /*
@@ -83,21 +83,17 @@ CLOSE FD OUTSIDE OF FUNCTION IN ALL CASES
 
 int par_read_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 {
-	size_t	width;
-	size_t	height;
-	char	**box;
-	
 	if (sb_map(maps, fd, ext_buff, info))
 		return (-1);
 	if (info->player.face == too_many_player)
 	{
-		queue_flush(&maps);
+		queue_flush(maps);
 		par_error_msg("Too Many Players");
 		return (1);
 	}
 	else if (info->player.face == no_player)
 	{
-		queue_flush(&maps);
+		queue_flush(maps);
 		par_error_msg("No Players");
 		return (1);
 	}

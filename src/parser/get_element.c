@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/24 22:38:16 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/28 17:31:03 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	sb_filter_type(char **box, t_parser *info, t_ltype type, bool *iserr)
 	if (type == north_elem || type == south_elem || \
 		type == west_elem || type == east_elem)
 	{
-		status = par_get_texture(box, info, type, iserr);
+		status = par_get_texture(box, info, type, *iserr);
 		if (status != 0)
 			*iserr = true;
 	}
