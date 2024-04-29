@@ -1,0 +1,28 @@
+// {
+// 	"makefile.launchConfigurations": [
+// 		{
+// 			"cwd": "/home/dklimkin/dev/42Network/minishell",
+// 			"binaryPath": "/home/dklimkin/dev/42Network/minishell/minishell",
+// 			"binaryArgs": []
+// 		}
+// 	],
+// 	"debug.console.fontSize": 16,
+// 	"scm.inputFontSize": 16,
+// 	"terminal.integrated.fontSize": 16,
+// 	"editor.formatOnPaste": true,
+// 	"files.associations": {
+// 		"minishell.h": "c",
+// 		"optional": "c",
+// 		"ostream": "c",
+// 		"system_error": "c",
+// 		"array": "c",
+// 		"functional": "c",
+// 		"tuple": "c",
+// 		"type_traits": "c",
+// 		"utility": "c",
+// 		"libft.h": "c",
+// 		"random": "c",
+// 		"cmath": "c",
+// 		"cub3d.h": "c"
+// 	},
+// }
