@@ -6,25 +6,17 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:06:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 12:42:35 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:24:45 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
 
-// x 13.6290722
-// y 2.42881489
-
-// x 13.5151558
-// y 1
-
-// 25.5345, 34.435
-// 21.12, 12.23
-
 # define TITLE "cub3d"
 
 // @def dev
+# define MY_FLT_MAX 3.402823466e+38F
 # define PI 3.14159265358979323846
 # define SUCCESS 0
 # define FAILURE -1
@@ -32,16 +24,24 @@
 // @def window
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
-# define CELL_SIZE 35
-# define PLAYER_SIZE 25
+# define PLAYER_SIZE 8
 # define SCREEN_WIDTH 800
 # define SCREEN_HEIGHT 600
 # define FIELD_OF_VIEW 0.8
 
+// @def minimap
+# define MINIMAP_PLAYER_SIZE 4
+# define MINIMAP_CELL_SIZE 10
+# define MINIMAP_WIDTH 180
+# define MINIMAP_HEIGHT 180
+# define MINIMAP_X -20
+# define MINIMAP_Y 20
+# define MINIMAP_OPACITY 100
+
 // @def gameplay
 # define VISION_DISTANCE MAP_WIDTH
-# define PLAYER_SPEED 0.12
-# define CAMERA_SPEED 0.08
+# define PLAYER_SPEED 0.08
+# define CAMERA_SPEED 0.05
 
 // @def keyboard keys values
 # define KEY_ESC 65307

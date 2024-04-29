@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 16:11:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/26 14:35:48 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:26:16 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	draw_square(t_square params, t_img img)
 		while (x < params.width && (x + params.pos.x) < img.width)
 		{
 			put_pixel_img(img,
-				(t_xy){x + params.pos.x, y + params.pos.y}, params.color);
+				(t_fxy){x + params.pos.x, y + params.pos.y}, params.color);
 			x++;
 		}
 		y++;
@@ -62,10 +62,64 @@ void	draw_line(t_line params, t_img img, int side)
 	lc.error = (lc.delta_x + lc.delta_y);
 	while (true)
 	{
-		put_pixel_img(img, (t_xy){lc.current_x, lc.current_y}, params.color);
+		put_pixel_img(img, (t_fxy){lc.current_x, lc.current_y}, params.color);
 		if (lc.current_x == lc.target_x && lc.current_y == lc.target_y)
 			break ;
 		lc.error_delta = (2 * lc.error);
 		handle_delta_error(&lc);
 	}
+}
+
+static void	draw(t_state *state, t_ray ray, t_column column, int x)
+{
+	int	y;
+
+	y = 0;
+	while (y < column.wall_start)
+	{
+		put_pixel_img((*state->canvas), (t_fxy){x, y},
+			create_color(255, 0, 0, 0));
+		y++;
+	}
+	while (y < column.wall_end)
+	{
+		put_pixel_img((*state->canvas), (t_fxy){x, y},
+			create_color(255, 5, 70, 120));
+		column.shadow.color = create_color(column.shadow.opacity, 0, 0, 0);
+		put_pixel_img((*state->canvas), (t_fxy){x, y}, column.shadow.color);
+		y++;
+	}
+	while (y < (SCREEN_HEIGHT - 1))
+	{
+		put_pixel_img((*state->canvas), (t_fxy){x, y},
+			create_color(255, 0, 0, 0));
+		y++;
+	}
+}
+
+void	draw_column(t_state *state, t_ray ray, int x)
+{
+	t_column	column;
+	t_shadow	shadow;
+	float		exponent;
+
+	column.height = (int)(SCREEN_WIDTH / (ray.perp_dist * cos(ray.angle)));
+	column.wall_start = -column.height / 2 + SCREEN_HEIGHT / 2;
+	if (column.wall_start < 0)
+		column.wall_start = 0;
+	column.wall_start -= (int)state->mov_offset * 5;
+	column.wall_end = column.height / 2 + SCREEN_HEIGHT / 2;
+	if (column.wall_end >= SCREEN_HEIGHT)
+		column.wall_end = SCREEN_HEIGHT - 1;
+	column.wall_end -= (int)state->mov_offset * 5;
+	shadow.max_opacity = 200;
+	shadow.factor = 10;
+	if (ray.is_back_side)
+		shadow.factor = 5;
+	exponent = (1 - exp(-(ray.perp_dist / shadow.factor)));
+	shadow.opacity = (shadow.max_opacity * exponent);
+	if (shadow.opacity > shadow.max_opacity)
+		shadow.opacity = shadow.max_opacity;
+	column.shadow = shadow;
+	draw(state, ray, column, x);
 }

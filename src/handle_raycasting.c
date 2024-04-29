@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 12:43:04 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:01:46 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,82 +56,38 @@ static void	preform_dda(t_ray *ray, int map_x, int map_y)
 	}
 }
 
-static void	draw(t_state *state, t_ray ray, t_column column, int x)
+static int	init_ray(float p_angle, t_ray *ray, int x, float angle_increment)
 {
-	int	y;
+	float	current_angle;
 
-	y = 0;
-	while (y < column.wall_start)
-	{
-		put_pixel_img((*state->canvas), (t_xy){x, y},
-			create_color(255, 0, 0, 0));
-		y++;
-	}
-	while (y < column.wall_end)
-	{
-		put_pixel_img((*state->canvas), (t_xy){x, y},
-			create_color(255, 5, 70, 120));
-		column.shadow.color = create_color(column.shadow.opacity, 0, 0, 0);
-		put_pixel_img((*state->canvas), (t_xy){x, y}, column.shadow.color);
-		y++;
-	}
-	while (y < (SCREEN_HEIGHT - 1))
-	{
-		put_pixel_img((*state->canvas), (t_xy){x, y},
-			create_color(255, 0, 0, 0));
-		y++;
-	}
-}
-
-static void	draw_column(t_state *state, t_ray ray, int x)
-{
-	t_column	column;
-	t_shadow	shadow;
-	float		exponent;
-
-	column.height = (int)(SCREEN_WIDTH / (ray.perp_dist * cos(ray.angle)));
-	column.wall_start = -column.height / 2 + SCREEN_HEIGHT / 2;
-	if (column.wall_start < 0)
-		column.wall_start = 0;
-	column.wall_start -= (int)state->mov_offset * 5;
-	column.wall_end = column.height / 2 + SCREEN_HEIGHT / 2;
-	if (column.wall_end >= SCREEN_HEIGHT)
-		column.wall_end = SCREEN_HEIGHT - 1;
-	column.wall_end -= (int)state->mov_offset * 5;
-	shadow.max_opacity = 200;
-	shadow.factor = 10;
-	if (ray.is_back_side)
-		shadow.factor = 5;
-	exponent = (1 - exp(-(ray.perp_dist / shadow.factor)));
-	shadow.opacity = (shadow.max_opacity * exponent);
-	if (shadow.opacity > shadow.max_opacity)
-		shadow.opacity = shadow.max_opacity;
-	column.shadow = shadow;
-	draw(state, ray, column, x);
+	current_angle = (p_angle - (FIELD_OF_VIEW / 2)) + (x * angle_increment);
+	ray->angle = current_angle - p_angle;
+	ray->dir = (t_fxy){cos(current_angle), sin(current_angle)};
+	ray->end_pos = (t_fxy *)malloc(SCREEN_WIDTH * sizeof(t_fxy));
+	if (!ray->end_pos)
+		return (FAILURE);
+	ray->delta_dist.x = 1 / fabs(ray->dir.x);
+	ray->delta_dist.y = 1 / fabs(ray->dir.y);
+	if (ray->dir.x == 0)
+		ray->delta_dist.x = MY_FLT_MAX;
+	if (ray->dir.y == 0)
+		ray->delta_dist.y = MY_FLT_MAX;
+	return (SUCCESS);
 }
 
 void	handle_raycasting(t_state **state)
 {
 	t_ray		ray;
-	float		angle;
-	float		angle_i;
+	float		angle_increment;
 	int			x;
 
 	x = 0;
-	angle_i = FIELD_OF_VIEW / (SCREEN_WIDTH - 1);
+	angle_increment = FIELD_OF_VIEW / (SCREEN_WIDTH - 1);
 	while (x < SCREEN_WIDTH)
 	{
 		ft_memset(&ray, 0, sizeof(t_ray));
-		angle = (((*state)->p_dir_angle - (FIELD_OF_VIEW / 2)) + (x * angle_i));
-		ray.angle = angle - (*state)->p_dir_angle;
-		ray.dir = (t_xy){cos(angle), sin(angle)};
-		ray.end_pos = (*state)->p_pos;
-		ray.delta_dist.x = 1 / fabs(ray.dir.x);
-		ray.delta_dist.y = 1 / fabs(ray.dir.y);
-		if (ray.dir.x == 0)
-			ray.delta_dist.x = FLT_MAX;
-		if (ray.dir.y == 0)
-			ray.delta_dist.y = FLT_MAX;
+		if (init_ray((*state)->p_dir_angle, &ray, x, angle_increment))
+			return ;
 		calc_step_and_initial_side_dist((*state), &ray);
 		preform_dda(&ray, (int)(*state)->p_pos.x, (int)(*state)->p_pos.y);
 		draw_column((*state), ray, x);
