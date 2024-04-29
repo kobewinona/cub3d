@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 22:36:12 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 22:41:43 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,3 +50,5 @@ int	main(void)
 	mlx_loop(win->mlx_ptr);
 	return (game_exit(&state, EXIT_SUCCESS));
 }
+
+
