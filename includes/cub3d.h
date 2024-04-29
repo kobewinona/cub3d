@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 16:19:32 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 20:58:12 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef struct s_fxy
 
 typedef struct s_xy
 {
-	float	x;
-	float	y;
+	int	x;
+	int	y;
 }	t_xy;
 
 typedef struct s_win
@@ -103,11 +103,11 @@ typedef struct s_ray
 {
 	float	angle;
 	t_fxy	dir;
-	t_fxy	*end_pos;
-	// t_fxy	end_pos;
 	t_fxy	delta_dist;
 	float	perp_dist;
 	t_fxy	side_dist;
+	t_xy	map;
+	t_xy	step;
 	bool	is_obstacle_hit;
 	bool	is_back_side;
 }	t_ray;
@@ -137,6 +137,9 @@ typedef struct s_minimap
 	int		wall_color;
 	int		opacity;
 	t_fxy	pos;
+	t_fxy	p_pos;
+	t_fxy	center_pos;
+	t_fxy	offset;
 	t_xy	start_pos;
 }	t_minimap;
 
@@ -154,6 +157,7 @@ typedef struct s_state
 	int		mov_offset_step;
 	float	mov_speed;
 	float	cam_speed;
+	t_fxy	*rays;
 }	t_state;
 
 typedef enum s_argb

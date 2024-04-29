@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:32:53 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 16:36:19 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 21:00:26 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,18 @@ static void	init_minimap(t_state *state, t_minimap *minimap)
 {
 	minimap->opacity = clamp(MINIMAP_OPACITY, 0, 255);
 	minimap->bg_color = create_color(minimap->opacity, 20, 20, 20);
-	minimap->player_color = create_color(minimap->opacity - 50, 120, 120, 120);
-	minimap->wall_color = create_color(minimap->opacity, 150, 150, 150);
+	minimap->player_color = create_color(minimap->opacity, 120, 120, 180);
+	minimap->wall_color = create_color(minimap->opacity, 90, 100, 105);
 	minimap->pos = (t_fxy){SCREEN_WIDTH - MINIMAP_WIDTH + MINIMAP_X, MINIMAP_Y};
 	minimap->start_pos = (t_xy){
 		(int)state->p_pos.x - (MINIMAP_WIDTH / 2 / MINIMAP_CELL_SIZE),
 		(int)state->p_pos.y - (MINIMAP_HEIGHT / 2 / MINIMAP_CELL_SIZE)};
+	minimap->offset.x = MINIMAP_WIDTH - (MINIMAP_WIDTH / 2);
+	minimap->offset.y = MINIMAP_HEIGHT - (MINIMAP_HEIGHT / 2);
+	minimap->center_pos.x = minimap->pos.x
+		+ (MINIMAP_WIDTH / 2) + MINIMAP_CELL_SIZE / 2;
+	minimap->center_pos.y = minimap->pos.y
+		+ (MINIMAP_HEIGHT / 2) + MINIMAP_CELL_SIZE / 2;
 }
 
 static void	render_minimap_layout_row(t_minimap minimap, int y, t_img canvas)
@@ -49,10 +55,38 @@ static void	render_minimap_layout_row(t_minimap minimap, int y, t_img canvas)
 	}
 }
 
+static void	render_field_of_view(t_state *state, t_minimap minimap, t_fxy *rays)
+{
+	t_fxy	ray_end_pos;
+	int		i;
+
+	i = 0;
+	while (i < (SCREEN_WIDTH - 1))
+	{
+		ray_end_pos.x = minimap.pos.x + (rays[i].x - minimap.start_pos.x)
+			* MINIMAP_CELL_SIZE;
+		ray_end_pos.y = minimap.pos.y + (rays[i].y - minimap.start_pos.y)
+			* MINIMAP_CELL_SIZE;
+		draw_line((t_line){{minimap.p_pos.x, minimap.p_pos.y},
+		{ray_end_pos.x, ray_end_pos.y},
+			create_color(255, 200, 50, 100)}, (*state->canvas), 0);
+		i++;
+	}
+	draw_square((t_square){{minimap.p_pos.x - (MINIMAP_CELL_SIZE / 2),
+		minimap.p_pos.y - (MINIMAP_CELL_SIZE / 2)},
+		MINIMAP_CELL_SIZE, MINIMAP_CELL_SIZE,
+		minimap.player_color}, (*state->canvas));
+	put_pixel_img((*state->canvas), (t_fxy){minimap.p_pos.x, minimap.p_pos.y},
+		create_color(255, 200, 200, 200));
+	free(state->rays);
+}
+
 void	render_minimap(t_state *state)
 {
 	t_minimap	minimap;
 	int			map_y;
+	t_fxy		ray_end_pos;
+	t_fxy		p_pos;
 	int			y;
 
 	init_minimap(state, &minimap);
@@ -64,23 +98,17 @@ void	render_minimap(t_state *state)
 		render_minimap_layout_row(minimap, y, (*state->canvas));
 		y++;
 	}
-	draw_square((t_square){{minimap.pos.x + (MINIMAP_WIDTH / 2),
-		minimap.pos.y + (MINIMAP_HEIGHT / 2)},
-		MINIMAP_CELL_SIZE, MINIMAP_CELL_SIZE,
-		minimap.player_color}, (*state->canvas));
-	put_pixel_img((*state->canvas), (t_fxy){
-		minimap.pos.x + (MINIMAP_WIDTH / 2) + MINIMAP_CELL_SIZE / 2,
-		minimap.pos.y + (MINIMAP_HEIGHT / 2) + MINIMAP_CELL_SIZE / 2},
-		create_color(255, 200, 200, 200));
+	minimap.p_pos.x = minimap.pos.x + (state->p_pos.x - minimap.start_pos.x)
+		* MINIMAP_CELL_SIZE;
+	minimap.p_pos.y = minimap.pos.y + (state->p_pos.y - minimap.start_pos.y)
+		* MINIMAP_CELL_SIZE;
+	render_field_of_view(state, minimap, state->rays);
 }
 
 int	render_game(t_state **state)
 {
 	update_player_direction((*state));
 	update_player_position((*state));
-	put_pixel_img((*(*state)->canvas), (t_fxy){(*state)->p_pos.x
-		* MINIMAP_CELL_SIZE, (*state)->p_pos.y * MINIMAP_CELL_SIZE},
-		create_color(255, 255, 255, 255));
 	handle_raycasting(state);
 	render_minimap((*state));
 	mlx_put_image_to_window((*state)->win->mlx_ptr,
