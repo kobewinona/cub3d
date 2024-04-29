@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:33:27 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 12:16:47 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:09:41 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	handle_forward_movement(t_state *state, int dir_y)
 
 	state->mov_speed = PLAYER_SPEED;
 	if (state->keys.move_left || state->keys.move_right)
-		state->mov_speed -= (PLAYER_SPEED / 1.5);
+		state->mov_speed = (PLAYER_SPEED / 1.5);
 	if (state->keys.move_backwards)
 		state->mov_speed /= 2;
 	next_pos.x = state->p_pos.x + ((state->mov_speed * state->p_dir.x) * dir_y);
