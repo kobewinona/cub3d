@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:36:26 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/27 18:56:00 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/27 19:11:10 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,7 @@ int	read_keys_pressed(int key_pressed, t_state **state)
 	if (key_pressed == LEFT_ARROW)
 		(*state)->keys.turn_left = true;
 	if (key_pressed == RIGHT_ARROW)
-		(*state)->keys.turn_right = true;	
-	// if (key_pressed == LEFT_ARROW || key_pressed == RIGHT_ARROW)
-	// {
-	// 	if ((*state)->cam_speed <= CAMERA_SPEED)
-	// 		(*state)->cam_speed += 0.02;
-	// }
+		(*state)->keys.turn_right = true;
 	return (SUCCESS);
 }
 
@@ -47,14 +42,8 @@ int	read_keys_released(int key_released, t_state **state)
 	if (key_released == KEY_D)
 		(*state)->keys.move_right = false;
 	if (key_released == LEFT_ARROW)
-	{
 		(*state)->keys.turn_left = false;
-		// (*state)->cam_speed = 0;
-	}
 	if (key_released == RIGHT_ARROW)
-	{
 		(*state)->keys.turn_right = false;
-		// (*state)->cam_speed = 0;
-	}
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/27 18:43:22 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:03:33 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ typedef struct s_state
 	int		log_fd;
 	float	mov_offset;
 	int		mov_offset_step;
+	float	mov_speed;
 	float	cam_speed;
 }	t_state;
 
@@ -174,5 +175,9 @@ int		create_color(int alpha, int red, int green, int blue);
 int		blend_colors(unsigned int bg_color, unsigned int fg_color);
 void	draw_square(t_square params, t_img img);
 void	draw_line(t_line params, t_img img, int side);
+
+// clamp
+int		clamp(int value, int min, int max);
+float	fclamp(float value, float min, float max);
 
 #endif

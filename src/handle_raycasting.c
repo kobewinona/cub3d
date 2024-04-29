@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/27 18:47:19 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:43:04 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	preform_dda(t_ray *ray, int map_x, int map_y)
 			map_y += step_y;
 			ray->side_dist.y += ray->delta_dist.y;
 		}
+		map_x = clamp(map_x, 0, MAP_WIDTH);
+		map_y = clamp(map_y, 0, MAP_HEIGHT);
 		ray->is_obstacle_hit = g_test_map[map_y][map_x] > 0;
 	}
 }
@@ -73,7 +75,7 @@ static void	draw(t_state *state, t_ray ray, t_column column, int x)
 		put_pixel_img((*state->canvas), (t_xy){x, y}, column.shadow.color);
 		y++;
 	}
-	while (y < SCREEN_HEIGHT)
+	while (y < (SCREEN_HEIGHT - 1))
 	{
 		put_pixel_img((*state->canvas), (t_xy){x, y},
 			create_color(255, 0, 0, 0));
@@ -87,7 +89,6 @@ static void	draw_column(t_state *state, t_ray ray, int x)
 	t_shadow	shadow;
 	float		exponent;
 
-	// printf("state->mov_offset %d\n", (int)state->mov_offset);
 	column.height = (int)(SCREEN_WIDTH / (ray.perp_dist * cos(ray.angle)));
 	column.wall_start = -column.height / 2 + SCREEN_HEIGHT / 2;
 	if (column.wall_start < 0)

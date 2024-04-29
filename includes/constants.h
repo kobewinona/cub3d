@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:06:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/27 18:56:17 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:42:35 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,14 @@
 # define MAP_HEIGHT 24
 # define CELL_SIZE 35
 # define PLAYER_SIZE 25
-# define SCREEN_WIDTH 840
-# define SCREEN_HEIGHT 840
-// # define SCREEN_WIDTH 640
-// # define SCREEN_HEIGHT 460
+# define SCREEN_WIDTH 800
+# define SCREEN_HEIGHT 600
 # define FIELD_OF_VIEW 0.8
 
 // @def gameplay
 # define VISION_DISTANCE MAP_WIDTH
 # define PLAYER_SPEED 0.12
 # define CAMERA_SPEED 0.08
-# define MOVEMENT_SHAKING 0.6
 
 // @def keyboard keys values
 # define KEY_ESC 65307

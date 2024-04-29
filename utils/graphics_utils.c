@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 15:17:25 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/18 16:11:13 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:41:26 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_img	*create_image(int w, int h, void *mlx_ptr)
 	img->addr = mlx_get_data_addr(img->img_ptr,
 			&img->bpp, &img->line_len, &img->endian);
 	img->width = w;
-	img->height = w;
+	img->height = h;
 	return (img);
 }
 
@@ -55,6 +55,7 @@ void	put_pixel_img(t_img img, t_xy pos, int color)
 	if (x < 0 || y < 0 || x >= img.width || y >= img.height)
 		return ;
 	offset = (y * img.line_len) + (x * (img.bpp / 8));
+	// printf("pixel %s\n", pixel);
 	pixel = (char *)(img.addr + offset);
 	*(int *)pixel = blend_colors(*(int *)pixel, color);
 }
