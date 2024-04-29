@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:33:27 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 12:16:47 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:26:17 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	calculate_screen_shaking(t_state *state, int dir_x, int dir_y)
 
 static void	handle_sideways_movement(t_state *state, int dir_x)
 {
-	t_xy	next_pos;
+	t_fxy	next_pos;
 	int		next_map_pos_x;
 	int		next_map_pos_y;
 	float	player_speed;
@@ -54,14 +54,14 @@ static void	handle_sideways_movement(t_state *state, int dir_x)
 
 static void	handle_forward_movement(t_state *state, int dir_y)
 {
-	t_xy	next_pos;
+	t_fxy	next_pos;
 	int		next_map_pos_x;
 	int		next_map_pos_y;
 	float	player_speed;
 
 	state->mov_speed = PLAYER_SPEED;
 	if (state->keys.move_left || state->keys.move_right)
-		state->mov_speed -= (PLAYER_SPEED / 1.5);
+		state->mov_speed = (PLAYER_SPEED / 1.5);
 	if (state->keys.move_backwards)
 		state->mov_speed /= 2;
 	next_pos.x = state->p_pos.x + ((state->mov_speed * state->p_dir.x) * dir_y);

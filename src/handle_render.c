@@ -6,70 +6,111 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:32:53 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 12:33:18 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 21:00:26 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	render_layout(t_state *state)
+static void	init_minimap(t_state *state, t_minimap *minimap)
 {
-	int	layout_color;
-	int	y;
+	minimap->opacity = clamp(MINIMAP_OPACITY, 0, 255);
+	minimap->bg_color = create_color(minimap->opacity, 20, 20, 20);
+	minimap->player_color = create_color(minimap->opacity, 120, 120, 180);
+	minimap->wall_color = create_color(minimap->opacity, 90, 100, 105);
+	minimap->pos = (t_fxy){SCREEN_WIDTH - MINIMAP_WIDTH + MINIMAP_X, MINIMAP_Y};
+	minimap->start_pos = (t_xy){
+		(int)state->p_pos.x - (MINIMAP_WIDTH / 2 / MINIMAP_CELL_SIZE),
+		(int)state->p_pos.y - (MINIMAP_HEIGHT / 2 / MINIMAP_CELL_SIZE)};
+	minimap->offset.x = MINIMAP_WIDTH - (MINIMAP_WIDTH / 2);
+	minimap->offset.y = MINIMAP_HEIGHT - (MINIMAP_HEIGHT / 2);
+	minimap->center_pos.x = minimap->pos.x
+		+ (MINIMAP_WIDTH / 2) + MINIMAP_CELL_SIZE / 2;
+	minimap->center_pos.y = minimap->pos.y
+		+ (MINIMAP_HEIGHT / 2) + MINIMAP_CELL_SIZE / 2;
+}
+
+static void	render_minimap_layout_row(t_minimap minimap, int y, t_img canvas)
+{
+	int	map_x;
+	int	map_y;
 	int	x;
 
-	y = -1;
-	while (++y < MAP_HEIGHT)
+	x = 0;
+	while (x < MINIMAP_WIDTH / MINIMAP_CELL_SIZE)
 	{
-		x = -1;
-		while (++x < MAP_WIDTH)
+		map_x = minimap.start_pos.x + x;
+		map_y = minimap.start_pos.y + y;
+		if (map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < MAP_HEIGHT)
 		{
-			if (g_test_map[y][x] > 0)
-				layout_color = create_color(200, 0, 0, 150);
-			else
-				layout_color = create_color(255, 25, 25, 25);
-			draw_square((t_square){(t_xy){x * CELL_SIZE, y * CELL_SIZE},
-				CELL_SIZE, CELL_SIZE, layout_color}, *(state->canvas));
-			draw_line((t_line){(t_xy){x * CELL_SIZE, y * CELL_SIZE},
-				(t_xy){x * CELL_SIZE, (y + 1) * CELL_SIZE},
-				create_color(50, 255, 255, 255)}, (*state->canvas), 0);
+			if (g_test_map[map_y][map_x] > 0)
+			{
+				draw_square((t_square){{minimap.pos.x + x * MINIMAP_CELL_SIZE,
+					minimap.pos.y + y * MINIMAP_CELL_SIZE},
+					MINIMAP_CELL_SIZE, MINIMAP_CELL_SIZE,
+					minimap.wall_color}, canvas);
+			}
 		}
-		draw_line((t_line){(t_xy){0, y * CELL_SIZE},
-			(t_xy){MAP_WIDTH * CELL_SIZE, y * CELL_SIZE},
-			create_color(50, 255, 255, 255)}, (*state->canvas), 0);
+		x++;
 	}
 }
 
-static void	draw_direction_vector(t_state *state, t_img *canvas)
+static void	render_field_of_view(t_state *state, t_minimap minimap, t_fxy *rays)
 {
-	double	length;
-	t_xy	end_point;
+	t_fxy	ray_end_pos;
+	int		i;
 
-	length = 4;
-	end_point = (t_xy){state->p_pos.x + state->p_dir.x * length,
-		state->p_pos.y + state->p_dir.y * length};
-	draw_line((t_line){{state->p_pos.x * CELL_SIZE, state->p_pos.y * CELL_SIZE},
-	{end_point.x * CELL_SIZE, end_point.y * CELL_SIZE},
-		create_color(255, 100, 0, 255)}, (*canvas), 0);
+	i = 0;
+	while (i < (SCREEN_WIDTH - 1))
+	{
+		ray_end_pos.x = minimap.pos.x + (rays[i].x - minimap.start_pos.x)
+			* MINIMAP_CELL_SIZE;
+		ray_end_pos.y = minimap.pos.y + (rays[i].y - minimap.start_pos.y)
+			* MINIMAP_CELL_SIZE;
+		draw_line((t_line){{minimap.p_pos.x, minimap.p_pos.y},
+		{ray_end_pos.x, ray_end_pos.y},
+			create_color(255, 200, 50, 100)}, (*state->canvas), 0);
+		i++;
+	}
+	draw_square((t_square){{minimap.p_pos.x - (MINIMAP_CELL_SIZE / 2),
+		minimap.p_pos.y - (MINIMAP_CELL_SIZE / 2)},
+		MINIMAP_CELL_SIZE, MINIMAP_CELL_SIZE,
+		minimap.player_color}, (*state->canvas));
+	put_pixel_img((*state->canvas), (t_fxy){minimap.p_pos.x, minimap.p_pos.y},
+		create_color(255, 200, 200, 200));
+	free(state->rays);
+}
+
+void	render_minimap(t_state *state)
+{
+	t_minimap	minimap;
+	int			map_y;
+	t_fxy		ray_end_pos;
+	t_fxy		p_pos;
+	int			y;
+
+	init_minimap(state, &minimap);
+	draw_square((t_square){{minimap.pos.x, minimap.pos.y},
+		MINIMAP_WIDTH, MINIMAP_HEIGHT, minimap.bg_color}, (*state->canvas));
+	y = 0;
+	while (y < MINIMAP_HEIGHT / MINIMAP_CELL_SIZE)
+	{
+		render_minimap_layout_row(minimap, y, (*state->canvas));
+		y++;
+	}
+	minimap.p_pos.x = minimap.pos.x + (state->p_pos.x - minimap.start_pos.x)
+		* MINIMAP_CELL_SIZE;
+	minimap.p_pos.y = minimap.pos.y + (state->p_pos.y - minimap.start_pos.y)
+		* MINIMAP_CELL_SIZE;
+	render_field_of_view(state, minimap, state->rays);
 }
 
 int	render_game(t_state **state)
 {
 	update_player_direction((*state));
-	// printf("(*state)->cam_speed %f\n", (*state)->cam_speed);
 	update_player_position((*state));
-	printf("(*state)->p_pos.x %f, (*state)->p_pos.y %f\n", (*state)->p_pos.x, (*state)->p_pos.y);
-	// render_layout((*state));
-	// draw_direction_vector(*state, (*state)->canvas);
-	// draw_square((t_square){(t_xy){((*state)->p_pos.x * CELL_SIZE)
-	// 	- (PLAYER_SIZE / 2), ((*state)->p_pos.y * CELL_SIZE)
-	// 	- (PLAYER_SIZE / 2)}, PLAYER_SIZE, PLAYER_SIZE,
-	// 	create_color(100, 150, 0, 100)}, (*(*state)->canvas));
-	put_pixel_img((*(*state)->canvas), (t_xy){(*state)->p_pos.x
-		* CELL_SIZE, (*state)->p_pos.y * CELL_SIZE},
-		create_color(255, 255, 255, 255));
-	// printf("state->mov_offset %d\n", (int)(*state)->mov_offset);
 	handle_raycasting(state);
+	render_minimap((*state));
 	mlx_put_image_to_window((*state)->win->mlx_ptr,
 		(*state)->win->win_ptr, (*state)->canvas->img_ptr, 0, 0);
 	return (SUCCESS);

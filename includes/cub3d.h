@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 12:03:33 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 20:58:12 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 
 // @attention
 # include <stdio.h>
-
 # include <stdlib.h>
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
-# include <float.h>
+# include <limits.h>
 # include "../libs/libft/includes/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
 # include "constants.h"
@@ -39,10 +38,16 @@ typedef struct s_keys
 	bool	turn_right;
 }	t_keys;
 
+typedef struct s_fxy
+{
+	float	x;
+	float	y;
+}	t_fxy;
+
 typedef struct s_xy
 {
-	double	x;
-	double	y;
+	int	x;
+	int	y;
 }	t_xy;
 
 typedef struct s_win
@@ -66,7 +71,7 @@ typedef struct s_img
 
 typedef struct s_square
 {
-	t_xy	pos;
+	t_fxy	pos;
 	int		width;
 	int		height;
 	int		color;
@@ -74,8 +79,8 @@ typedef struct s_square
 
 typedef struct s_line
 {
-	t_xy	start;
-	t_xy	end;
+	t_fxy	start;
+	t_fxy	end;
 	int		color;
 
 }	t_line;
@@ -97,11 +102,12 @@ typedef struct s_line_calc
 typedef struct s_ray
 {
 	float	angle;
-	t_xy	dir;
-	t_xy	end_pos;
-	t_xy	delta_dist;
+	t_fxy	dir;
+	t_fxy	delta_dist;
 	float	perp_dist;
-	t_xy	side_dist;
+	t_fxy	side_dist;
+	t_xy	map;
+	t_xy	step;
 	bool	is_obstacle_hit;
 	bool	is_back_side;
 }	t_ray;
@@ -124,13 +130,26 @@ typedef struct s_column
 	t_shadow	shadow;
 }	t_column;
 
+typedef struct s_minimap
+{
+	int		bg_color;
+	int		player_color;
+	int		wall_color;
+	int		opacity;
+	t_fxy	pos;
+	t_fxy	p_pos;
+	t_fxy	center_pos;
+	t_fxy	offset;
+	t_xy	start_pos;
+}	t_minimap;
+
 typedef struct s_state
 {
 	t_win	*win;
-	t_xy	p_pos;
-	t_xy	p_dir;
+	t_fxy	p_pos;
+	t_fxy	p_dir;
 	float	p_dir_angle;
-	t_xy	plane;
+	t_fxy	plane;
 	t_keys	keys;
 	t_img	*canvas;
 	int		log_fd;
@@ -138,6 +157,7 @@ typedef struct s_state
 	int		mov_offset_step;
 	float	mov_speed;
 	float	cam_speed;
+	t_fxy	*rays;
 }	t_state;
 
 typedef enum s_argb
@@ -170,11 +190,12 @@ void	print_map(int map[MAP_WIDTH][MAP_HEIGHT]);
 // graphics utils
 int		create_window(int w, int h, t_win **win);
 t_img	*create_image(int width, int height, void *mlx_ptr);
-void	put_pixel_img(t_img img, t_xy pos, int color);
+void	put_pixel_img(t_img img, t_fxy pos, int color);
 int		create_color(int alpha, int red, int green, int blue);
 int		blend_colors(unsigned int bg_color, unsigned int fg_color);
 void	draw_square(t_square params, t_img img);
 void	draw_line(t_line params, t_img img, int side);
+void	draw_column(t_state *state, t_ray ray, int x);
 
 // clamp
 int		clamp(int value, int min, int max);

@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 19:09:02 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 12:09:41 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:16:34 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,7 @@
 static void	update_camera_speed(t_state *state)
 {
 	if (state->keys.turn_right || state->keys.turn_left)
-	{
-		if (state->cam_speed > CAMERA_SPEED)
-			state->cam_speed = CAMERA_SPEED;
-		else
-			state->cam_speed += 0.006;
-	}
+		state->cam_speed = fclamp(state->cam_speed + 0.003, 0, CAMERA_SPEED);
 	else
 		state->cam_speed = 0;
 }

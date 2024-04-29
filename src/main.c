@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 12:03:57 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:26:23 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	main(void)
 		return (EXIT_FAILURE);
 	ft_memset(state, 0, sizeof(t_state));
 	state->log_fd = open("logs.txt", O_WRONLY | O_CREAT | O_TRUNC, 444);
-	state->p_pos = (t_xy){13.629072, 2.428815};
-	state->p_dir = (t_xy){0, -1};
+	state->p_pos = (t_fxy){13.629072, 2.428815};
+	state->p_dir = (t_fxy){0, -1};
 	state->p_dir_angle = atan2(state->p_dir.y, state->p_dir.x);
 	state->mov_offset_step = 1;
 	state->mov_speed = PLAYER_SPEED;
