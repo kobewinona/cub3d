@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/28 16:59:26 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/29 19:21:41 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,22 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 {
 	char	*line;
 	t_queue	err;
-	size_t	no;
+	size_t	i;
 	
-	no = maps->head->line_no;
+	i = 0;
 	err = queue_init();
 	line = get_next_line_ext_buff(fd, ext_buff);
 	while (line != NULL)
 	{
-		par_find_player_by_line(line, no, &info->player);
-		if (!sb_check_map(maps, &err, node_new(line, no, map_elem), line))
+		par_find_player_by_line(line, i, &info->player);
+		if (!sb_check_map(maps, &err, node_new(line, maps->head->line_no, map_elem), line))
 		{
 			free(*ext_buff);
 			*ext_buff = NULL;
 			return (-1);
 		}
 		line = get_next_line_ext_buff(fd, ext_buff);
-		no++;
+		i++;
 	}
 	if (errno == ENOMEM)
 		return (-1);

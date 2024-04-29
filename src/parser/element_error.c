@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/22 03:15:40 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/29 20:03:20 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,14 @@ static void	sb_print_elem_error(t_queue *err)
 	}
 }
 
-void	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err)
+bool	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err)
 {
 	if (err->head == NULL)
-		return ;
+		return (true);
 	printf("Error\n");
 	printf("Element Error (ignore checking map)\n");
 	sb_print_uninit(info->init_checker);
 	sb_print_elem_error(err);
-	parser_free(info);
-	close(fd);
-	free(ext_buff);
-	exit(EXIT_FAILURE);
+	parser_free(info, &fd, &ext_buff);
+	return (false);
 }

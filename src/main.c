@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/28 16:58:21 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/29 20:38:28 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,69 +26,27 @@ int	main(int argc, char **argv)
 {
 	int			fd;
 	t_parser	info;
-	t_queue		element;
-	t_queue		maps;
-	t_queue		err;
-	char		*ext_buff;
-	t_node		*first_map;
 
-	element = queue_init();
-	err = queue_init();
-	maps = queue_init();
-	ext_buff = NULL;
+	fd = -1;
 	if (parser_init(&info) == -1)
-	{
 		return (EXIT_FAILURE);
-	}
 	fd = sb_argv_parsing(argc, argv);
 	if (fd == -1)
-		return (EXIT_FAILURE);
-	first_map = par_read_element(&element, fd, &ext_buff, &info.init_checker);
-	if (first_map == NULL)
 	{
-		par_error_msg("Allocation failed or Map isn't exist");
-		close(fd);
-		queue_flush(&element);
-		queue_flush(&err);
-		// TODO: delete parser
+		parser_free(&info, &fd, NULL);
 		return (EXIT_FAILURE);
 	}
-	queue_queue(&maps, first_map);
-	if (par_get_element(&info, &element, &err) == -1)
-	{
-		par_error_msg("Allocation failed");
-		close(fd);
-		queue_flush(&maps);
-		// TODO: delete parser
-		return (EXIT_FAILURE);
-	}
-	par_element_error(fd, ext_buff, &info, &err);
-
-	int status = par_read_map(&maps, fd, &ext_buff, &info);
-	if (status == -1)
-	{
-		// TODO: write a function that clear every variable
-		par_error_msg("Allocation failed");
-		return (EXIT_FAILURE);
-	}
-	else if (status == 1)
-	{
-		// TODO: write a function that clear every variable
-		// par_error_msg("Allocation failed");
-		return (EXIT_FAILURE);
-	}
-	info.map = par_get_map(&maps, &info);
-	if (info.map == NULL)
-	{
-		// TODO: write a function that clear every variable
-		par_error_msg("Allocation failed");
-		return (EXIT_FAILURE);
-	}
+	parser_job(fd, &info);
 	parser_debug(&info, true);
-	free(ext_buff);
-	queue_flush(&err);
-	queue_flush(&element);
-	close(fd);
-	parser_free(&info);
+	info.window = mlx_new_window(info.mlx, 1000, 1000, "Cud3D");
+	if (info.window == NULL)
+	{
+		parser_free(&info, &fd, NULL);
+		return (EXIT_FAILURE);
+	}
+	// Your Part
+	
+	// Your Part
+	parser_free(&info, &fd, NULL);
 	return (EXIT_SUCCESS);
 }
