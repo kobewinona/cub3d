@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 22:41:43 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:19:59 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,41 @@ int	game_exit(t_state **state, int exit_status)
 	exit(exit_status);
 }
 
-int	main(void)
+static int	sb_argv_parsing(int argc, char **argv)
 {
-	t_state	*state;
-	t_win	*win;
+	if (argc != 2)
+	{
+		par_error_msg("Only take 2 arguments !!!");
+		return (-1);
+	}
+	return (par_open_cub3d(argv[1]));
+}
 
-	print_map(g_test_map);
+int	main(int argc, char **argv)
+{
+	int			fd;
+	t_parser	info;
+	t_state		*state;
+	t_win		*win;
+
+	fd = -1;
+	if (parser_init(&info) == -1)
+		return (EXIT_FAILURE);
+	fd = sb_argv_parsing(argc, argv);
+	if (fd == -1)
+	{
+		parser_free(&info, &fd, NULL);
+		return (EXIT_FAILURE);
+	}
+	parser_job(fd, &info);
+	parser_debug(&info, true);
+	info.window = mlx_new_window(info.mlx, 1000, 1000, "Cud3D");
+	if (info.window == NULL)
+	{
+		parser_free(&info, &fd, NULL);
+		return (EXIT_FAILURE);
+	}
+
 	state = (t_state *)malloc(sizeof(t_state));
 	if (!state)
 		return (EXIT_FAILURE);
@@ -48,7 +77,5 @@ int	main(void)
 	mlx_hook(win->win_ptr, 03, (1L << 1), read_keys_released, &state);
 	mlx_hook(win->win_ptr, 17, 0, game_exit, &state);
 	mlx_loop(win->mlx_ptr);
-	return (game_exit(&state, EXIT_SUCCESS));
+	return (parser_free(&info, &fd, NULL), game_exit(&state, EXIT_SUCCESS));
 }
-
-

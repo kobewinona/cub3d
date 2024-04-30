@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 20:58:12 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:20:01 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "../libs/libft/includes/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
 # include "constants.h"
+# include "parser.h"
 
 extern int	g_test_map[MAP_WIDTH][MAP_HEIGHT];
 
@@ -183,9 +184,6 @@ int		read_keys_released(int key, t_state **state);
 // player
 void	update_player_position(t_state *state);
 void	update_player_direction(t_state *state);
-
-// map utils
-void	print_map(int map[MAP_WIDTH][MAP_HEIGHT]);
 
 // graphics utils
 int		create_window(int w, int h, t_win **win);

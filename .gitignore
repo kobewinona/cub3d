@@ -1,4 +1,5 @@
 # IDE
+.vscode/
 .idea
 *.dSYM
 
@@ -18,5 +19,17 @@ obj
 *.py
 *.lldb
 
+# mlx file
+libs/minilibx-linux/*.a
+libs/minilibx-linux/**/Makefile.gen
+libs/minilibx-linux/**/*.o
+libs/minilibx-linux/**/mlx-test
+
+# libft
+libs/libft/*.a
+
 # logs
 logs
+
+# valgrind
+vgcore*
