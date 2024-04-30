@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 21:31:45 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 00:42:31 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "../libs/libft/includes/libft.h"
 # include "../libs/minilibx-linux/mlx.h"
 # include "constants.h"
+# include "parser.h"
 
 extern int	g_test_map[MAP_WIDTH][MAP_HEIGHT];
 
@@ -77,27 +78,28 @@ typedef struct s_square
 	int		color;
 }	t_square;
 
-typedef struct s_line
+typedef struct s_line_params
 {
 	t_fxy	start;
 	t_fxy	end;
+	float	max_x0;
+	float	max_x1;
+	float	max_y0;
+	float	max_y1;
 	int		color;
+	int		len;
+}	t_line_params;
 
-}	t_line;
-
-typedef struct s_line_calc
+typedef struct s_line
 {
-	int	current_x;
-	int	current_y;
-	int	target_x;
-	int	target_y;
-	int	delta_x;
-	int	delta_y;
-	int	step_x;
-	int	step_y;
-	int	error;
-	int	error_delta;
-}	t_line_calc;
+	t_xy	current;
+	t_xy	target;
+	t_xy	delta;
+	t_xy	step;
+	int		error;
+	int		error_delta;
+	int		len;
+}	t_line;
 
 typedef struct s_ray
 {
@@ -145,19 +147,19 @@ typedef struct s_minimap
 
 typedef struct s_state
 {
-	t_win	*win;
-	t_fxy	p_pos;
-	t_fxy	p_dir;
-	float	p_dir_angle;
-	t_fxy	plane;
-	t_keys	keys;
-	t_img	*canvas;
-	int		log_fd;
-	float	mov_offset;
-	int		mov_offset_step;
-	float	mov_speed;
-	float	cam_speed;
-	t_fxy	*rays;
+	t_win		*win;
+	t_parser	info;
+	t_fxy		p_pos;
+	t_fxy		p_dir;
+	float		p_dir_angle;
+	t_fxy		plane;
+	t_keys		keys;
+	t_img		*canvas;
+	float		mov_offset;
+	int			mov_offset_step;
+	float		mov_speed;
+	float		cam_speed;
+	t_fxy		*rays;
 }	t_state;
 
 typedef enum s_argb
@@ -184,9 +186,6 @@ int		read_keys_released(int key, t_state **state);
 void	update_player_position(t_state *state);
 void	update_player_direction(t_state *state);
 
-// map utils
-void	print_map(int map[MAP_WIDTH][MAP_HEIGHT]);
-
 // graphics utils
 int		create_window(int w, int h, t_win **win);
 t_img	*create_image(int width, int height, void *mlx_ptr);
@@ -194,7 +193,7 @@ void	put_pixel_img(t_img img, t_fxy pos, int color);
 int		create_color(int alpha, int red, int green, int blue);
 int		blend_colors(unsigned int bg_color, unsigned int fg_color);
 void	draw_square(t_square params, t_img img);
-void	draw_line(t_line params, t_img img, int side);
+void	draw_line(t_line_params params, t_img img);
 void	draw_column(t_state *state, t_ray ray, int x);
 
 // clamp

@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 20:59:04 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:18:33 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	update_rays(t_fxy p_pos, t_ray ray, t_fxy *rays, int i)
 	}
 }
 
-static void	preform_dda(t_state *state, t_ray *ray, int i, t_fxy *rays)
+static void	preform_dda(t_state *state, t_ray *ray, t_fxy *rays, int i)
 {
 	ray->step.x = (ray->dir.x > 0) - (ray->dir.x < 0);
 	ray->step.y = (ray->dir.y > 0) - (ray->dir.y < 0);
@@ -69,9 +69,9 @@ static void	preform_dda(t_state *state, t_ray *ray, int i, t_fxy *rays)
 			update_rays(state->p_pos, (*ray), rays, i);
 			ray->side_dist.y += ray->delta_dist.y;
 		}
-		ray->map.x = clamp(ray->map.x, 0, MAP_WIDTH);
-		ray->map.y = clamp(ray->map.y, 0, MAP_HEIGHT);
-		ray->is_obstacle_hit = g_test_map[ray->map.y][ray->map.x] > 0;
+		ray->map.x = clamp(ray->map.x, 0, state->info.width);
+		ray->map.y = clamp(ray->map.y, 0, state->info.height);
+		ray->is_obstacle_hit = state->info.map[ray->map.y][ray->map.x] == 1;
 	}
 }
 
@@ -84,9 +84,9 @@ static void	init_ray(t_state *state, t_ray *ray, int x, float angle_increment)
 	ray->angle = current_angle - state->p_dir_angle;
 	ray->dir = (t_fxy){cos(current_angle), sin(current_angle)};
 	ray->delta_dist.x = 1 / fabs(ray->dir.x);
-	ray->delta_dist.y = 1 / fabs(ray->dir.y);
 	if (ray->dir.x == 0)
 		ray->delta_dist.x = MY_FLT_MAX;
+	ray->delta_dist.y = 1 / fabs(ray->dir.y);
 	if (ray->dir.y == 0)
 		ray->delta_dist.y = MY_FLT_MAX;
 	ray->map.x = state->p_pos.x;
@@ -111,7 +111,7 @@ void	handle_raycasting(t_state **state)
 		init_ray((*state), &ray, x, angle_increment);
 		rays_end_pos[x] = (*state)->p_pos;
 		calc_step_and_initial_side_dist((*state), &ray);
-		preform_dda((*state), &ray, x, rays_end_pos);
+		preform_dda((*state), &ray, rays_end_pos, x);
 		draw_column((*state), ray, x);
 		x++;
 	}
