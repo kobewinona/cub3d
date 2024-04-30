@@ -6,6 +6,9 @@
 a.out
 cub3d
 
+# minilibx
+libs/minilibx-linux
+
 # objects
 obj
 
