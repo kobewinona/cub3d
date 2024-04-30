@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_player.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 22:47:50 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/24 23:06:04 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:06:06 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static bool	sb_is_this_player(char c, t_player *player)
 		|| c == FACE_EAST_CHAR) && player->face != no_player)
 		player->face = too_many_player;
 	else if (c == FACE_NORTH_CHAR)
-			player->face = north;
+		player->face = north;
 	else if (c == FACE_SOUTH_CHAR)
 		player->face = south;
 	else if (c == FACE_WEST_CHAR)

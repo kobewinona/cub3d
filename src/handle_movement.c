@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:33:27 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 15:26:17 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:15:51 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ static void	handle_sideways_movement(t_state *state, int dir_x)
 
 	state->mov_speed = (PLAYER_SPEED / 1.5);
 	next_pos.x = state->p_pos.x + ((state->mov_speed * state->p_dir.y) * dir_x);
-	next_map_pos_x = clamp((int)next_pos.x, 0, (MAP_WIDTH - 1));
+	next_map_pos_x = clamp((int)next_pos.x, 0, (state->info.width - 1));
 	next_pos.y = state->p_pos.y - ((state->mov_speed * state->p_dir.x) * dir_x);
-	next_map_pos_y = clamp((int)next_pos.y, 0, (MAP_HEIGHT - 1));
-	if (g_test_map[(int)state->p_pos.y][next_map_pos_x] < 1)
+	next_map_pos_y = clamp((int)next_pos.y, 0, (state->info.height - 1));
+	if (state->info.map[(int)state->p_pos.y][next_map_pos_x] != 1)
 		state->p_pos.x = next_pos.x;
-	if (g_test_map[next_map_pos_y][(int)state->p_pos.x] < 1)
+	if (state->info.map[next_map_pos_y][(int)state->p_pos.x] != 1)
 		state->p_pos.y = next_pos.y;
 }
 
@@ -65,12 +65,12 @@ static void	handle_forward_movement(t_state *state, int dir_y)
 	if (state->keys.move_backwards)
 		state->mov_speed /= 2;
 	next_pos.x = state->p_pos.x + ((state->mov_speed * state->p_dir.x) * dir_y);
-	next_map_pos_x = clamp((int)next_pos.x, 0, (MAP_WIDTH - 1));
+	next_map_pos_x = clamp((int)next_pos.x, 0, (state->info.width - 1));
 	next_pos.y = state->p_pos.y + ((state->mov_speed * state->p_dir.y) * dir_y);
 	next_map_pos_y = clamp((int)next_pos.y, 0, (MAP_HEIGHT - 1));
-	if (g_test_map[(int)state->p_pos.y][next_map_pos_x] < 1)
+	if (state->info.map[(int)state->p_pos.y][next_map_pos_x] != 1)
 		state->p_pos.x = next_pos.x;
-	if (g_test_map[next_map_pos_y][(int)state->p_pos.x] < 1)
+	if (state->info.map[next_map_pos_y][(int)state->p_pos.x] != 1)
 		state->p_pos.y = next_pos.y;
 }
 

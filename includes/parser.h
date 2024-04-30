@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/29 20:30:51 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/04/30 13:13:35 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_rgb
 {
 	int		r;
 	int		g;
-	int 	b;
+	int		b;
 	bool	isinit;
 }	t_rgb;
 
@@ -70,8 +70,8 @@ typedef struct s_parser
 }	t_parser;
 
 // main function
-int			par_open_cub3d(const char *path);
-int	parser_init(t_parser *info);
+int		par_open_cub3d(const char *path);
+int		parser_init(t_parser *info);
 void	parser_free(t_parser *info, int *fd, char **ext_buff);
 void	par_print_map(t_parser *info);
 void	parser_job(int fd, t_parser *info);
@@ -81,15 +81,15 @@ t_node	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit);
 bool	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err);
 
 // parser_utils
-void		par_error_msg(char *msg);
-bool		par_ismap(char *line);
-bool		par_isspace(char *line);
+void	par_error_msg(char *msg);
+bool	par_ismap(char *line);
+bool	par_isspace(char *line);
 void	parser_debug(t_parser *info, bool isprint);
 bool	par_isplayer(char c);
 
-int	par_get_texture(char **box, t_parser *info, t_ltype type, bool iserr);
-int	par_get_color(char **box, t_parser *info, t_ltype type);
-int	par_get_element(t_parser *info, t_queue *element, t_queue *err);
+int		par_get_texture(char **box, t_parser *info, t_ltype type, bool iserr);
+int		par_get_color(char **box, t_parser *info, t_ltype type);
+int		par_get_element(t_parser *info, t_queue *element, t_queue *err);
 
 char	**par_get_map(t_queue *map_queue, t_parser *info);
 int		par_read_map(t_queue *maps, int fd, char **ext_buff, t_parser *info);

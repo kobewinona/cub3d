@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:20:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/30 12:20:18 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 00:24:14 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@
 # define PLAYER 2
 # define EMPTY -2
 
-
 // @def window
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
@@ -56,9 +55,7 @@
 # define MINIMAP_HEIGHT 180
 # define MINIMAP_X -20
 # define MINIMAP_Y 20
-# define MINIMAP_OPACITY 100
-
-// 800 - 180 - 20 = 600
+# define MINIMAP_OPACITY 150
 
 // @def gameplay
 # define VISION_DISTANCE MAP_WIDTH

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/28 17:33:01 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 00:40:21 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	par_get_texture(char **box, t_parser *info, t_ltype type, bool iserr)
 	int			height;
 	int			width;
 	t_texture	*ptr;
-	
+
 	ptr = sb_get_ptr(info, type);
 	sb_add_null_at_newline(box[1]);
 	ptr->img = mlx_xpm_file_to_image(info->mlx, box[1], &width, &height);

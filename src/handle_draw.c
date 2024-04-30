@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 16:11:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/29 15:26:16 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 00:39:38 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,42 +31,50 @@ void	draw_square(t_square params, t_img img)
 	}
 }
 
-static void	handle_delta_error(t_line_calc *lc)
+static int	step_the_line(t_line *line, t_line_params params)
 {
-	if (lc->error_delta >= lc->delta_y)
+	if (line->error_delta >= line->delta.y)
 	{
-		lc->error += lc->delta_y;
-		lc->current_x += lc->step_x;
+		line->error += line->delta.y;
+		line->current.x += line->step.x;
 	}
-	if (lc->error_delta <= lc->delta_x)
+	if (line->error_delta <= line->delta.x)
 	{
-		lc->error += lc->delta_x;
-		lc->current_y += lc->step_y;
+		line->error += line->delta.x;
+		line->current.y += line->step.y;
 	}
+	line->len++;
+	if (line->len >= params.len)
+		return (FAILURE);
+	if (line->current.x == params.max_x0 || line->current.x == params.max_x1)
+		return (FAILURE);
+	if (line->current.y == params.max_y0 || line->current.y == params.max_y1)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
-void	draw_line(t_line params, t_img img, int side)
+void	draw_line(t_line_params params, t_img img)
 {
-	t_line_calc	lc;
+	t_line	line;
 
-	lc = (t_line_calc){round(params.start.x), round(params.start.y),
+	line = (t_line){round(params.start.x), round(params.start.y),
 		round(params.end.x), round(params.end.y)};
-	lc.delta_x = abs(lc.target_x - lc.current_x);
-	lc.delta_y = -abs(lc.target_y - lc.current_y);
-	lc.step_x = -1;
-	if (lc.current_x < lc.target_x)
-		lc.step_x = 1;
-	lc.step_y = -1;
-	if (lc.current_y < lc.target_y)
-		lc.step_y = 1;
-	lc.error = (lc.delta_x + lc.delta_y);
-	while (true)
+	line.len = 0;
+	line.delta.x = abs(line.target.x - line.current.x);
+	line.delta.y = -abs(line.target.y - line.current.y);
+	line.step.x = -1;
+	if (line.current.x < line.target.x)
+		line.step.x = 1;
+	line.step.y = -1;
+	if (line.current.y < line.target.y)
+		line.step.y = 1;
+	line.error = (line.delta.x + line.delta.y);
+	while (line.current.x != line.target.x || line.current.y != line.target.y)
 	{
-		put_pixel_img(img, (t_fxy){lc.current_x, lc.current_y}, params.color);
-		if (lc.current_x == lc.target_x && lc.current_y == lc.target_y)
-			break ;
-		lc.error_delta = (2 * lc.error);
-		handle_delta_error(&lc);
+		put_pixel_img(img, (t_fxy){line.current.x,
+			line.current.y}, params.color);
+		line.error_delta = (2 * line.error);
+		step_the_line(&line, params);
 	}
 }
 
@@ -78,7 +86,8 @@ static void	draw(t_state *state, t_ray ray, t_column column, int x)
 	while (y < column.wall_start)
 	{
 		put_pixel_img((*state->canvas), (t_fxy){x, y},
-			create_color(255, 0, 0, 0));
+			create_color(255, state->info.ceil.r,
+				state->info.ceil.g, state->info.ceil.b));
 		y++;
 	}
 	while (y < column.wall_end)
@@ -92,7 +101,8 @@ static void	draw(t_state *state, t_ray ray, t_column column, int x)
 	while (y < (SCREEN_HEIGHT - 1))
 	{
 		put_pixel_img((*state->canvas), (t_fxy){x, y},
-			create_color(255, 0, 0, 0));
+			create_color(255, state->info.floor.r,
+				state->info.floor.g, state->info.floor.b));
 		y++;
 	}
 }
