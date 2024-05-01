@@ -6,27 +6,11 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/30 18:18:33 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:21:02 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static void	calc_step_and_initial_side_dist(t_state *state, t_ray *ray)
-{
-	if (ray->dir.x < 0)
-		ray->side_dist.x = (state->p_pos.x
-				- floor(state->p_pos.x)) * ray->delta_dist.x;
-	else
-		ray->side_dist.x = (ceil(state->p_pos.x)
-				- state->p_pos.x) * ray->delta_dist.x;
-	if (ray->dir.y < 0)
-		ray->side_dist.y = (state->p_pos.y
-				- floor(state->p_pos.y)) * ray->delta_dist.y;
-	else
-		ray->side_dist.y = (ceil(state->p_pos.y)
-				- state->p_pos.y) * ray->delta_dist.y;
-}
 
 static void	update_rays(t_fxy p_pos, t_ray ray, t_fxy *rays, int i)
 {
@@ -75,12 +59,30 @@ static void	preform_dda(t_state *state, t_ray *ray, t_fxy *rays, int i)
 	}
 }
 
-static void	init_ray(t_state *state, t_ray *ray, int x, float angle_increment)
+static void	calc_step_and_initial_side_dist(t_state *state, t_ray *ray)
+{
+	t_fxy	grid_offset0;
+	t_fxy	grid_offset1;
+
+	grid_offset0.x = (state->p_pos.x - floor(state->p_pos.x));
+	grid_offset0.y = (state->p_pos.y - floor(state->p_pos.y));
+	grid_offset1.x = (ceil(state->p_pos.x) - state->p_pos.x);
+	grid_offset1.y = (ceil(state->p_pos.y) - state->p_pos.y);
+	if (ray->dir.x < 0)
+		ray->side_dist.x = grid_offset0.x * ray->delta_dist.x;
+	else
+		ray->side_dist.x = grid_offset1.x * ray->delta_dist.x;
+	if (ray->dir.y < 0)
+		ray->side_dist.y = grid_offset0.y * ray->delta_dist.y;
+	else
+		ray->side_dist.y = grid_offset1.y * ray->delta_dist.y;
+}
+
+static void	set_ray_data(t_state *state, t_ray *ray, int x, float i)
 {
 	float	current_angle;
 
-	current_angle = (state->p_dir_angle - (FIELD_OF_VIEW / 2))
-		+ (x * angle_increment);
+	current_angle = (state->p_dir_angle - (FIELD_OF_VIEW / 2)) + (x * i);
 	ray->angle = current_angle - state->p_dir_angle;
 	ray->dir = (t_fxy){cos(current_angle), sin(current_angle)};
 	ray->delta_dist.x = 1 / fabs(ray->dir.x);
@@ -91,6 +93,7 @@ static void	init_ray(t_state *state, t_ray *ray, int x, float angle_increment)
 		ray->delta_dist.y = MY_FLT_MAX;
 	ray->map.x = state->p_pos.x;
 	ray->map.y = state->p_pos.y;
+	calc_step_and_initial_side_dist(state, ray);
 }
 
 void	handle_raycasting(t_state **state)
@@ -108,11 +111,10 @@ void	handle_raycasting(t_state **state)
 	while (x < SCREEN_WIDTH)
 	{
 		ft_memset(&ray, 0, sizeof(t_ray));
-		init_ray((*state), &ray, x, angle_increment);
+		set_ray_data((*state), &ray, x, angle_increment);
 		rays_end_pos[x] = (*state)->p_pos;
-		calc_step_and_initial_side_dist((*state), &ray);
 		preform_dda((*state), &ray, rays_end_pos, x);
-		draw_column((*state), ray, x);
+		put_scanline((*state), ray, x);
 		x++;
 	}
 	(*state)->rays = rays_end_pos;

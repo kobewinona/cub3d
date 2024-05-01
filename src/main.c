@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 00:41:42 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 18:25:06 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	game_exit(t_state **state, int exit_status)
 {
-	mlx_destroy_window((*state)->win->mlx_ptr, (*state)->win->win_ptr);
+	mlx_destroy_window((*state)->info.mlx, (*state)->win->win_ptr);
 	if (exit_status != EXIT_SUCCESS)
 		exit(EXIT_FAILURE);
 	exit(exit_status);
@@ -55,25 +55,26 @@ static int	init_state(t_state **state, t_parser info)
 
 static int	run_mlx(t_state **state, int fd)
 {
-	if (create_window(SCREEN_WIDTH, SCREEN_HEIGHT, &((*state)->win)) == FAILURE)
+	if (create_window((*state)->info.mlx,
+			SCREEN_WIDTH, SCREEN_HEIGHT, &((*state)->win)) == FAILURE)
 		return (EXIT_FAILURE);
-	if (!(*state)->win || !(*state)->win->mlx_ptr || !(*state)->win->win_ptr)
+	if (!(*state)->win || !(*state)->info.mlx || !(*state)->win->win_ptr)
 	{
 		parser_free(&(*state)->info, &fd, NULL);
 		return (game_exit(state, EXIT_FAILURE));
 	}
 	(*state)->canvas = create_image(
-			SCREEN_WIDTH, SCREEN_HEIGHT, (*state)->win->mlx_ptr);
+			(*state)->info.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!(*state)->canvas || !(*state)->canvas->img_ptr)
 	{
 		parser_free(&(*state)->info, &fd, NULL);
 		return (game_exit(state, EXIT_FAILURE));
 	}
-	mlx_loop_hook((*state)->win->mlx_ptr, render_game, state);
+	mlx_loop_hook((*state)->info.mlx, render_game, state);
 	mlx_hook((*state)->win->win_ptr, 02, (1L << 0), read_keys_pressed, state);
 	mlx_hook((*state)->win->win_ptr, 03, (1L << 1), read_keys_released, state);
 	mlx_hook((*state)->win->win_ptr, 17, 0, game_exit, state);
-	mlx_loop((*state)->win->mlx_ptr);
+	mlx_loop((*state)->info.mlx);
 	return (SUCCESS);
 }
 

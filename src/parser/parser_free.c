@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/29 20:39:23 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 18:16:14 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	parser_free(t_parser *info, int *fd, char **ext_buff)
 		free(*ext_buff);
 		*ext_buff = NULL;
 	}
-	if (info->window != NULL)
-		mlx_destroy_window(info->mlx, info->window);
 	if (info->north.img != NULL)
 		mlx_destroy_image(info->mlx, info->north.img);
 	if (info->south.img != NULL)

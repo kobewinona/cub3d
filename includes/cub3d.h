@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 00:42:31 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:37:34 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,16 @@ typedef struct s_xy
 	int	y;
 }	t_xy;
 
+typedef struct	s_bounds
+{
+	float	top;
+	float	right;
+	float	bottom;
+	float	left;
+}	t_bounds;
+
 typedef struct s_win
 {
-	void	*mlx_ptr;
 	void	*win_ptr;
 	int		width;
 	int		height;
@@ -80,14 +87,11 @@ typedef struct s_square
 
 typedef struct s_line_params
 {
-	t_fxy	start;
-	t_fxy	end;
-	float	max_x0;
-	float	max_x1;
-	float	max_y0;
-	float	max_y1;
-	int		color;
-	int		len;
+	t_fxy		start;
+	t_fxy		end;
+	t_bounds	bounds;
+	int			color;
+	int			len;
 }	t_line_params;
 
 typedef struct s_line
@@ -122,7 +126,7 @@ typedef struct s_shadow
 	int	color;
 }	t_shadow;
 
-typedef struct s_column
+typedef struct s_scanline
 {
 	int			height;
 	int			wall_start;
@@ -130,7 +134,7 @@ typedef struct s_column
 	int			ceil_color;
 	int			floor_color;
 	t_shadow	shadow;
-}	t_column;
+}	t_scanline;
 
 typedef struct s_minimap
 {
@@ -174,6 +178,7 @@ int		game_exit(t_state **state, int exit_status);
 
 // render
 int		render_game(t_state **state);
+void	render_minimap(t_state *state);
 
 // raycasting
 void	handle_raycasting(t_state **state);
@@ -187,14 +192,14 @@ void	update_player_position(t_state *state);
 void	update_player_direction(t_state *state);
 
 // graphics utils
-int		create_window(int w, int h, t_win **win);
-t_img	*create_image(int width, int height, void *mlx_ptr);
-void	put_pixel_img(t_img img, t_fxy pos, int color);
+int		create_window(void *mlx_ptr, int w, int h, t_win **win);
+t_img	*create_image(void *mlx_ptr, int width, int height);
+void	put_pxl(t_img img, t_fxy pos, int color);
 int		create_color(int alpha, int red, int green, int blue);
-int		blend_colors(unsigned int bg_color, unsigned int fg_color);
-void	draw_square(t_square params, t_img img);
-void	draw_line(t_line_params params, t_img img);
-void	draw_column(t_state *state, t_ray ray, int x);
+t_rgb	get_color_from_img(void *img_ptr, int x, int y);
+void	put_square(t_square params, t_img img);
+void	put_line(t_line_params params, t_img img);
+void	put_scanline(t_state *state, t_ray ray, int x);
 
 // clamp
 int		clamp(int value, int min, int max);

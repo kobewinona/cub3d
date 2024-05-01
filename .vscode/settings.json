@@ -1,4 +1,8 @@
-// {
+{
+	"files.associations": {
+		"cmath": "c"
+	}
+} // {
 // 	"makefile.launchConfigurations": [
 // 		{
 // 			"cwd": "/home/dklimkin/dev/42Network/minishell",

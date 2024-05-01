@@ -6,16 +6,11 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:40:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/04/18 17:45:10 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:24:43 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static int	get_argb_value(int argb, t_argb chanel)
-{
-	return ((argb >> chanel) & 0xFF);
-}
 
 int	create_color(int alpha, int red, int green, int blue)
 {
@@ -24,22 +19,14 @@ int	create_color(int alpha, int red, int green, int blue)
 	return (alpha << ALPHA_CH | red << RED_CH | green << GREEN_CH | blue);
 }
 
-int	blend_colors(unsigned int bg_color, unsigned int fg_color)
+t_rgb	get_color_from_img(void *img_ptr, int x, int y)
 {
-	float	alpha;
-	int		red;
-	int		green;
-	int		blue;
+	t_img			img;
+	char			*data;
+	unsigned int	color;
 
-	alpha = (fg_color >> ALPHA_CH) / 255.0;
-	red = (int)((1 - alpha)
-			* get_argb_value(bg_color, RED_CH) + alpha
-			* get_argb_value(fg_color, RED_CH));
-	green = (int)((1 - alpha)
-			* get_argb_value(bg_color, GREEN_CH) + alpha
-			* get_argb_value(fg_color, GREEN_CH));
-	blue = (int)((1 - alpha)
-			* get_argb_value(bg_color, BLUE_CH) + alpha
-			* get_argb_value(fg_color, BLUE_CH));
-	return ((red << RED_CH) | (green << GREEN_CH) | blue);
+	data = mlx_get_data_addr(img_ptr, &img.bpp, &img.line_len, &img.endian);
+	color = *(unsigned int *)(data + x * (img.bpp / 8) + y * img.line_len);
+	return ((t_rgb){color >> RED_CH & 0xFF,
+		color >> GREEN_CH & 0xFF, color & 0xFF});
 }

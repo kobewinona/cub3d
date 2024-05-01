@@ -5,11 +5,7 @@
             "label": "Build cub3d",
             "type": "shell",
             "command": "make",
-<<<<<<< HEAD
             "args": [],
-=======
-            "args": ["all"],  // Add specific make targets if needed
->>>>>>> dima
             "group": {
                 "kind": "build",
                 "isDefault": false
