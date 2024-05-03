@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:45:38 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 20:21:02 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/02 03:17:09 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ static void	set_ray_data(t_state *state, t_ray *ray, int x, float i)
 void	handle_raycasting(t_state **state)
 {
 	t_ray		ray;
-	t_fxy		*rays_end_pos;
+	t_fxy		*rays_map;
 	float		angle_increment;
 	int			x;
 
-	rays_end_pos = (t_fxy *)malloc(SCREEN_WIDTH * sizeof(t_fxy));
-	if (!rays_end_pos)
+	rays_map = (t_fxy *)malloc(SCREEN_WIDTH * sizeof(t_fxy));
+	if (!rays_map)
 		return ;
 	x = 0;
 	angle_increment = FIELD_OF_VIEW / (SCREEN_WIDTH - 1);
@@ -112,10 +112,10 @@ void	handle_raycasting(t_state **state)
 	{
 		ft_memset(&ray, 0, sizeof(t_ray));
 		set_ray_data((*state), &ray, x, angle_increment);
-		rays_end_pos[x] = (*state)->p_pos;
-		preform_dda((*state), &ray, rays_end_pos, x);
+		rays_map[x] = (*state)->p_pos;
+		preform_dda((*state), &ray, rays_map, x);
+		(*state)->rays = rays_map;
 		put_scanline((*state), ray, x);
 		x++;
 	}
-	(*state)->rays = rays_end_pos;
 }

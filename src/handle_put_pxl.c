@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 16:11:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 20:36:28 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 22:39:58 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,38 +82,25 @@ void	put_line(t_line_params params, t_img img)
 	}
 }
 
-static int	blend_colors(unsigned int bg_color, unsigned int fg_color)
+void	put_pxl(t_img img, t_fxy pos, unsigned int color)
 {
-	float	alpha;
-	int		red;
-	int		green;
-	int		blue;
-
-	alpha = (fg_color >> ALPHA_CH) / 255.0;
-	red = (int)((1 - alpha)
-			* ((bg_color >> RED_CH) & 0xFF) + alpha
-			* ((fg_color >> RED_CH) & 0xFF));
-	green = (int)((1 - alpha)
-			* ((bg_color >> GREEN_CH) & 0xFF) + alpha
-			* ((fg_color >> GREEN_CH) & 0xFF));
-	blue = (int)((1 - alpha)
-			* ((bg_color >> BLUE_CH) & 0xFF) + alpha
-			* ((fg_color >> BLUE_CH) & 0xFF));
-	return ((red << RED_CH) | (green << GREEN_CH) | blue);
-}
-
-void	put_pxl(t_img img, t_fxy pos, int color)
-{
-	int		offset;
 	char	*pixel;
-	int		y;
+	float	alpha;
+	t_rgb	rgb;
 	int		x;
+	int		y;
 
-	y = (int)round(pos.y);
 	x = (int)round(pos.x);
+	y = (int)round(pos.y);
 	if (x < 0 || y < 0 || x >= img.width || y >= img.height)
 		return ;
-	offset = (y * img.line_len) + (x * (img.bpp / 8));
-	pixel = (char *)(img.addr + offset);
-	*(int *)pixel = blend_colors(*(int *)pixel, color);
+	pixel = (char *)(img.addr + (y * img.line_len) + (x * (img.bpp / 8)));
+	alpha = (color >> ALPHA_CH & 255) / 255.0;
+	rgb.r = (int)(((1 - alpha) * ((*(int *)pixel >> RED_CH) & 255))
+			+ (alpha * ((color >> RED_CH) & 255)));
+	rgb.g = (int)((1 - alpha) * ((*(int *)pixel >> GREEN_CH) & 255)
+			+ (alpha * ((color >> GREEN_CH) & 255)));
+	rgb.b = (int)(((1 - alpha) * ((*(int *)pixel >> BLUE_CH) & 255))
+			+ (alpha * ((color >> BLUE_CH) & 255)));
+	*(int *)pixel = ((rgb.r << RED_CH) | (rgb.g << GREEN_CH) | rgb.b);
 }

@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 20:37:34 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/03 22:21:44 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 # include "../libs/minilibx-linux/mlx.h"
 # include "constants.h"
 # include "parser.h"
-
-extern int	g_test_map[MAP_WIDTH][MAP_HEIGHT];
 
 // @typedef structs
 
@@ -51,7 +49,7 @@ typedef struct s_xy
 	int	y;
 }	t_xy;
 
-typedef struct	s_bounds
+typedef struct s_bounds
 {
 	float	top;
 	float	right;
@@ -111,6 +109,7 @@ typedef struct s_ray
 	t_fxy	dir;
 	t_fxy	delta_dist;
 	float	perp_dist;
+	float	wall_x;
 	t_fxy	side_dist;
 	t_xy	map;
 	t_xy	step;
@@ -128,12 +127,18 @@ typedef struct s_shadow
 
 typedef struct s_scanline
 {
+	int			x;
+	int			y;
 	int			height;
 	int			wall_start;
 	int			wall_end;
 	int			ceil_color;
 	int			floor_color;
 	t_shadow	shadow;
+	t_texture	tex;
+	t_xy		tex_index;
+	float		tex_findex;
+	float		step_y;
 }	t_scanline;
 
 typedef struct s_minimap
@@ -194,7 +199,7 @@ void	update_player_direction(t_state *state);
 // graphics utils
 int		create_window(void *mlx_ptr, int w, int h, t_win **win);
 t_img	*create_image(void *mlx_ptr, int width, int height);
-void	put_pxl(t_img img, t_fxy pos, int color);
+void	put_pxl(t_img img, t_fxy pos, unsigned int color);
 int		create_color(int alpha, int red, int green, int blue);
 t_rgb	get_color_from_img(void *img_ptr, int x, int y);
 void	put_square(t_square params, t_img img);

@@ -6,61 +6,97 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:59:55 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 20:40:36 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/03 22:22:23 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	draw(t_state *state, t_ray ray, t_scanline scanline, int x)
+static void	put_wall(t_state *state, t_scanline *scanline)
 {
-	t_rgb	color;
-	int		y;
+	t_rgb	tex_pixel;
+	float	wall_offset;
 
-	y = 0;
-	while (y < scanline.wall_start)
+	wall_offset = (scanline->wall_start
+			- (SCREEN_HEIGHT / 2 - scanline->height / 2));
+	scanline->tex_findex = wall_offset
+		* (1.0 * scanline->tex.height / scanline->height);
+	while (scanline->y < scanline->wall_end)
 	{
-		put_pxl((*state->canvas), (t_fxy){x, y},
+		scanline->tex_index.y = (int)scanline->tex_findex
+			% scanline->tex.height;
+		scanline->tex_findex += scanline->step_y;
+		tex_pixel = get_color_from_img(scanline->tex.img,
+				clamp(scanline->tex_index.x, 0, scanline->tex.width),
+				clamp(scanline->tex_index.y, 0, scanline->tex.height));
+		put_pxl((*state->canvas), (t_fxy){scanline->x, scanline->y},
+			create_color(255, tex_pixel.r, tex_pixel.g, tex_pixel.b));
+		scanline->shadow.color = create_color(
+				scanline->shadow.opacity, 0, 0, 0);
+		put_pxl((*state->canvas), (t_fxy){scanline->x, scanline->y},
+			scanline->shadow.color);
+		scanline->y++;
+	}
+}
+
+static void	put(t_state *state, t_ray ray, t_scanline *scanline)
+{
+	while (scanline->y < scanline->wall_start)
+	{
+		put_pxl((*state->canvas), (t_fxy){scanline->x, scanline->y},
 			create_color(255, state->info.ceil.r,
 				state->info.ceil.g, state->info.ceil.b));
-		y++;
+		scanline->y++;
 	}
-	int i = 0;
-	while (y < scanline.wall_end)
+	put_wall(state, scanline);
+	while (scanline->y < SCREEN_HEIGHT)
 	{
-		color = get_color_from_img(state->info.south.img, 0, clamp(i, 0, 50));
-		i++;
-		put_pxl((*state->canvas), (t_fxy){x, y},
-			create_color(255, color.r, color.g, color.b));
-		// put_pxl((*state->canvas), (t_fxy){x, y},
-		// 	create_color(255, 5, 70, 120));
-		scanline.shadow.color = create_color(scanline.shadow.opacity, 0, 0, 0);
-		put_pxl((*state->canvas), (t_fxy){x, y}, scanline.shadow.color);
-		y++;
-	}
-	while (y < (SCREEN_HEIGHT - 1))
-	{
-		put_pxl((*state->canvas), (t_fxy){x, y},
+		put_pxl((*state->canvas), (t_fxy){scanline->x, scanline->y},
 			create_color(255, state->info.floor.r,
 				state->info.floor.g, state->info.floor.b));
-		y++;
+		scanline->y++;
 	}
+}
+
+static void	set_texture_data(t_state *state, t_ray ray, t_scanline *scanline)
+{
+	if (ray.is_back_side)
+	{
+		if (ray.dir.x > 0)
+			scanline->tex = state->info.west;
+		else
+			scanline->tex = state->info.east;
+		scanline->tex_index.x = (fmod(state->rays[scanline->x].y, 1.0)
+				* scanline->tex.width);
+	}
+	else
+	{
+		if (ray.dir.y > 0)
+			scanline->tex = state->info.south;
+		else
+			scanline->tex = state->info.north;
+		scanline->tex_index.x = (fmod(state->rays[scanline->x].x, 1.0)
+				* scanline->tex.width);
+	}
+	scanline->tex.width -= 1;
+	scanline->tex.height -= 1;
+	scanline->step_y = ((1.0 * scanline->tex.height) / scanline->height);
 }
 
 static void	set_scanline_data(t_state *state, t_ray ray, t_scanline *scanline)
 {
 	t_shadow	shadow;
 	float		exponent;
+	int			wall_start;
+	int			wall_end;
 
 	scanline->height = (int)(SCREEN_WIDTH / (ray.perp_dist * cos(ray.angle)));
 	scanline->wall_start = -scanline->height / 2 + SCREEN_HEIGHT / 2;
 	if (scanline->wall_start < 0)
 		scanline->wall_start = 0;
-	scanline->wall_start += (int)state->mov_offset * 5;
 	scanline->wall_end = scanline->height / 2 + SCREEN_HEIGHT / 2;
 	if (scanline->wall_end >= SCREEN_HEIGHT)
 		scanline->wall_end = SCREEN_HEIGHT - 1;
-	scanline->wall_end += (int)state->mov_offset * 5;
 	shadow.max_opacity = 200;
 	shadow.factor = 10;
 	if (ray.is_back_side)
@@ -70,12 +106,15 @@ static void	set_scanline_data(t_state *state, t_ray ray, t_scanline *scanline)
 	if (shadow.opacity > shadow.max_opacity)
 		shadow.opacity = shadow.max_opacity;
 	scanline->shadow = shadow;
+	set_texture_data(state, ray, scanline);
 }
 
 void	put_scanline(t_state *state, t_ray ray, int x)
 {
 	t_scanline	scanline;
 
+	scanline.x = x;
+	scanline.y = 0;
 	set_scanline_data(state, ray, &scanline);
-	draw(state, ray, scanline, x);
+	put(state, ray, &scanline);
 }

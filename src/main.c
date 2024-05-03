@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 18:25:06 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/03 22:18:59 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static int	init_state(t_state **state, t_parser info)
 		(*state)->p_dir = (t_fxy){-1, 0};
 	else if (info.player.face == east)
 		(*state)->p_dir = (t_fxy){1, 0};
+	(*state)->p_dir = (t_fxy){0.107790, -0.994174};
 	(*state)->p_dir_angle = atan2((*state)->p_dir.y, (*state)->p_dir.x);
 	(*state)->mov_offset_step = 1;
 	(*state)->mov_speed = PLAYER_SPEED;

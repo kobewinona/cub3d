@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:04:04 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 20:43:12 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 22:21:26 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static void	set_minimap_data(t_state *state, t_minimap *minimap)
 	minimap->opacity = clamp(MINIMAP_OPACITY, 0, 255);
 	minimap->bg_color = create_color(minimap->opacity, 20, 20, 20);
 	minimap->player_color = create_color(minimap->opacity, 20, 60, 5);
-	minimap->wall_color = create_color(minimap->opacity - 100, 120, 170, 100);
+	minimap->wall_color = create_color(minimap->opacity - 100, 120, 140, 120);
 	minimap->pos = (t_fxy){SCREEN_WIDTH - MINIMAP_WIDTH + MINIMAP_X, MINIMAP_Y};
 	minimap->start_pos = (t_xy){
 		(int)state->p_pos.x - (MINIMAP_WIDTH / 2 / MINIMAP_CELL_SIZE),
