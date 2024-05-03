@@ -6,13 +6,13 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:59:55 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/03 22:22:23 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/03 23:06:41 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	put_wall(t_state *state, t_scanline *scanline)
+static void	put_wall(t_state *state, t_scanline *scanline, float perp_dist)
 {
 	t_rgb	tex_pixel;
 	float	wall_offset;
@@ -48,7 +48,7 @@ static void	put(t_state *state, t_ray ray, t_scanline *scanline)
 				state->info.ceil.g, state->info.ceil.b));
 		scanline->y++;
 	}
-	put_wall(state, scanline);
+	put_wall(state, scanline, ray.perp_dist);
 	while (scanline->y < SCREEN_HEIGHT)
 	{
 		put_pxl((*state->canvas), (t_fxy){scanline->x, scanline->y},
@@ -83,20 +83,19 @@ static void	set_texture_data(t_state *state, t_ray ray, t_scanline *scanline)
 	scanline->step_y = ((1.0 * scanline->tex.height) / scanline->height);
 }
 
-static void	set_scanline_data(t_state *state, t_ray ray, t_scanline *scanline)
+void	put_scanline(t_state *state, t_ray ray, int x)
 {
+	t_scanline	scanline;
 	t_shadow	shadow;
 	float		exponent;
-	int			wall_start;
-	int			wall_end;
 
-	scanline->height = (int)(SCREEN_WIDTH / (ray.perp_dist * cos(ray.angle)));
-	scanline->wall_start = -scanline->height / 2 + SCREEN_HEIGHT / 2;
-	if (scanline->wall_start < 0)
-		scanline->wall_start = 0;
-	scanline->wall_end = scanline->height / 2 + SCREEN_HEIGHT / 2;
-	if (scanline->wall_end >= SCREEN_HEIGHT)
-		scanline->wall_end = SCREEN_HEIGHT - 1;
+	scanline.height = (int)(SCREEN_WIDTH / (ray.perp_dist * cos(ray.angle)));
+	scanline.wall_start = -scanline.height / 2 + SCREEN_HEIGHT / 2;
+	if (scanline.wall_start < 0)
+		scanline.wall_start = 0;
+	scanline.wall_end = scanline.height / 2 + SCREEN_HEIGHT / 2;
+	if (scanline.wall_end >= SCREEN_HEIGHT)
+		scanline.wall_end = SCREEN_HEIGHT - 1;
 	shadow.max_opacity = 200;
 	shadow.factor = 10;
 	if (ray.is_back_side)
@@ -105,16 +104,9 @@ static void	set_scanline_data(t_state *state, t_ray ray, t_scanline *scanline)
 	shadow.opacity = (shadow.max_opacity * exponent);
 	if (shadow.opacity > shadow.max_opacity)
 		shadow.opacity = shadow.max_opacity;
-	scanline->shadow = shadow;
-	set_texture_data(state, ray, scanline);
-}
-
-void	put_scanline(t_state *state, t_ray ray, int x)
-{
-	t_scanline	scanline;
-
+	scanline.shadow = shadow;
 	scanline.x = x;
 	scanline.y = 0;
-	set_scanline_data(state, ray, &scanline);
+	set_texture_data(state, ray, &scanline);
 	put(state, ray, &scanline);
 }

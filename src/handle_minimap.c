@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:04:04 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 22:21:26 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/03 23:11:21 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,9 @@ static void	render_player_fov(t_state *state, t_minimap minimap, t_fxy *rays)
 		minimap.player_color}, (*state->canvas));
 	put_pxl((*state->canvas), (t_fxy){minimap.p_pos.x, minimap.p_pos.y},
 		create_color(255, 50, 150, 10));
-	free(state->rays);
 }
 
-static void	render_minimap_scnaline(t_state *state, t_minimap minimap, int y)
+static void	render_minimap_scanline(t_state *state, t_minimap minimap, int y)
 {
 	int	map_x;
 	int	map_y;
@@ -113,7 +112,7 @@ void	render_minimap(t_state *state)
 		MINIMAP_WIDTH, MINIMAP_HEIGHT, minimap.bg_color}, (*state->canvas));
 	y = 0;
 	while (y < MINIMAP_HEIGHT / MINIMAP_CELL_SIZE)
-		render_minimap_scnaline(state, minimap, y++);
+		render_minimap_scanline(state, minimap, y++);
 	minimap.p_pos.x = minimap.pos.x + (state->p_pos.x - minimap.start_pos.x)
 		* MINIMAP_CELL_SIZE;
 	minimap.p_pos.y = minimap.pos.y + (state->p_pos.y - minimap.start_pos.y)

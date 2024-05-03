@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/03 22:18:59 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/03 23:18:23 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 int	game_exit(t_state **state, int exit_status)
 {
+	mlx_destroy_image((*state)->info.mlx, (*state)->canvas->img_ptr);
 	mlx_destroy_window((*state)->info.mlx, (*state)->win->win_ptr);
+	if ((*state)->rays)
+		free((*state)->rays);
+	free((*state));
 	if (exit_status != EXIT_SUCCESS)
 		exit(EXIT_FAILURE);
 	exit(exit_status);
