@@ -10,8 +10,11 @@ cub3d
 # minilibx
 libs/minilibx-linux
 
+# vscode
+.vscode/
+
 # objects
-obj
+obj/
 
 # rest
 .DS_store

@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 07:51:07 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/29 18:50:50 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:32:18 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	par_ismap(char *line)
 		if (line[i] != WALL_CHAR && line[i] != FLOOR_CHAR && line[i] != ' ' \
 			&& line[i] != FACE_NORTH_CHAR && line[i] != FACE_SOUTH_CHAR && \
 			line[i] != FACE_WEST_CHAR && line[i] != FACE_EAST_CHAR)
-				return (false);
+			return (false);
 		i++;
 	}
 	return (true);
