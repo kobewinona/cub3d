@@ -6,7 +6,7 @@
 #    By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/04 23:48:46 by tponutha         ###   ########.fr        #
+#    Updated: 2024/05/04 23:52:46 by tponutha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,9 @@ NORM			= norminette -R CheckSourceForbiddenHeader
 INCLUDES		= ./includes
 SRCS_DIR		= ./src
 OBJS_DIR		= ./obj
+LIBS_DIR		= ./libs
 
 # Libraries Properties
-LIBS_DIR		= ./libs
 LIBFT_DIR		= $(LIBS_DIR)/libft
 MINILIBX_DIR	= $(LIBS_DIR)/minilibx-linux
 LIBFT			= $(LIBFT_DIR)/libft-$(MACHINE).a
@@ -37,6 +37,13 @@ MINILIBX		= $(MINILIBX_DIR)/libmlx_Linux.a
 LIBFT_FLAG		= -L$(LIBFT_DIR) -lft-$(MACHINE)
 MINILIBX_FLAG	= -L$(MINILIBX_DIR) -lmlx_Linux
 LIBSFLAG		= $(LIBFT_FLAG) $(MINILIBX_FLAG)
+
+# Header files
+HEADER			= constants.h \
+					cub3d.h \
+					ft_queue.h \
+					parser.h
+HEADERS			= $(addprefix $(INCLUDES), $(HEADER))
 
 # Source Codes
 #	Main Code
@@ -134,9 +141,8 @@ fclean: clean
 re: fclean all
 
 norm:
-	@$(NORM) $(LIBFT_DIR)
-	@$(NORM) $(SRCS)
+	$(NORM) $(LIBFT_DIR) $(SRCS) $(HEADERS)
 
 -include $(DEPS)
 
-.PHONY:	all clean fclean re minilibx libft
+.PHONY:	all clean fclean re minilibx libft norm
