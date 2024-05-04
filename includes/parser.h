@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/30 13:13:35 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:57:20 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ bool	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err);
 void	par_error_msg(char *msg);
 bool	par_ismap(char *line);
 bool	par_isspace(char *line);
-void	parser_debug(t_parser *info, bool isprint);
+bool	parser_debug(t_parser *info, bool isprint);
 bool	par_isplayer(char c);
 
 int		par_get_texture(char **box, t_parser *info, t_ltype type, bool iserr);
