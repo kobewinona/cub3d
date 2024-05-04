@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 19:32:55 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/29 20:42:54 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:31:35 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_queue	sb_element_part(int fd, char **ext_buff, t_parser *info)
 	t_queue	element;
 	t_queue	err;
 	t_queue	map;
-	
+
 	element = queue_init();
 	err = queue_init();
 	map = queue_init();

@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parser_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/01 18:16:14 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/01 21:05:45 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 
-void	parser_free(t_parser *info, int *fd, char **ext_buff)
+static void	sb_check_null(int *fd, char **ext_buff)
 {
-	if (*fd >= 0)
+	if (fd != NULL)
 	{
-		close(*fd);
+		if (*fd >= 0)
+			close(*fd);
 		*fd = -1;
 	}
 	if (ext_buff != NULL)
@@ -24,6 +25,13 @@ void	parser_free(t_parser *info, int *fd, char **ext_buff)
 		free(*ext_buff);
 		*ext_buff = NULL;
 	}
+}
+
+void	parser_free(t_parser *info, int *fd, char **ext_buff)
+{
+	sb_check_null(fd, ext_buff);
+	if (info->window != NULL)
+		mlx_destroy_window(info->mlx, info->window);
 	if (info->north.img != NULL)
 		mlx_destroy_image(info->mlx, info->north.img);
 	if (info->south.img != NULL)
@@ -36,6 +44,3 @@ void	parser_free(t_parser *info, int *fd, char **ext_buff)
 		free(info->mlx);
 	ft_free_split(info->map);
 }
-
-
-// going to toilet elsewhere

@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/29 20:27:41 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:56:49 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ static void	sb_print_elem(t_parser *info)
 	printf("C: %d,%d,%d\n", info->ceil.r, info->ceil.g, info->ceil.b);
 }
 
-void	parser_debug(t_parser *info, bool isprint)
+bool	parser_debug(t_parser *info, bool isprint)
 {
 	if (!isprint)
-		return ;
+		return (false);
 	sb_print_elem(info);
 	sb_print_player(info);
 	par_print_map(info);
+	return (true);
 }

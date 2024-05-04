@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 18:25:06 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/29 19:31:27 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:31:12 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	sb_floodfill(t_parser *info, size_t x, size_t y, bool *isok)
 bool	par_floodfill(t_parser *info)
 {
 	bool	isok;
-	
+
 	isok = true;
 	sb_floodfill(info, info->player.x, info->player.y, &isok);
 	sb_restore_map(info->map, info->width, info->height);

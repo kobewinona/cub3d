@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/17 21:56:28 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:59:20 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	par_open_cub3d(const char *path)
 	dot_ptr = ft_strnstr(path, ".cub", path_len);
 	if (dot_ptr == NULL)
 	{
-		par_error_msg("File extension name don't exist");
+		par_error_msg("File extension name should be .cub");
 		return (-1);
 	}
 	if (ft_strlen(dot_ptr) > sizeof(".cub") - 1)

@@ -6,14 +6,17 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/29 19:21:41 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:49:08 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 
-static bool	sb_check_map(t_queue *maps, t_queue *err, t_node *node, char *line)
+static bool	sb_ch_map(t_queue *maps, t_queue *err, char *line, size_t line_no)
 {
+	t_node	*node;
+
+	node = node_new(line, line_no, map_elem);
 	if (node == NULL)
 	{
 		free(line);
@@ -34,7 +37,7 @@ static bool	sb_check_map(t_queue *maps, t_queue *err, t_node *node, char *line)
 static int	sb_illegal(t_queue *map, t_queue *err)
 {
 	t_node	*node;
-	
+
 	if (err->head == NULL)
 		return (0);
 	queue_flush(map);
@@ -56,14 +59,16 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 	char	*line;
 	t_queue	err;
 	size_t	i;
-	
+	size_t	no;
+
 	i = 0;
 	err = queue_init();
 	line = get_next_line_ext_buff(fd, ext_buff);
+	no = maps->head->line_no;
 	while (line != NULL)
 	{
 		par_find_player_by_line(line, i, &info->player);
-		if (!sb_check_map(maps, &err, node_new(line, maps->head->line_no, map_elem), line))
+		if (!sb_ch_map(maps, &err, line, no))
 		{
 			free(*ext_buff);
 			*ext_buff = NULL;
@@ -71,6 +76,7 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 		}
 		line = get_next_line_ext_buff(fd, ext_buff);
 		i++;
+		no++;
 	}
 	if (errno == ENOMEM)
 		return (-1);
@@ -81,7 +87,7 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 CLOSE FD OUTSIDE OF FUNCTION IN ALL CASES
 */
 
-int par_read_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
+int	par_read_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 {
 	if (sb_map(maps, fd, ext_buff, info))
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/28 17:31:03 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:49:38 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static void	sb_filter_elemnet(t_queue *element, t_queue *err)
 	*element = tmp;
 }
 
-static int	sb_filter_type(char **box, t_parser *info, t_ltype type, bool *iserr)
+static int	sb_filter(char **box, t_parser *info, t_ltype type, bool *iserr)
 {
 	int	status;
-	
+
 	if (type == north_elem || type == south_elem || \
 		type == west_elem || type == east_elem)
 	{
@@ -56,7 +56,7 @@ static int	sb_extract(t_parser *info, t_node *node, t_queue *err, bool *iserr)
 		return (-1);
 	if (ft_split_len(box) == 2)
 	{
-		status = sb_filter_type(box, info, node->type, iserr);
+		status = sb_filter(box, info, node->type, iserr);
 		if (status == 1)
 			queue_queue(err, node);
 	}
