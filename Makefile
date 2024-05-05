@@ -6,7 +6,7 @@
 #    By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/04 23:52:46 by tponutha         ###   ########.fr        #
+#    Updated: 2024/05/05 22:30:13 by tponutha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,16 +16,16 @@ NAME			= cub3d
 
 # Compiler Flags
 CC				= gcc
-CFLAGS			= -Wall -Wextra -Werror -MP -MMD# -g -03
+CFLAGS			= -MP -MMD#-Wall -Wextra -Werror -MP -MMD# -g -03
 GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
 NORM			= norminette -R CheckSourceForbiddenHeader
 
 # Code Directories
-INCLUDES		= ./includes
-SRCS_DIR		= ./src
-OBJS_DIR		= ./obj
-LIBS_DIR		= ./libs
+INCLUDES		= includes
+SRCS_DIR		= src
+OBJS_DIR		= obj
+LIBS_DIR		= libs
 
 # Libraries Properties
 LIBFT_DIR		= $(LIBS_DIR)/libft
@@ -109,23 +109,25 @@ SRCS			= $(MAIN_SRCS) $(PARSER_SRCS) $(QUEUE_SRCS) $(RENDER_SRCS) $(UTILS_SRCS)
 OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS 			= $(OBJS:.o=.d)
 
-$(NAME): $(OBJS) Makefile libft minilibx
+# Main Rules
+all: $(NAME)
+
+$(NAME): $(LIBFT) $(MINILIBX) $(OBJS)
 	@echo "Linking..."
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBSFLAG) $(GFLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBSFLAG) $(GFLAGS) -o $(NAME)
 	@echo "Build complete."
 
-all: minilibx libft $(NAME)
-	@echo "Building $(NAME)..."
-	
 $(OBJS_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	@echo "Compiling $<..."
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
-libft:
+# Make rule for libft
+$(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-minilibx:
+# Make rule for minilibx
+$(MINILIBX):
 	$(MAKE) -C $(MINILIBX_DIR)
 
 clean:
@@ -140,9 +142,10 @@ fclean: clean
 
 re: fclean all
 
+# For checking norm (except minilibx)
 norm:
 	$(NORM) $(LIBFT_DIR) $(SRCS) $(HEADERS)
 
 -include $(DEPS)
 
-.PHONY:	all clean fclean re minilibx libft norm
+.PHONY:	all clean fclean re norm
