@@ -6,7 +6,7 @@
 #    By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/05 22:30:13 by tponutha         ###   ########.fr        #
+#    Updated: 2024/05/05 22:31:37 by tponutha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,10 +22,10 @@ RM				= rm -rf
 NORM			= norminette -R CheckSourceForbiddenHeader
 
 # Code Directories
-INCLUDES		= includes
-SRCS_DIR		= src
-OBJS_DIR		= obj
-LIBS_DIR		= libs
+INCLUDES		= ./includes
+SRCS_DIR		= ./src
+OBJS_DIR		= ./obj
+LIBS_DIR		= ./libs
 
 # Libraries Properties
 LIBFT_DIR		= $(LIBS_DIR)/libft
