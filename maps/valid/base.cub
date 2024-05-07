@@ -1,7 +1,7 @@
-NO ./asset/set5/north.xpm
-SO ./asset/set5/north.xpm
-WE ./asset/set5/north.xpm
-EA ./asset/set5/north.xpm
+NO ./asset/set3/north.xpm
+SO ./asset/set3/north.xpm
+WE ./asset/set6/west.xpm
+EA ./asset/set6/west.xpm
 
 F 5,5,5
 C 5,5,5

@@ -6,7 +6,7 @@
 #    By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/07 18:58:43 by dklimkin         ###   ########.fr        #
+#    Updated: 2024/05/07 19:48:14 by dklimkin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME			= cub3d
 
 # Compiler Flags
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -MP
+CFLAGS			= -Wall -Wextra -Werror
 GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
 NORM			= norminette -R CheckSourceForbiddenHeader
@@ -43,7 +43,7 @@ HEADER			= constants.h \
 					cub3d.h \
 					ft_queue.h \
 					parser.h
-HEADERS			= $(addprefix $(INCLUDES), $(HEADER))
+HEADERS			= $(addprefix $(INCLUDES)/, $(HEADER))
 
 # Source Codes
 #	Main Code
@@ -107,14 +107,13 @@ UTILS_SRCS		= $(addprefix $(UTILS_DIR), $(UTILS_SRC))
 # Source Code & Object Management
 SRCS			= $(MAIN_SRCS) $(PARSER_SRCS) $(QUEUE_SRCS) $(RENDER_SRCS) $(UTILS_SRCS)
 OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
-DEPS 			= $(OBJS:.o=.d)
 
 $(NAME): $(OBJS) Makefile libft minilibx
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBSFLAG) $(GFLAGS) -o $(NAME)
 
 all: minilibx libft $(NAME)
 	
-$(OBJS_DIR)/%.o: %.c
+$(OBJS_DIR)/%.o: %.c $(HEADERS)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
@@ -125,7 +124,7 @@ minilibx:
 	$(MAKE) -C $(MINILIBX_DIR)
 
 clean:
-	$(RM) $(OBJS_DIR) $(DEPS)
+	$(RM) $(OBJS_DIR)
 	$(MAKE) -C $(MINILIBX_DIR) clean
 	$(MAKE) -C $(LIBFT_DIR) clean
 
@@ -138,7 +137,5 @@ re: fclean all
 
 norm:
 	$(NORM) $(LIBFT_DIR) $(SRCS) $(HEADERS)
-
--include $(DEPS)
 
 .PHONY:	all clean fclean re minilibx libft norm
