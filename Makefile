@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+         #
+#    By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/04 23:52:46 by tponutha         ###   ########.fr        #
+#    Updated: 2024/05/07 18:58:43 by dklimkin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ MACHINE 		:= $(shell uname -m)
 NAME			= cub3d
 
 # Compiler Flags
-CC				= gcc
-CFLAGS			= -Wall -Wextra -Werror -MP -MMD# -g -03
+CC				= cc
+CFLAGS			= -Wall -Wextra -Werror -MP
 GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
 NORM			= norminette -R CheckSourceForbiddenHeader
@@ -110,16 +110,12 @@ OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 DEPS 			= $(OBJS:.o=.d)
 
 $(NAME): $(OBJS) Makefile libft minilibx
-	@echo "Linking..."
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBSFLAG) $(GFLAGS) -o $(NAME)
-	@echo "Build complete."
 
 all: minilibx libft $(NAME)
-	@echo "Building $(NAME)..."
 	
 $(OBJS_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@echo "Compiling $<..."
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
 libft:

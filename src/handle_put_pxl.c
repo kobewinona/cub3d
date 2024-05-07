@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 16:11:01 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 22:39:58 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:13:09 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,12 @@ static int	step_the_line(t_line *line, t_line_params params)
 
 void	put_line(t_line_params params, t_img img)
 {
+	float	alpha;
 	t_line	line;
 
-	line = (t_line){round(params.start.x), round(params.start.y),
-		round(params.end.x), round(params.end.y)};
+	alpha = (1.0 * MINIMAP_FOV_LEN);
+	line.current = (t_xy){round(params.start.x), round(params.start.y)};
+	line.target = (t_xy){round(params.end.x), round(params.end.y)};
 	line.len = 0;
 	line.delta.x = abs(line.target.x - line.current.x);
 	line.delta.y = -abs(line.target.y - line.current.y);
@@ -75,7 +77,9 @@ void	put_line(t_line_params params, t_img img)
 	line.error = (line.delta.x + line.delta.y);
 	while (line.current.x != line.target.x || line.current.y != line.target.y)
 	{
-		put_pxl(img, (t_fxy){line.current.x, line.current.y}, params.color);
+		alpha = fclamp((alpha - 0.10), 0, (1.0 * MINIMAP_FOV_LEN));
+		put_pxl(img, (t_fxy){line.current.x, line.current.y}, create_color(
+				(int)alpha, params.color.r, params.color.g, params.color.b));
 		line.error_delta = (2 * line.error);
 		if (step_the_line(&line, params) == FAILURE)
 			break ;

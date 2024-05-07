@@ -6,25 +6,11 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:04:04 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/03 23:11:21 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:17:54 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// static void	calculate_fov_radius(float *len, int i)
-// {
-// 	float	len_step;
-// 	float	max_len;
-// 	int		mid_point;
-// 	float	angle;
-
-// 	len_step = max_len / mid_point;
-// 	max_len = 5.0;
-// 	mid_point = SCREEN_WIDTH / 2;
-// 	angle = (float)i / (SCREEN_WIDTH - 1) * PI;
-// 	(*len) = max_len * sin(angle);
-// }
 
 static void	render_player_fov(t_state *state, t_minimap minimap, t_fxy *rays)
 {
@@ -41,7 +27,7 @@ static void	render_player_fov(t_state *state, t_minimap minimap, t_fxy *rays)
 		put_line((t_line_params){minimap.p_pos, ray_end_pos, (t_bounds){
 			MINIMAP_Y, minimap.pos.x + MINIMAP_WIDTH,
 			MINIMAP_Y + MINIMAP_HEIGHT, minimap.pos.x},
-			create_color(5, 80, 120, 100), INT_MAX}, (*state->canvas));
+			(t_rgb){80, 120, 100, true}, INT_MAX}, (*state->canvas));
 		i++;
 	}
 	put_square((t_square){{minimap.p_pos.x - (MINIMAP_CELL_SIZE / 2),
@@ -102,9 +88,6 @@ static void	set_minimap_data(t_state *state, t_minimap *minimap)
 void	render_minimap(t_state *state)
 {
 	t_minimap	minimap;
-	int			map_y;
-	t_fxy		ray_end_pos;
-	t_fxy		p_pos;
 	int			y;
 
 	set_minimap_data(state, &minimap);
