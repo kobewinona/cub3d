@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/03 22:21:44 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:11:48 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_line_params
 	t_fxy		start;
 	t_fxy		end;
 	t_bounds	bounds;
-	int			color;
+	t_rgb		color;
 	int			len;
 }	t_line_params;
 
@@ -201,6 +201,7 @@ int		create_window(void *mlx_ptr, int w, int h, t_win **win);
 t_img	*create_image(void *mlx_ptr, int width, int height);
 void	put_pxl(t_img img, t_fxy pos, unsigned int color);
 int		create_color(int alpha, int red, int green, int blue);
+t_rgb	get_color_rgb(int color);
 t_rgb	get_color_from_img(void *img_ptr, int x, int y);
 void	put_square(t_square params, t_img img);
 void	put_line(t_line_params params, t_img img);

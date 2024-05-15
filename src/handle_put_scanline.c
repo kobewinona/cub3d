@@ -6,13 +6,13 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:59:55 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/03 23:06:41 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:34:09 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	put_wall(t_state *state, t_scanline *scanline, float perp_dist)
+static void	put_wall(t_state *state, t_scanline *scanline)
 {
 	t_rgb	tex_pixel;
 	float	wall_offset;
@@ -39,7 +39,7 @@ static void	put_wall(t_state *state, t_scanline *scanline, float perp_dist)
 	}
 }
 
-static void	put(t_state *state, t_ray ray, t_scanline *scanline)
+static void	put(t_state *state, t_scanline *scanline)
 {
 	while (scanline->y < scanline->wall_start)
 	{
@@ -48,7 +48,7 @@ static void	put(t_state *state, t_ray ray, t_scanline *scanline)
 				state->info.ceil.g, state->info.ceil.b));
 		scanline->y++;
 	}
-	put_wall(state, scanline, ray.perp_dist);
+	put_wall(state, scanline);
 	while (scanline->y < SCREEN_HEIGHT)
 	{
 		put_pxl((*state->canvas), (t_fxy){scanline->x, scanline->y},
@@ -97,7 +97,7 @@ void	put_scanline(t_state *state, t_ray ray, int x)
 	if (scanline.wall_end >= SCREEN_HEIGHT)
 		scanline.wall_end = SCREEN_HEIGHT - 1;
 	shadow.max_opacity = 200;
-	shadow.factor = 10;
+	shadow.factor = 8;
 	if (ray.is_back_side)
 		shadow.factor = 5;
 	exponent = (1 - exp(-(ray.perp_dist / shadow.factor)));
@@ -108,5 +108,5 @@ void	put_scanline(t_state *state, t_ray ray, int x)
 	scanline.x = x;
 	scanline.y = 0;
 	set_texture_data(state, ray, &scanline);
-	put(state, ray, &scanline);
+	put(state, &scanline);
 }

@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:33:27 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/01 20:45:05 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:46:10 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void	handle_sideways_movement(t_state *state, int dir_x)
 	t_fxy	next_pos;
 	int		next_map_pos_x;
 	int		next_map_pos_y;
-	float	player_speed;
 
 	state->mov_speed = (PLAYER_SPEED / 1.5);
 	next_pos.x = state->p_pos.x + ((state->mov_speed * state->p_dir.y) * dir_x);
@@ -57,7 +56,6 @@ static void	handle_forward_movement(t_state *state, int dir_y)
 	t_fxy	next_pos;
 	int		next_map_pos_x;
 	int		next_map_pos_y;
-	float	player_speed;
 
 	state->mov_speed = PLAYER_SPEED;
 	if (state->keys.move_left || state->keys.move_right)
@@ -82,7 +80,6 @@ void	update_player_position(t_state *state)
 {
 	int		dir_x;
 	int		dir_y;
-	float	player_speed;
 
 	dir_x = (state->keys.move_left - state->keys.move_right);
 	dir_y = (state->keys.move_forwards - state->keys.move_backwards);

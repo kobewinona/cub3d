@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+         #
+#    By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
 #    Updated: 2024/05/05 22:31:37 by tponutha         ###   ########.fr        #
@@ -15,7 +15,7 @@ MACHINE 		:= $(shell uname -m)
 NAME			= cub3d
 
 # Compiler Flags
-CC				= gcc
+CC				= cc
 CFLAGS			= -MP -MMD#-Wall -Wextra -Werror -MP -MMD# -g -03
 GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
@@ -43,7 +43,7 @@ HEADER			= constants.h \
 					cub3d.h \
 					ft_queue.h \
 					parser.h
-HEADERS			= $(addprefix $(INCLUDES), $(HEADER))
+HEADERS			= $(addprefix $(INCLUDES)/, $(HEADER))
 
 # Source Codes
 #	Main Code
@@ -107,7 +107,6 @@ UTILS_SRCS		= $(addprefix $(UTILS_DIR), $(UTILS_SRC))
 # Source Code & Object Management
 SRCS			= $(MAIN_SRCS) $(PARSER_SRCS) $(QUEUE_SRCS) $(RENDER_SRCS) $(UTILS_SRCS)
 OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
-DEPS 			= $(OBJS:.o=.d)
 
 # Main Rules
 all: $(NAME)
@@ -119,7 +118,6 @@ $(NAME): $(LIBFT) $(MINILIBX) $(OBJS)
 
 $(OBJS_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@echo "Compiling $<..."
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
 # Make rule for libft
@@ -131,7 +129,7 @@ $(MINILIBX):
 	$(MAKE) -C $(MINILIBX_DIR)
 
 clean:
-	$(RM) $(OBJS_DIR) $(DEPS)
+	$(RM) $(OBJS_DIR)
 	$(MAKE) -C $(MINILIBX_DIR) clean
 	$(MAKE) -C $(LIBFT_DIR) clean
 
