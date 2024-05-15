@@ -6,7 +6,7 @@
 #    By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/07 19:48:14 by dklimkin         ###   ########.fr        #
+#    Updated: 2024/05/05 22:31:37 by tponutha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME			= cub3d
 
 # Compiler Flags
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -MP -MMD#-Wall -Wextra -Werror -MP -MMD# -g -03
 GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
 NORM			= norminette -R CheckSourceForbiddenHeader
@@ -108,19 +108,24 @@ UTILS_SRCS		= $(addprefix $(UTILS_DIR), $(UTILS_SRC))
 SRCS			= $(MAIN_SRCS) $(PARSER_SRCS) $(QUEUE_SRCS) $(RENDER_SRCS) $(UTILS_SRCS)
 OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
-$(NAME): $(OBJS) Makefile libft minilibx
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBSFLAG) $(GFLAGS) -o $(NAME)
+# Main Rules
+all: $(NAME)
 
-all: minilibx libft $(NAME)
-	
-$(OBJS_DIR)/%.o: %.c $(HEADERS)
+$(NAME): $(LIBFT) $(MINILIBX) $(OBJS)
+	@echo "Linking..."
+	$(CC) $(CFLAGS) $(OBJS) $(LIBSFLAG) $(GFLAGS) -o $(NAME)
+	@echo "Build complete."
+
+$(OBJS_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
-libft:
+# Make rule for libft
+$(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-minilibx:
+# Make rule for minilibx
+$(MINILIBX):
 	$(MAKE) -C $(MINILIBX_DIR)
 
 clean:
@@ -135,7 +140,10 @@ fclean: clean
 
 re: fclean all
 
+# For checking norm (except minilibx)
 norm:
 	$(NORM) $(LIBFT_DIR) $(SRCS) $(HEADERS)
 
-.PHONY:	all clean fclean re minilibx libft norm
+-include $(DEPS)
+
+.PHONY:	all clean fclean re norm

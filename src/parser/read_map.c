@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/01 20:49:08 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/15 06:46:33 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ static bool	sb_ch_map(t_queue *maps, t_queue *err, char *line, size_t line_no)
 	return (true);
 }
 
-static int	sb_illegal(t_queue *map, t_queue *err)
+static int	sb_illegal(t_parser *info, t_queue *map, t_queue *err)
 {
 	t_node	*node;
 
-	if (err->head == NULL)
+	if (err->head == NULL && (info->player.face != no_player && info->player.face != too_many_player))
 		return (0);
 	queue_flush(map);
 	node = queue_dequeue(err);
@@ -51,6 +51,14 @@ static int	sb_illegal(t_queue *map, t_queue *err)
 		node_delete(node);
 		node = queue_dequeue(err);
 	}
+	if (info->player.face == no_player)
+	{
+		printf("No player in a Map\n");
+	}
+	else if (info->player.face == too_many_player)
+	{
+		printf("Too many player in a Map\n");
+	}
 	return (1);
 }
 
@@ -61,7 +69,7 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 	size_t	i;
 	size_t	no;
 
-	i = 0;
+	i = 1;
 	err = queue_init();
 	line = get_next_line_ext_buff(fd, ext_buff);
 	no = maps->head->line_no;
@@ -80,7 +88,7 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 	}
 	if (errno == ENOMEM)
 		return (-1);
-	return (sb_illegal(maps, &err));
+	return (sb_illegal(info, maps, &err));
 }
 
 /*
@@ -89,8 +97,11 @@ CLOSE FD OUTSIDE OF FUNCTION IN ALL CASES
 
 int	par_read_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 {
-	if (sb_map(maps, fd, ext_buff, info))
-		return (-1);
+	int	res;
+
+	res = sb_map(maps, fd, ext_buff, info);
+	if (res != 0)
+		return (res);
 	if (info->player.face == too_many_player)
 	{
 		queue_flush(maps);

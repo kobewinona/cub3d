@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/01 20:49:38 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/07 20:25:49 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ static int	sb_extract(t_parser *info, t_node *node, t_queue *err, bool *iserr)
 	ft_free_split(box);
 	return (status);
 }
-
-// static int	sb_summary_error(t_queue *err)
 
 int	par_get_element(t_parser *info, t_queue *element, t_queue *err)
 {

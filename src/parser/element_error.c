@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/01 20:30:23 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/15 07:03:18 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,26 @@ static void	sb_print_elem_error(t_queue *err)
 	}
 }
 
+static bool	sb_is_elem_init(t_parser *info, t_queue *err)
+{
+	if (info->north.img == NULL)
+		return (false);
+	if (info->south.img == NULL)
+		return (false);
+	if (info->west.img == NULL)
+		return (false);
+	if (info->east.img == NULL)
+		return (false);
+	if (!info->floor.isinit)
+		return (false);
+	if (!info->ceil.isinit)
+		return (false);
+	return (err->head == NULL);
+}
+
 bool	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err)
 {
-	if (err->head == NULL)
+	if (sb_is_elem_init(info, err))
 		return (true);
 	printf("Error\n");
 	printf("Element Error (ignore checking map)\n");

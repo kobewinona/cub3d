@@ -6,14 +6,13 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 23:11:34 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/22 04:48:42 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/15 07:00:00 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_QUEUE_H
 # define FT_QUEUE_H
 # include <stdlib.h>
-# include <stdio.h>
 
 typedef enum e_err_type
 {
