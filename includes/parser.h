@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 18:01:21 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/01 20:57:20 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/15 07:00:59 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSER_H
 # include <fcntl.h>
 # include <stdbool.h>
+# include <stdio.h>
 # include <sys/errno.h>
 # include "constants.h"
 # include "ft_queue.h"

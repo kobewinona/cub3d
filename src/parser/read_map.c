@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/13 21:38:51 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/15 06:46:33 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 	no = maps->head->line_no;
 	while (line != NULL)
 	{
-		printf("%lu, %s\n", i, line);
 		par_find_player_by_line(line, i, &info->player);
 		if (!sb_ch_map(maps, &err, line, no))
 		{
@@ -98,8 +97,11 @@ CLOSE FD OUTSIDE OF FUNCTION IN ALL CASES
 
 int	par_read_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 {
-	if (sb_map(maps, fd, ext_buff, info))
-		return (-1);
+	int	res;
+
+	res = sb_map(maps, fd, ext_buff, info);
+	if (res != 0)
+		return (res);
 	if (info->player.face == too_many_player)
 	{
 		queue_flush(maps);

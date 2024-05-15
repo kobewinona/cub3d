@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 19:32:55 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/01 20:31:35 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/15 06:44:51 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static bool	sb_map_part(t_queue *map, t_parser *info)
 	info->map = par_get_map(map, info);
 	if (info->map == NULL)
 	{
-		par_error_msg("Allocation failed");
 		return (false);
 	}
 	if (!par_floodfill(info))

@@ -6,7 +6,7 @@
 #    By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/05 22:31:37 by tponutha         ###   ########.fr        #
+#    Updated: 2024/05/15 07:01:58 by tponutha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,14 +74,12 @@ PARSER_SRCS		= $(addprefix $(PARSER_DIR), $(PARSER_SRC))
 #	Queue Code
 QUEUE_DIR		= $(SRCS_DIR)/queue/
 QUEUE_SRC		= node_delete.c \
-					node_extract.c \
 					node_new.c \
 					queue_dequeue.c \
 					queue_flush.c \
 					queue_init.c \
 					queue_len.c \
-					queue_queue.c \
-					queue_transverse.c
+					queue_queue.c
 QUEUE_SRCS		= $(addprefix $(QUEUE_DIR), $(QUEUE_SRC))
 
 #	Render Code
