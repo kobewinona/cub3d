@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/15 07:35:29 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 20:58:10 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 int	game_exit(t_state **state, int exit_status)
 {
-	parser_free(&((*state)->info), NULL, NULL);
 	mlx_destroy_image((*state)->info.mlx, (*state)->canvas->img_ptr);
 	mlx_destroy_window((*state)->info.mlx, (*state)->win->win_ptr);
 	if ((*state)->rays)
 		free((*state)->rays);
 	free((*state));
-	// if (exit_status != EXIT_SUCCESS)
-	// 	exit(EXIT_FAILURE);
+	if (exit_status != EXIT_SUCCESS)
+		exit(EXIT_FAILURE);
 	exit(exit_status);
 }
 
@@ -89,25 +88,21 @@ int	main(int argc, char **argv)
 	t_parser	info;
 	t_state		*state;
 
-	ft_memset(&info, 0, sizeof(info));
-	info.mlx = mlx_init();
-	if (info.mlx == NULL)
+	fd = -1;
+	if (parser_init(&info) == -1)
 		return (EXIT_FAILURE);
 	fd = sb_argv_parsing(argc, argv);
 	if (fd == -1)
 		return (parser_free(&info, &fd, NULL), EXIT_FAILURE);
 	parser_job(fd, &info);
-	if (parser_debug(&info, false))
-		return (parser_free(&info, &fd, NULL), EXIT_SUCCESS);
-	
-	// state = (t_state *)malloc(sizeof(t_state));
-	// if (!state)
-	// 	return (parser_free(&info, &fd, NULL), EXIT_FAILURE);
-	// ft_memset(state, 0, sizeof(t_state));
-
+	parser_debug(&info, true);
+	state = (t_state *)malloc(sizeof(t_state));
+	if (!state)
+		return (parser_free(&info, &fd, NULL), EXIT_FAILURE);
+	ft_memset(state, 0, sizeof(t_state));
 	if (init_state(&state, info) == FAILURE)
-		return (game_exit(&state, EXIT_FAILURE));
+		return (parser_free(&info, &fd, NULL), game_exit(&state, EXIT_FAILURE));
 	if (run_mlx(&state, fd) == FAILURE)
-		return (game_exit(&state, EXIT_FAILURE));
-	return (game_exit(&state, EXIT_SUCCESS));
+		return (parser_free(&info, &fd, NULL), game_exit(&state, EXIT_FAILURE));
+	return (parser_free(&info, &fd, NULL), game_exit(&state, EXIT_SUCCESS));
 }
