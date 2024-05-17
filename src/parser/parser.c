@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 19:32:55 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/17 21:07:31 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:31:18 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ void	parser_job(int fd, t_parser *info)
 	ext_buff = NULL;
 	map = sb_element_part(fd, &ext_buff, info);
 	if (map.head == NULL)
+	{
+		close(fd);
 		exit(EXIT_FAILURE);
+	}
 	status = par_read_map(&map, fd, &ext_buff, info);
 	if (status == -1)
 		par_error_msg("Allocation failed");
