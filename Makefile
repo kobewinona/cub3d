@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+         #
+#    By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/15 07:23:56 by tponutha         ###   ########.fr        #
+#    Updated: 2024/05/17 21:07:15 by dklimkin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME			= cub3d
 
 # Compiler Flags
 CC				= cc
-CFLAGS			= -MP -MMD#-Wall -Wextra -Werror -MP -MMD# -g -03
+CFLAGS			= -Wall -Wextra -Werror
 GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
 NORM			= norminette -R CheckSourceForbiddenHeader
@@ -47,12 +47,12 @@ HEADERS			= $(addprefix $(INCLUDES)/, $(HEADER))
 
 # Source Codes
 #	Main Code
-MAIN_DIR		= $(SRCS_DIR)/
+MAIN_DIR		= $(SRCS_DIR)
 MAIN_SRC		= main.c
-MAIN_SRCS		= $(addprefix $(MAIN_DIR), $(MAIN_SRC))
+MAIN_SRCS		= $(addprefix $(MAIN_DIR)/, $(MAIN_SRC))
 
 #	Parser Code
-PARSER_DIR		= $(SRCS_DIR)/parser/
+PARSER_DIR		= $(SRCS_DIR)/parser
 PARSER_SRC		= element_error.c \
 					get_color.c \
 					get_element.c \
@@ -69,10 +69,10 @@ PARSER_SRC		= element_error.c \
 					print_map.c \
 					read_element.c \
 					read_map.c
-PARSER_SRCS		= $(addprefix $(PARSER_DIR), $(PARSER_SRC))
+PARSER_SRCS		= $(addprefix $(PARSER_DIR)/, $(PARSER_SRC))
 
 #	Queue Code
-QUEUE_DIR		= $(SRCS_DIR)/queue/
+QUEUE_DIR		= $(SRCS_DIR)/queue
 QUEUE_SRC		= node_delete.c \
 					node_new.c \
 					queue_dequeue.c \
@@ -80,10 +80,10 @@ QUEUE_SRC		= node_delete.c \
 					queue_init.c \
 					queue_len.c \
 					queue_queue.c
-QUEUE_SRCS		= $(addprefix $(QUEUE_DIR), $(QUEUE_SRC))
+QUEUE_SRCS		= $(addprefix $(QUEUE_DIR)/, $(QUEUE_SRC))
 
 #	Render Code
-RENDER_DIR		= $(SRCS_DIR)/
+RENDER_DIR		= $(SRCS_DIR)
 RENDER_SRC		= handle_input.c \
 					handle_minimap.c \
 					handle_movement.c \
@@ -93,14 +93,14 @@ RENDER_SRC		= handle_input.c \
 					handle_render.c \
 					handle_rotation.c \
 					handle_textures.c
-RENDER_SRCS		= $(addprefix $(RENDER_DIR), $(RENDER_SRC))
+RENDER_SRCS		= $(addprefix $(RENDER_DIR)/, $(RENDER_SRC))
 
 # Utils Code
-UTILS_DIR		= ./utils/
+UTILS_DIR		= ./utils
 UTILS_SRC		= clamp.c \
 					colors_utils.c \
 					graphics_utils.c
-UTILS_SRCS		= $(addprefix $(UTILS_DIR), $(UTILS_SRC))
+UTILS_SRCS		= $(addprefix $(UTILS_DIR)/, $(UTILS_SRC))
 
 # Source Code & Object Management
 SRCS			= $(MAIN_SRCS) $(PARSER_SRCS) $(QUEUE_SRCS) $(RENDER_SRCS) $(UTILS_SRCS)
@@ -110,11 +110,9 @@ OBJS 			= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJS)
-	@echo "Linking..."
 	$(CC) $(CFLAGS) $(OBJS) $(LIBSFLAG) $(GFLAGS) -o $(NAME)
-	@echo "Build complete."
 
-$(OBJS_DIR)/%.o: %.c
+$(OBJS_DIR)/%.o: %.c $(HEADERS)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
@@ -141,7 +139,5 @@ re: fclean all
 # For checking norm (except minilibx)
 norm:
 	$(NORM) $(LIBFT_DIR) $(SRCS) $(HEADERS)
-
--include $(DEPS)
 
 .PHONY:	all clean fclean re norm

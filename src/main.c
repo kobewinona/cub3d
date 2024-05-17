@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/17 20:58:10 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:02:54 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,6 @@ int	main(int argc, char **argv)
 		return (parser_free(&info, &fd, NULL), EXIT_FAILURE);
 	parser_job(fd, &info);
 	parser_debug(&info, true);
-	state = (t_state *)malloc(sizeof(t_state));
-	if (!state)
-		return (parser_free(&info, &fd, NULL), EXIT_FAILURE);
-	ft_memset(state, 0, sizeof(t_state));
 	if (init_state(&state, info) == FAILURE)
 		return (parser_free(&info, &fd, NULL), game_exit(&state, EXIT_FAILURE));
 	if (run_mlx(&state, fd) == FAILURE)
