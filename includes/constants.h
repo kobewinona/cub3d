@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constants.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:20:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/07 19:45:53 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/17 20:43:08 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # define PI 3.14159265358979323846
 # define SUCCESS 0
 # define FAILURE -1
-# define EXIT_SUCCESS 0
-# define EXIT_FAILURE 1
+// # define EXIT_SUCCESS 0
+// # define EXIT_FAILURE 1
 # define NORTH_ELEM "NO"
 # define SOUTH_ELEM "SO"
 # define WEST_ELEM "WE"
