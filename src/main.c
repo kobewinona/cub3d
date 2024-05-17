@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/17 21:02:54 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/17 22:03:24 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,14 @@
 int	game_exit(t_state **state, int exit_status)
 {
 	mlx_destroy_image((*state)->info.mlx, (*state)->canvas->img_ptr);
+	free((*state)->canvas);
 	mlx_destroy_window((*state)->info.mlx, (*state)->win->win_ptr);
+	free((*state)->win);
+	parser_free(&(*state)->info, 0, NULL);
 	if ((*state)->rays)
 		free((*state)->rays);
+	mlx_destroy_display((*state)->info.mlx);
+	free((*state)->info.mlx);
 	free((*state));
 	if (exit_status != EXIT_SUCCESS)
 		exit(EXIT_FAILURE);
@@ -59,6 +64,7 @@ static int	init_state(t_state **state, t_parser info)
 
 static int	run_mlx(t_state **state, int fd)
 {
+	(void)fd;
 	if (create_window((*state)->info.mlx,
 			SCREEN_WIDTH, SCREEN_HEIGHT, &((*state)->win)) == FAILURE)
 		return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 20:04:04 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/07 19:17:54 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:34:06 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,21 @@ static void	render_player_fov(t_state *state, t_minimap minimap, t_fxy *rays)
 
 static void	render_minimap_scanline(t_state *state, t_minimap minimap, int y)
 {
-	int	map_x;
-	int	map_y;
-	int	width;
-	int	height;
-	int	x;
+	t_xy	map;
+	int		width;
+	int		height;
+	int		x;
 
 	width = state->info.width;
 	height = state->info.height;
 	x = 0;
 	while (x < MINIMAP_WIDTH / MINIMAP_CELL_SIZE)
 	{
-		map_x = minimap.start_pos.x + x;
-		map_y = minimap.start_pos.y + y;
-		if (map_x >= 0 && map_x < width && map_y >= 0 && map_y < height)
+		map.x = minimap.start_pos.x + x;
+		map.y = minimap.start_pos.y + y;
+		if (map.x >= 0 && map.x < width && map.y >= 0 && map.y < height)
 		{
-			if (state->info.map[map_y][map_x] == 1)
+			if (state->info.map[map.y][map.x] == 1)
 			{
 				put_square((t_square){{minimap.pos.x + x * MINIMAP_CELL_SIZE,
 					minimap.pos.y + y * MINIMAP_CELL_SIZE},

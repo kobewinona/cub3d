@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:04:03 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/07 19:11:48 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:57:29 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,12 @@ typedef enum s_argb
 	RED_CH = 16,
 	ALPHA_CH = 24,
 }	t_argb;
+
+typedef struct s_test
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+}	t_test;
 
 int		game_exit(t_state **state, int exit_status);
 

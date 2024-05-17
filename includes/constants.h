@@ -6,7 +6,7 @@
 /*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 12:20:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/17 21:29:58 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:31:04 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@
 # define FACE_EAST_CHAR 'E'
 # define FLOOR_CHAR '0'
 # define WALL_CHAR '1'
-
-
-
 
 # define WALL 1
 # define FLOOR 0

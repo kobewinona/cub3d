@@ -6,7 +6,7 @@
 #    By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/17 21:28:06 by dklimkin         ###   ########.fr        #
+#    Updated: 2024/05/17 22:00:58 by dklimkin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@
 NAME			= cub3d
 
 # Compiler Flags
-CC				= cc
-CFLAGS			= -Wall -Wextra -Werror
+CC				= gcc
+CFLAGS			= -Wall -Wextra -Werror -g
 GFLAGS			= -lXext -lX11 -lm -lz
 RM				= rm -rf
 NORM			= norminette -R CheckSourceForbiddenHeader
@@ -84,7 +84,7 @@ all: $(NAME)
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBSFLAG) $(GFLAGS) -o $(NAME)
 
-$(OBJS_DIR)/%.o: %.c $(HEADERS)
+$(OBJS_DIR)/%.o: %.c Makefile $(HEADERS)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
