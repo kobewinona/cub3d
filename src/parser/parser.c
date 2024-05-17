@@ -6,11 +6,19 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 19:32:55 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/17 21:31:18 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 22:33:01 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
+
+static t_queue	sb_wide_flush(t_queue *element, t_queue *map, t_queue *err)
+{
+	queue_flush(element);
+	queue_flush(map);
+	queue_flush(err);
+	return (queue_init());
+}
 
 static t_queue	sb_element_part(int fd, char **ext_buff, t_parser *info)
 {
@@ -24,13 +32,10 @@ static t_queue	sb_element_part(int fd, char **ext_buff, t_parser *info)
 	map = queue_init();
 	first_map = par_read_element(&element, fd, ext_buff, &info->init_checker);
 	if (first_map == NULL)
-		return (map);
+		return (sb_wide_flush(&element, &map, &err));
 	queue_queue(&map, first_map);
 	if (par_get_element(info, &element, &err) == -1)
-	{
-		queue_flush(&map);
-		return (map);
-	}
+		return (sb_wide_flush(&element, &map, &err));
 	if (!par_element_error(fd, *ext_buff, info, &err))
 		queue_flush(&map);
 	return (map);
@@ -62,6 +67,7 @@ void	parser_job(int fd, t_parser *info)
 	map = sb_element_part(fd, &ext_buff, info);
 	if (map.head == NULL)
 	{
+		par_error_msg("Empty Map");
 		close(fd);
 		exit(EXIT_FAILURE);
 	}
