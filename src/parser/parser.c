@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 19:32:55 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/15 06:44:51 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 20:27:55 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static bool	sb_map_part(t_queue *map, t_parser *info)
 	{
 		par_error_msg("Floodfill Error");
 		par_print_map(info);
-		return (true);
+		return (false);
 	}
 	return (true);
 }

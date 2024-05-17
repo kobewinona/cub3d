@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 18:25:06 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/01 20:31:12 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 20:29:10 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ static void	sb_floodfill(t_parser *info, size_t x, size_t y, bool *isok)
 {
 	if (*isok == false)
 		return ;
-	if (info->map[y][x] == WALL || info->map[y][x] == FLOOR_CHAR)
-		return ;
 	if (x == 0 || x == info->width - 1 || y == 0 || y == info->height - 1)
 	{
 		*isok = false;
 		return ;
 	}
+	if (info->map[y][x] == WALL || info->map[y][x] == FLOOR_CHAR)
+		return ;
 	if (info->map[y][x] == FLOOR || par_isplayer(info->map[y][x]))
 		info->map[y][x] = FLOOR_CHAR;
 	else if (info->map[y][x] == EMPTY)
