@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/15 07:34:35 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:02:06 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static void	sb_check_null(int *fd, char **ext_buff)
 void	parser_free(t_parser *info, int *fd, char **ext_buff)
 {
 	sb_check_null(fd, ext_buff);
-	// if (info->window != NULL)
-	// 	mlx_destroy_window(info->mlx, info->window);
 	if (info->north.img != NULL)
 		mlx_destroy_image(info->mlx, info->north.img);
 	if (info->south.img != NULL)
@@ -40,7 +38,5 @@ void	parser_free(t_parser *info, int *fd, char **ext_buff)
 		mlx_destroy_image(info->mlx, info->east.img);
 	if (info->west.img != NULL)
 		mlx_destroy_image(info->mlx, info->west.img);
-	// if (info->mlx != NULL)
-	// 	free(info->mlx);
 	ft_free_split(info->map);
 }
