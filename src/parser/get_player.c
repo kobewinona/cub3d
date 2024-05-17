@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 22:47:50 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/13 21:39:11 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:04:39 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	par_find_player_by_line(char *line, size_t line_no, t_player *player)
 {
 	size_t	i;
 
-	i = 0;
+	i = 1;
 	while (line[i] != '\0' && line[i] != '\n')
 	{
 		if (player->face == too_many_player)
