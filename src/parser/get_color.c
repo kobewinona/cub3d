@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/15 06:43:14 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:24:19 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	sb_isnumber(char *str)
 			return (false);
 		i++;
 	}
-	return (true);
+	return (str[0] != '\0' && str[0] != '\n');
 }
 
 static t_rgb	*sb_get_ptr(t_parser *info, t_ltype type)

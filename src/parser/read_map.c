@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/15 06:46:33 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:03:15 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static int	sb_illegal(t_parser *info, t_queue *map, t_queue *err)
 {
 	t_node	*node;
 
-	if (err->head == NULL && (info->player.face != no_player && info->player.face != too_many_player))
+	if (err->head == NULL && (info->player.face != no_player \
+		&& info->player.face != too_many_player))
 		return (0);
 	queue_flush(map);
 	node = queue_dequeue(err);
@@ -52,13 +53,9 @@ static int	sb_illegal(t_parser *info, t_queue *map, t_queue *err)
 		node = queue_dequeue(err);
 	}
 	if (info->player.face == no_player)
-	{
 		printf("No player in a Map\n");
-	}
 	else if (info->player.face == too_many_player)
-	{
 		printf("Too many player in a Map\n");
-	}
 	return (1);
 }
 

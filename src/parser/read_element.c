@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_element.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 05:23:56 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/07 19:14:32 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:46:26 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	sb_is_contain_elemnet(char *line, int *bits, t_ltype *type)
 	if (ft_strnstr(line, "C ", len) != NULL)
 		return (sb_set_element_bits((1 << 5), bits, type, ceil_elem));
 	*type = unidentify;
-	return (true);
+	return (false);
 }
 
 /*
