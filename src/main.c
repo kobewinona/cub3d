@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/17 22:03:24 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/18 22:06:48 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ int	game_exit(t_state **state, int exit_status)
 	free((*state)->canvas);
 	mlx_destroy_window((*state)->info.mlx, (*state)->win->win_ptr);
 	free((*state)->win);
-	parser_free(&(*state)->info, 0, NULL);
 	if ((*state)->rays)
 		free((*state)->rays);
+	mlx_destroy_image((*state)->info.mlx, (*state)->info.north.img);
+	mlx_destroy_image((*state)->info.mlx, (*state)->info.south.img);
+	mlx_destroy_image((*state)->info.mlx, (*state)->info.west.img);
+	mlx_destroy_image((*state)->info.mlx, (*state)->info.east.img);
+	ft_free_split((*state)->info.map);
 	mlx_destroy_display((*state)->info.mlx);
 	free((*state)->info.mlx);
 	free((*state));
@@ -62,24 +66,17 @@ static int	init_state(t_state **state, t_parser info)
 	return (SUCCESS);
 }
 
-static int	run_mlx(t_state **state, int fd)
+static int	run_mlx(t_state **state)
 {
-	(void)fd;
 	if (create_window((*state)->info.mlx,
 			SCREEN_WIDTH, SCREEN_HEIGHT, &((*state)->win)) == FAILURE)
 		return (EXIT_FAILURE);
 	if (!(*state)->win || !(*state)->info.mlx || !(*state)->win->win_ptr)
-	{
-		parser_free(&(*state)->info, &fd, NULL);
 		return (game_exit(state, EXIT_FAILURE));
-	}
 	(*state)->canvas = create_image(
 			(*state)->info.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!(*state)->canvas || !(*state)->canvas->img_ptr)
-	{
-		parser_free(&(*state)->info, &fd, NULL);
 		return (game_exit(state, EXIT_FAILURE));
-	}
 	mlx_loop_hook((*state)->info.mlx, render_game, state);
 	mlx_hook((*state)->win->win_ptr, 02, (1L << 0), read_keys_pressed, state);
 	mlx_hook((*state)->win->win_ptr, 03, (1L << 1), read_keys_released, state);
@@ -94,17 +91,20 @@ int	main(int argc, char **argv)
 	t_parser	info;
 	t_state		*state;
 
-	fd = -1;
 	if (parser_init(&info) == -1)
 		return (EXIT_FAILURE);
 	fd = sb_argv_parsing(argc, argv);
 	if (fd == -1)
 		return (parser_free(&info, &fd, NULL), EXIT_FAILURE);
 	parser_job(fd, &info);
-	parser_debug(&info, true);
+	if (parser_debug(&info, false))
+	{
+		parser_free(&info, &fd, NULL);
+		return (EXIT_SUCCESS);
+	}
 	if (init_state(&state, info) == FAILURE)
-		return (parser_free(&info, &fd, NULL), game_exit(&state, EXIT_FAILURE));
-	if (run_mlx(&state, fd) == FAILURE)
-		return (parser_free(&info, &fd, NULL), game_exit(&state, EXIT_FAILURE));
-	return (parser_free(&info, &fd, NULL), game_exit(&state, EXIT_SUCCESS));
+		return (game_exit(&state, EXIT_FAILURE));
+	if (run_mlx(&state) == FAILURE)
+		return (game_exit(&state, EXIT_FAILURE));
+	return (game_exit(&state, EXIT_SUCCESS));
 }

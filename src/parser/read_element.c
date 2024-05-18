@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 05:23:56 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/17 21:46:26 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/18 22:09:25 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ t_node	*par_read_element(t_queue *element, int fd, char **ext_buff, int *bit)
 				return (node_new(line, no, map_elem));
 			if (sb_check_element(line, no, element, bit) == -1)
 			{
-				free(ext_buff);
-				*ext_buff = NULL;
+				free(*ext_buff);
+				(*ext_buff) = NULL;
 				return (NULL);
 			}
 		}
