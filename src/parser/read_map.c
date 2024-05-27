@@ -6,32 +6,21 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/17 21:03:15 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/27 09:13:45 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 
-static bool	sb_ch_map(t_queue *maps, t_queue *err, char *line, size_t line_no)
+static void	sb_ch_map(t_node *node, t_queue *new_map, t_queue *err)
 {
-	t_node	*node;
-
-	node = node_new(line, line_no, map_elem);
-	if (node == NULL)
-	{
-		free(line);
-		queue_flush(maps);
-		queue_flush(err);
-		return (false);
-	}
 	if (par_ismap(node->str))
-		queue_queue(maps, node);
+		queue_queue(new_map, node);
 	else
 	{
 		node->err_type = data;
 		queue_queue(err, node);
 	}
-	return (true);
 }
 
 static int	sb_illegal(t_parser *info, t_queue *map, t_queue *err)
@@ -59,32 +48,25 @@ static int	sb_illegal(t_parser *info, t_queue *map, t_queue *err)
 	return (1);
 }
 
-static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
+static int	sb_map(t_queue *maps, t_parser *info)
 {
-	char	*line;
+	t_node	*node;
 	t_queue	err;
+	t_queue	new_map;
 	size_t	i;
-	size_t	no;
 
-	i = 1;
+	i = 0;
 	err = queue_init();
-	line = get_next_line_ext_buff(fd, ext_buff);
-	no = maps->head->line_no;
-	while (line != NULL)
+	new_map = queue_init();
+	node = queue_dequeue(maps);
+	while (node != NULL)
 	{
-		par_find_player_by_line(line, i, &info->player);
-		if (!sb_ch_map(maps, &err, line, no))
-		{
-			free(*ext_buff);
-			*ext_buff = NULL;
-			return (-1);
-		}
-		line = get_next_line_ext_buff(fd, ext_buff);
+		par_find_player_by_line(node->str, i, &info->player);
+		sb_ch_map(node, &new_map, &err);
+		node = queue_dequeue(maps);
 		i++;
-		no++;
 	}
-	if (errno == ENOMEM)
-		return (-1);
+	*maps = new_map;
 	return (sb_illegal(info, maps, &err));
 }
 
@@ -92,11 +74,11 @@ static int	sb_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
 CLOSE FD OUTSIDE OF FUNCTION IN ALL CASES
 */
 
-int	par_read_map(t_queue *maps, int fd, char **ext_buff, t_parser *info)
+int	par_read_map(t_queue *maps, t_parser *info)
 {
-	int	res;
+	int		res;
 
-	res = sb_map(maps, fd, ext_buff, info);
+	res = sb_map(maps, info);
 	if (res != 0)
 		return (res);
 	if (info->player.face == too_many_player)

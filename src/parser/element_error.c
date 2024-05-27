@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/15 07:03:18 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:30:33 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 static void	sb_err_str(char *line, size_t no, t_ltype type, t_etype etype)
 {
-	char	*ptr;
-
-	ptr = ft_strrchr(line, '\n');
 	if (etype == args)
 		printf("Must contain 2 arguments: %lu: %s", no, line);
 	else if (type == unidentify)
@@ -25,8 +22,6 @@ static void	sb_err_str(char *line, size_t no, t_ltype type, t_etype etype)
 		printf("Wrong RGB format [0-255,0-255,0-255]: %lu: %s", no, line);
 	else
 		printf("xpm file error or permission denied: %lu: %s", no, line);
-	if (ptr == NULL)
-		printf("\n");
 }
 
 static void	sb_print_uninit(int init_checker)
@@ -75,14 +70,16 @@ static bool	sb_is_elem_init(t_parser *info, t_queue *err)
 	return (err->head == NULL);
 }
 
-bool	par_element_error(int fd, char *ext_buff, t_parser *info, t_queue *err)
+bool	par_elem_error(t_parser *info, t_queue *map, t_queue *elem, t_queue *e)
 {
-	if (sb_is_elem_init(info, err))
+	if (sb_is_elem_init(info, e))
 		return (true);
 	printf("Error\n");
 	printf("Element Error (ignore checking map)\n");
+	queue_flush(elem);
+	queue_flush(map);
 	sb_print_uninit(info->init_checker);
-	sb_print_elem_error(err);
-	parser_free(info, &fd, &ext_buff);
+	sb_print_elem_error(e);
+	parser_free(info);
 	return (false);
 }

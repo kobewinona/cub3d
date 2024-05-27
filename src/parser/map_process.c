@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 23:18:59 by tponutha          #+#    #+#             */
-/*   Updated: 2024/04/28 17:31:55 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/27 08:56:40 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,9 @@ char	**par_get_map(t_queue *map_queue, t_parser *info)
 	info->height = queue_len(map_queue);
 	map = ft_calloc(sizeof(char *), info->height + 1);
 	if (map == NULL)
-	{
-		par_error_msg("Map Allocation failed");
 		return (NULL);
-	}
 	if (sb_map_transform(map, map_queue, info) == NULL)
-	{
-		par_error_msg("Map Allocation failed");
 		return (NULL);
-	}
 	info->map = map;
 	return (map);
 }

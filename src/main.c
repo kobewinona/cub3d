@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/27 14:13:11 by dklimkin         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:29:06 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,8 @@ int	game_exit(t_state **state, int exit_status)
 	free((*state)->win);
 	if ((*state)->rays)
 		free((*state)->rays);
-	mlx_destroy_image((*state)->info.mlx, (*state)->info.north.img);
-	mlx_destroy_image((*state)->info.mlx, (*state)->info.south.img);
-	mlx_destroy_image((*state)->info.mlx, (*state)->info.west.img);
-	mlx_destroy_image((*state)->info.mlx, (*state)->info.east.img);
-	ft_free_split((*state)->info.map);
-	mlx_destroy_display((*state)->info.mlx);
-	free((*state)->info.mlx);
+	parser_free(&(*state)->info);
 	free((*state));
-	if (exit_status != EXIT_SUCCESS)
-		exit(EXIT_FAILURE);
 	exit(exit_status);
 }
 
@@ -66,8 +58,9 @@ static int	init_state(t_state **state, t_parser info)
 	return (SUCCESS);
 }
 
-static int	run_mlx(t_state **state)
+static int	run_mlx(t_state **state, int fd)
 {
+	(void)fd;
 	if (create_window((*state)->info.mlx,
 			SCREEN_WIDTH, SCREEN_HEIGHT, &((*state)->win)) == FAILURE)
 		return (EXIT_FAILURE);
@@ -91,18 +84,17 @@ int	main(int argc, char **argv)
 	t_parser	info;
 	t_state		*state;
 
-	fd = -1;
 	if (parser_init(&info) == -1)
 		return (EXIT_FAILURE);
 	fd = sb_argv_parsing(argc, argv);
 	if (fd == -1)
-		return (parser_free(&info, &fd, NULL), EXIT_FAILURE);
+		return (parser_free(&info), EXIT_FAILURE);
 	parser_job(fd, &info);
 	if (parser_debug(&info, false))
-		return (parser_free(&info, &fd, NULL), EXIT_SUCCESS);
+		return (parser_free(&info), EXIT_SUCCESS);
 	if (init_state(&state, info) == FAILURE)
 		return (game_exit(&state, EXIT_FAILURE));
-	if (run_mlx(&state) == FAILURE)
+	if (run_mlx(&state, fd) == FAILURE)
 		return (game_exit(&state, EXIT_FAILURE));
 	return (game_exit(&state, EXIT_SUCCESS));
 }

@@ -6,30 +6,24 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/18 21:57:18 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/27 09:43:24 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 
-static void	sb_check_null(int *fd, char **ext_buff)
+void	sb_wildcard(t_parser *info)
 {
-	if (fd != NULL)
-	{
-		if (*fd >= 0)
-			close(*fd);
-		*fd = -1;
-	}
-	if (ext_buff != NULL)
-	{
-		free(*ext_buff);
-		*ext_buff = NULL;
-	}
+	info->mlx = NULL;
+	info->north.img = NULL;
+	info->south.img = NULL;
+	info->west.img = NULL;
+	info->east.img = NULL;
+	info->map = NULL;
 }
 
-void	parser_free(t_parser *info, int *fd, char **ext_buff)
+void	parser_free(t_parser *info)
 {
-	sb_check_null(fd, ext_buff);
 	if (info->north.img != NULL)
 		mlx_destroy_image(info->mlx, info->north.img);
 	if (info->south.img != NULL)
@@ -43,6 +37,6 @@ void	parser_free(t_parser *info, int *fd, char **ext_buff)
 	{
 		mlx_destroy_display(info->mlx);
 		free(info->mlx);
-		info->mlx = NULL;
 	}
+	sb_wildcard(info);
 }
