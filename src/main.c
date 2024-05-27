@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dklimkin <dklimkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:03:16 by dklimkin          #+#    #+#             */
-/*   Updated: 2024/05/18 22:06:48 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:13:11 by dklimkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	main(int argc, char **argv)
 	t_parser	info;
 	t_state		*state;
 
+	fd = -1;
 	if (parser_init(&info) == -1)
 		return (EXIT_FAILURE);
 	fd = sb_argv_parsing(argc, argv);
@@ -98,10 +99,7 @@ int	main(int argc, char **argv)
 		return (parser_free(&info, &fd, NULL), EXIT_FAILURE);
 	parser_job(fd, &info);
 	if (parser_debug(&info, false))
-	{
-		parser_free(&info, &fd, NULL);
-		return (EXIT_SUCCESS);
-	}
+		return (parser_free(&info, &fd, NULL), EXIT_SUCCESS);
 	if (init_state(&state, info) == FAILURE)
 		return (game_exit(&state, EXIT_FAILURE));
 	if (run_mlx(&state) == FAILURE)
