@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/27 21:30:33 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:49:15 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static void	sb_err_str(char *line, size_t no, t_ltype type, t_etype etype)
 {
 	if (etype == args)
-		printf("Must contain 2 arguments: %lu: %s", no, line);
+		printf("Must contain 2 arguments: %lu: %s\n", no, line);
 	else if (type == unidentify)
-		printf("Unidentify element: %lu: %s", no, line);
+		printf("Unidentify element: %lu: %s\n", no, line);
 	else if (type == floor_elem || type == ceil_elem)
-		printf("Wrong RGB format [0-255,0-255,0-255]: %lu: %s", no, line);
+		printf("Wrong RGB format [0-255,0-255,0-255]: %lu: %s\n", no, line);
 	else
-		printf("xpm file error or permission denied: %lu: %s", no, line);
+		printf("xpm file error or permission denied: %lu: %s\n", no, line);
 }
 
 static void	sb_print_uninit(int init_checker)

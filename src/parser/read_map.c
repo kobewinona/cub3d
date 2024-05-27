@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/27 09:13:45 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/27 22:16:19 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,6 @@ static int	sb_map(t_queue *maps, t_parser *info)
 	*maps = new_map;
 	return (sb_illegal(info, maps, &err));
 }
-
-/*
-CLOSE FD OUTSIDE OF FUNCTION IN ALL CASES
-*/
 
 int	par_read_map(t_queue *maps, t_parser *info)
 {

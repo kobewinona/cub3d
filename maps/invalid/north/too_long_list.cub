@@ -1,6 +1,6 @@
-NO ./asset/set4/east.xpm
+NO ./asset/set4/east.xpm  ./asset/set4/east.xpm  ./asset/set4/east.xpm  ./asset/set4/east.xpm
 SO ./asset/set4/east.xpm
-WE 11111111111111111111111
+WE ./asset/set4/east.xpm
 EA ./asset/set4/east.xpm
 
 F 5,15,5

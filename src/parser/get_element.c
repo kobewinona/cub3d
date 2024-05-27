@@ -6,7 +6,7 @@
 /*   By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 17:51:40 by tponutha          #+#    #+#             */
-/*   Updated: 2024/05/27 21:29:51 by tponutha         ###   ########.fr       */
+/*   Updated: 2024/05/27 22:02:00 by tponutha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,22 @@ static int	sb_filter(char **box, t_parser *info, t_ltype type)
 static int	sb_set_type(char **box, int *bits, t_ltype *type)
 {
 	size_t	len;
+	int		offset;
 
-	if (ft_split_len(box) != 2)
-		return (2);
+	offset = (ft_split_len(box) != 2) * 2;
 	len = ft_strlen(box[0]);
 	if (ft_strncmp(box[0], "NO", len) == 0)
-		return (par_set_element_bits(1 << 0, bits, type, north_elem));
+		return (par_set_element_bits(1 << 0, bits, type, north_elem) + offset);
 	if (ft_strncmp(box[0], "SO", len) == 0)
-		return (par_set_element_bits(1 << 1, bits, type, south_elem));
+		return (par_set_element_bits(1 << 1, bits, type, south_elem) + offset);
 	if (ft_strncmp(box[0], "WE", len) == 0)
-		return (par_set_element_bits(1 << 2, bits, type, west_elem));
+		return (par_set_element_bits(1 << 2, bits, type, west_elem) + offset);
 	if (ft_strncmp(box[0], "EA", len) == 0)
-		return (par_set_element_bits(1 << 3, bits, type, east_elem));
+		return (par_set_element_bits(1 << 3, bits, type, east_elem) + offset);
 	if (ft_strncmp(box[0], "F", len) == 0)
-		return (par_set_element_bits(1 << 4, bits, type, floor_elem));
+		return (par_set_element_bits(1 << 4, bits, type, floor_elem) + offset);
 	if (ft_strncmp(box[0], "C", len) == 0)
-		return (par_set_element_bits(1 << 5, bits, type, ceil_elem));
+		return (par_set_element_bits(1 << 5, bits, type, ceil_elem) + offset);
 	return (2);
 }
 
@@ -54,7 +54,7 @@ static int	sb_extract(t_parser *info, t_node *node, t_queue *err)
 	box = ft_split(node->str, ' ');
 	if (box == NULL)
 		return (-1);
-	if (sb_set_type(box, &info->init_checker, &node->type) != 2)
+	if (sb_set_type(box, &info->init_checker, &node->type) < 2)
 	{
 		status = sb_filter(box, info, node->type);
 		if (status == 1)
@@ -64,6 +64,8 @@ static int	sb_extract(t_parser *info, t_node *node, t_queue *err)
 	{
 		status = 1;
 		node->type = unidentify;
+		if (ft_split_len(box) != 2)
+			node->err_type = args;
 		queue_queue(err, node);
 	}
 	ft_free_split(box);
