@@ -6,7 +6,7 @@
 #    By: tponutha <tponutha@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 22:55:43 by tponutha          #+#    #+#              #
-#    Updated: 2024/05/27 21:34:35 by tponutha         ###   ########.fr        #
+#    Updated: 2024/05/28 21:36:49 by tponutha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ MAIN_SRCS		= $(addprefix $(MAIN_DIR)/, $(MAIN_SRC))
 PARSER_DIR		= $(SRCS_DIR)/parser
 PARSER_SRC		= element_error.c get_color.c get_element.c \
 					get_player.c get_texture.c map_floodfill.c \
-					map_process.c open_cub3d.c parser_debug.c \
+					get_map.c open_cub3d.c parser_debug.c \
 					parser_free.c parser_init.c parser_utils.c parser.c \
 					print_map.c read_cub3d.c read_map.c
 PARSER_SRCS		= $(addprefix $(PARSER_DIR)/, $(PARSER_SRC))
